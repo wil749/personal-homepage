@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="王悦为 Lia wil · 智能医学工程（脑机接口方向）大一学生 · 艺术 × 神经科学" />
+  <title>王悦为 · 个人主页</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <!-- 背景装饰 -->
+  <div class="bg-decor" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div id="cursor" class="cursor-dot" aria-hidden="true"></div>
+
+  <!-- 顶部导航 -->
+  <header class="nav">
+    <div class="nav__inner">
+      <a class="brand" href="#top">
+        <b>W</b>IL<span class="brand__dot" aria-hidden="true"></span><span id="brand-name">wil</span>
+      </a>
+      <nav class="nav__links" aria-label="导航">
+        <a id="nav-about" href="#about">关于</a>
+        <a id="nav-hobbies" href="#hobbies">兴趣</a>
+        <a id="nav-growing" href="#growing">进行中</a>
+        <a id="nav-contact" href="#contact">联系</a>
+        <div class="lang" role="group" aria-label="语言切换">
+          <button type="button" data-lang="zh" class="is-active">中</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <span class="hero__eyebrow"><i></i><span id="eyebrow">艺术 × 神经科学</span></span>
+    <h1 class="hero__title">
+      <span class="cn" id="name-cn">王悦为</span>
+    </h1>
+    <p class="hero__alias" id="alias">LIA · WIL</p>
+    <p class="hero__role" id="role"></p>
+    <p class="hero__intro" id="intro"></p>
+    <a class="hero__cta" href="#contact"><span id="cta">认识我一下</span> →</a>
+    <div class="scroll-hint" aria-hidden="true">Scroll · 下滑</div>
+  </section>
+
+  <!-- 跑马灯 -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track" id="marquee-track"></div>
+  </div>
+  <div class="marquee marquee--reverse" aria-hidden="true">
+    <div class="marquee__track" id="marquee-track-2"></div>
+  </div>
+
+  <main>
+    <!-- 关于 -->
+    <section class="section" id="about">
+      <div class="section__head reveal">
+        <div>
+          <span class="section__tag" id="about-tag">ABOUT / 关于</span>
+          <h2 id="about-h2">一个正在生长的 08 后</h2>
+        </div>
+        <p class="section__sub" id="about-sub"></p>
+      </div>
+      <div class="about-grid">
+        <article class="long-intro reveal">
+          <p id="long-intro"></p>
+          <div class="long-intro__meta" id="about-meta"></div>
+        </article>
+        <aside class="fact-card reveal">
+          <span class="fact-card__title" id="fact-title">个人档案 / PROFILE</span>
+          <dl class="fact-list" id="fact-list"></dl>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 兴趣 -->
+    <section class="section" id="hobbies">
+      <div class="section__head reveal">
+        <div>
+          <span class="section__tag" id="hobbies-tag">HOBBIES / 兴趣</span>
+          <h2 id="hobbies-h2">让生活有点颜色</h2>
+        </div>
+        <p class="section__sub" id="hobbies-sub"></p>
+      </div>
+      <div class="hobbies reveal" id="hobbies"></div>
+    </section>
+
+    <!-- 生长中 -->
+    <section class="section" id="growing">
+      <div class="section__head reveal">
+        <div>
+          <span class="section__tag" id="growing-tag">WIP / 进行中</span>
+          <h2 id="growing-h2">还有惊喜在路上</h2>
+        </div>
+        <p class="section__sub" id="growing-sub"></p>
+      </div>
+      <div class="growing" id="growing"></div>
+    </section>
+
+    <!-- 联系 -->
+    <section class="section" id="contact">
+      <div class="section__head reveal">
+        <div>
+          <span class="section__tag" id="contact-tag">CONTACT / 联系</span>
+          <h2 id="contact-h2">来和我聊聊</h2>
+        </div>
+        <p class="section__sub" id="contact-sub"></p>
+      </div>
+      <div class="contact" id="contact"></div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <p id="footer"></p>
+      <div class="social-quick">
+        <span id="github-soon" style="color:var(--gray);font-family:var(--font-mono);font-size:0.82rem;"></span>
+        <span class="mono" id="footer-note"></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

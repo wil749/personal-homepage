@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="王悦为 Lia wil · 智能医学工程（脑机接口方向）大一学生 · 黑红金 撞色档案" />
+  <title>王悦为 · WIL</title>
+
+  <!-- 纯自定义样式，无外部依赖，彻底离线自包含 -->
+  <style>
+    :root {
+      --ink: #000000;        /* 漆黑夜 */
+      --red: #e30613;        /* 高纯度红 */
+      --red-deep: #a30d14;   /* 深红 */
+      --gold: #c9a227;       /* 陈旧金 */
+      --gold-soft: #e6c877;  /* 柔金 */
+      --white: #ffffff;      /* 纯白 */
+      --soft: #ece7dd;       /* 米白 */
+      --gray: #b9b9c2;
+      --font: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Helvetica Neue", Arial, sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --wrap: 76rem;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 4.6rem; }
+    body { margin: 0; background: var(--ink); color: var(--white); font-family: var(--font); line-height: 1.7; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    ::selection { background: var(--red); color: #fff; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: var(--font); }
+    h1,h2,h3,p { margin: 0; }
+    .wrap { width: min(100% - clamp(1.2rem, 6vw, 4rem) * 2, var(--wrap)); margin-inline: auto; }
+
+    /* ---------------- 顶部栏（黑） ---------------- */
+    .topbar { position: sticky; top: 0; z-index: 80; background: var(--ink); border-bottom: 2px solid var(--red); }
+    .topbar__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.8rem; }
+    .brand { display: inline-flex; align-items: center; gap: 0.55rem; font-weight: 900; letter-spacing: 0.04em; }
+    .brand svg { width: 1.5rem; height: 1.5rem; color: var(--red); }
+    .brand b { color: var(--white); }
+    .brand .sub { font-size: 0.66rem; letter-spacing: 0.22em; color: var(--gold); font-weight: 700; }
+    .topnav { display: flex; align-items: center; gap: clamp(0.8rem, 3vw, 1.6rem); }
+    .topnav a { font-size: 0.84rem; letter-spacing: 0.08em; color: var(--white); opacity: 0.72; font-weight: 700; transition: color .3s var(--ease), opacity .3s var(--ease); }
+    .topnav a:hover { color: var(--red); opacity: 1; }
+    .lang { display: inline-flex; padding: 0.16rem; border: 1px solid #333; border-radius: 2px; }
+    .lang button { padding: 0.24rem 0.62rem; border: 0; background: transparent; color: var(--white); font-size: 0.72rem; font-weight: 800; letter-spacing: .06em; cursor: pointer; transition: all .3s var(--ease); }
+    .lang button.is-active { background: var(--red); color: #fff; }
+
+    /* ---------------- 色带通用 ---------------- */
+    .band { position: relative; overflow: hidden; }
+    .band--red { background: var(--red); color: var(--ink); }
+    .band--black { background: var(--ink); color: var(--white); }
+    .halftone { position: absolute; inset: 0; pointer-events: none; opacity: 0.28; background-image: radial-gradient(rgba(0,0,0,0.22) 1.3px, transparent 1.4px); background-size: 9px 9px; }
+    .label { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.3em; text-transform: uppercase; }
+    .label::before { content: ""; width: 1.6rem; height: 3px; background: currentColor; }
+    .band--red .label { color: var(--ink); }
+    .band--black .label { color: var(--gold); }
+
+    /* ---------------- 封面（红 · 大片撞色） ---------------- */
+    .cover { min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: clamp(3rem, 10vw, 6rem) clamp(1.2rem, 6vw, 4rem); }
+    .cover .eyebrow { font-size: 0.72rem; font-weight: 900; letter-spacing: 0.36em; text-transform: uppercase; color: var(--ink); }
+    .cover__name { font-size: clamp(3.6rem, 17vw, 11rem); font-weight: 900; line-height: 0.92; letter-spacing: -0.03em; color: var(--ink); margin-top: 0.6rem; }
+    .cover__name .en { color: #fff; display: inline-block; }
+    .cover__alias { margin-top: 0.8rem; font-size: clamp(0.8rem, 2.6vw, 1.05rem); font-weight: 800; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-soft); }
+    .cover__rule { width: 7rem; height: 5px; margin: 1.5rem auto; background: var(--ink); }
+    .cover__role { font-size: clamp(0.92rem, 2.4vw, 1.08rem); font-weight: 700; color: var(--ink); letter-spacing: 0.04em; }
+    .cover__intro { max-width: 40rem; margin: 1.2rem auto 0; font-size: clamp(1rem, 2.2vw, 1.16rem); color: rgba(0,0,0,0.82); }
+    .cover__intro strong { color: var(--ink); background: #fff; padding: 0 0.25rem; }
+    .cover__cta { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 2rem; padding: 0.85rem 1.8rem; background: var(--ink); color: #fff; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.9rem; transition: transform .35s var(--ease), background .35s var(--ease), color .35s var(--ease); }
+    .cover__cta:hover { background: #fff; color: var(--red); transform: translateY(-3px); }
+
+    /* 装饰插画 */
+    .art { position: absolute; pointer-events: none; z-index: 1; }
+    .art--cat { left: clamp(1rem, 6vw, 4rem); bottom: 12%; width: clamp(5rem, 13vw, 9rem); color: #000; }
+    .art--brain { right: clamp(1rem, 7vw, 5rem); top: 16%; width: clamp(4.5rem, 12vw, 8rem); color: #000; }
+    .art--brush { right: clamp(1rem, 10vw, 7rem); bottom: 18%; width: clamp(4rem, 10vw, 7rem); color: var(--gold-soft); transform: rotate(-18deg); }
+
+    .scroll-hint { position: absolute; bottom: 1.4rem; left: 50%; transform: translateX(-50%); font-size: 0.66rem; font-weight: 800; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink); opacity: 0.7; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+    .scroll-hint::after { content: ""; width: 2px; height: 2rem; background: linear-gradient(var(--ink), transparent); animation: drip 2s var(--ease) infinite; }
+
+    /* ---------------- 章节 ---------------- */
+    .section { padding-block: clamp(3.2rem, 9vw, 6rem); position: relative; }
+    .section__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.2rem; flex-wrap: wrap; margin-bottom: clamp(1.8rem, 4vw, 2.8rem); }
+    .h2 { font-size: clamp(2rem, 7vw, 4.2rem); font-weight: 900; letter-spacing: -0.02em; line-height: 1; margin-top: 0.7rem; }
+    .h2 em { font-style: normal; color: var(--red); }
+    .band--black .h2 { color: #fff; }
+    .h2 .gold { color: var(--gold); }
+    .section__sub { max-width: 30rem; color: var(--gray); font-size: 0.96rem; }
+
+    /* 关于（黑） */
+    .about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(1rem, 3vw, 2rem); align-items: stretch; }
+    .long-intro { font-size: clamp(1.15rem, 3vw, 1.6rem); line-height: 1.6; color: var(--white); font-weight: 500; }
+    .long-intro em { font-style: normal; color: var(--gold); }
+    .about-meta { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1.6rem; }
+    .chip { padding: 0.3rem 0.7rem; border: 1px solid #333; color: var(--gray); font-size: 0.8rem; font-weight: 700; }
+    .chip b { color: var(--red); font-weight: 800; }
+    /* 档案红卡 */
+    .fact-card { background: var(--red); color: #fff; padding: clamp(1.4rem, 3.5vw, 2.2rem); position: relative; }
+    .fact-card__title { display: inline-flex; align-items: baseline; gap: 0.6rem; font-weight: 900; letter-spacing: 0.14em; font-size: 1rem; color: #fff; }
+    .fact-card__title i { font-style: normal; color: var(--gold-soft); }
+    .fact-list { display: flex; flex-direction: column; margin-top: 1rem; }
+    .fact-row { display: flex; justify-content: space-between; gap: 1rem; padding-block: 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.28); }
+    .fact-row:last-child { border-bottom: 0; }
+    .fact-row dt { color: rgba(255,255,255,0.72); font-size: 0.82rem; flex-shrink: 0; }
+    .fact-row dd { margin: 0; font-weight: 800; text-align: right; font-size: 0.92rem; }
+
+    /* ---------------- 兴趣（红） ---------------- */
+    .hobbies { display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(0.8rem, 2vw, 1.3rem); }
+    .hobby { position: relative; background: #fff; color: var(--ink); padding: clamp(1.1rem, 2.6vw, 2rem) 1rem; text-align: left; border: 0; cursor: pointer; display: flex; flex-direction: column; gap: 1rem; transition: transform .35s var(--ease), box-shadow .35s var(--ease), background .35s var(--ease); }
+    .hobby:hover { transform: translateY(-6px); box-shadow: 0 14px 30px rgba(0,0,0,0.28); }
+    .hobby svg { width: clamp(2rem, 4vw, 3rem); height: clamp(2rem, 4vw, 3rem); color: var(--red); }
+    .hobby .cn { font-weight: 900; font-size: clamp(1.1rem, 2.4vw, 1.5rem); }
+    .hobby .en { font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); font-weight: 800; }
+    .hobby::before { content: ""; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--red); }
+    .hobby:nth-child(2)::before { background: var(--gold); }
+
+    /* ---------------- 项目（黑） ---------------- */
+    .growing { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 3vw, 2rem); }
+    .grow-card { border: 1px solid #2c2c2c; padding: clamp(1.4rem, 3.5vw, 2.2rem); position: relative; transition: border-color .35s var(--ease), transform .35s var(--ease); }
+    .grow-card:hover { border-color: var(--red); transform: translateY(-6px); }
+    .grow-card__no { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.24em; color: var(--gold); }
+    .grow-card h3 { margin: 0.7rem 0 0.5rem; font-size: clamp(1.2rem, 2.6vw, 1.5rem); font-weight: 900; color: #fff; }
+    .grow-card p { color: var(--gray); font-size: 0.94rem; }
+    .grow-badge { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem; color: var(--red); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+    .grow-badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: pulse 2s var(--ease) infinite; }
+
+    /* ---------------- 联系（红） ---------------- */
+    .contact { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 3vw, 2rem); }
+    .contact-item { background: var(--ink); color: #fff; padding: clamp(1.4rem, 3.5vw, 2.2rem); display: flex; flex-direction: column; gap: 0.5rem; position: relative; transition: transform .35s var(--ease), background .35s var(--ease); }
+    .contact-item:hover { transform: translateY(-6px); background: #1a1a1a; }
+    .contact-item__k { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-soft); }
+    .contact-item__v { font-weight: 900; font-size: clamp(1.05rem, 2.6vw, 1.4rem); word-break: break-all; }
+    .contact-item__tap { margin-top: 0.4rem; font-size: 0.8rem; color: var(--gray); }
+    .contact-item__tap::after { content: "→"; margin-left: 0.4rem; color: var(--red); }
+
+    /* ---------------- 页脚（黑） ---------------- */
+    .footer { background: var(--ink); border-top: 2px solid var(--red); padding-block: clamp(1.8rem, 4vw, 2.6rem); }
+    .footer__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer p { color: var(--gray); font-size: 0.86rem; }
+    .footer .mono { font-family: var(--font); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+    .footer b { color: var(--red); }
+
+    /* ---------------- 滚动浮现 ---------------- */
+    [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+    [data-reveal].is-in { opacity: 1; transform: none; }
+    .fade { opacity: 0; }
+    .fade.on { animation: pop 0.6s var(--ease) both; }
+
+    @keyframes pop { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+    @keyframes drip { 0% { transform: scaleY(0); transform-origin: top; } 45% { transform: scaleY(1); transform-origin: top; } 55% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+    @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } }
+    @keyframes float { 0%,100% { transform: translateY(0) rotate(var(--r,0deg)); } 50% { transform: translateY(-12px) rotate(var(--r,0deg)); } }
+
+    /* ---------------- 响应式 ---------------- */
+    @media (max-width: 860px) {
+      .topnav > a { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .hobbies { grid-template-columns: repeat(2, 1fr); }
+      .growing, .contact { grid-template-columns: 1fr; }
+      .art--brain { display: none; }
+      .scroll-hint { display: none; }
+    }
+    @media (max-width: 480px) { .hobbies { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      [data-reveal], .fade.on, .scroll-hint::after, .grow-badge i, .art { animation: none !important; transition: none !important; }
+      [data-reveal] { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 顶部栏 -->
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="#top">
+        <svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M38 40 L46 12 L66 36 Z"/><path d="M62 40 L54 12 L34 36 Z"/><circle cx="50" cy="56" r="24"/><ellipse cx="43" cy="54" rx="3" ry="5" fill="#fff"/><ellipse cx="57" cy="54" rx="3" ry="5" fill="#fff"/></svg>
+        <b id="brand-name">王悦为</b><span class="sub">WIL · LIA</span>
+      </a>
+      <nav class="topnav" aria-label="导航">
+        <a id="nav-about" href="#about">关于</a>
+        <a id="nav-hobbies" href="#hobbies">兴趣</a>
+        <a id="nav-growing" href="#growing">项目</a>
+        <a id="nav-contact" href="#contact">联系</a>
+        <div class="lang" role="group" aria-label="语言切换">
+          <button type="button" data-lang="zh" class="is-active">中</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 封面 -->
+    <section class="band band--red" id="top">
+      <div class="halftone" aria-hidden="true"></div>
+      <!-- 装饰插画 -->
+      <svg class="art art--cat" viewBox="0 0 240 250" fill="none" aria-hidden="true">
+        <g fill="currentColor">
+          <circle cx="120" cy="86" r="46"/><path d="M84 62 L96 15 L128 47 Z"/><path d="M156 62 L144 15 L112 47 Z"/>
+          <path d="M120 246 C70 246 44 212 44 170 C44 140 60 116 96 104 L144 104 C180 116 196 140 196 170 C196 212 170 246 120 246 Z"/>
+          <rect x="92" y="158" width="16" height="88" rx="8"/><rect x="132" y="158" width="16" height="88" rx="8"/>
+          <path d="M56 174 C18 180 16 226 66 228 C84 229 96 222 102 212" stroke="currentColor" stroke-width="18" stroke-linecap="round"/>
+        </g>
+        <ellipse cx="102" cy="84" rx="7" ry="10" fill="#c9a227"/><ellipse cx="138" cy="84" rx="7" ry="10" fill="#c9a227"/>
+      </svg>
+      <svg class="art art--brain" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+        <path d="M50 14 C32 14 22 28 24 41 C14 45 14 60 26 63 C24 78 38 86 50 84 C62 86 76 78 74 63 C86 60 86 45 76 41 C78 28 68 14 50 14 Z" stroke="currentColor" stroke-width="3"/>
+        <path d="M50 22 L40 40 L60 50 L50 70" stroke="currentColor" stroke-width="2.4"/><circle cx="50" cy="22" r="3" fill="#c9a227"/><circle cx="40" cy="40" r="3" fill="#e30613"/><circle cx="60" cy="50" r="3" fill="#c9a227"/><circle cx="50" cy="70" r="3" fill="#e30613"/>
+      </svg>
+      <svg class="art art--brush" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <path d="M12 52 L44 20" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        <rect x="44" y="13" width="11" height="11" transform="rotate(-45 49 18)" fill="currentColor"/>
+        <path d="M48 8 L58 18 L53 23 L43 13 Z" fill="currentColor"/><circle cx="57" cy="24" r="3.4" fill="#e30613"/>
+      </svg>
+
+      <div class="cover">
+        <p class="eyebrow" id="eyebrow">脑机接口 × 艺术</p>
+        <h1 class="cover__name"><span id="name-cn">王悦为</span><span class="en" id="name-en">Lia</span></h1>
+        <p class="cover__alias" id="alias">WIL · NEURO · ART</p>
+        <div class="cover__rule" aria-hidden="true"></div>
+        <p class="cover__role" id="role">智能医学工程（脑机接口方向）· 大一</p>
+        <p class="cover__intro" id="intro"></p>
+        <a class="cover__cta" href="#about"><span id="cta">进入档案</span> →</a>
+        <div class="scroll-hint" aria-hidden="true">下滑 · Scroll</div>
+      </div>
+    </section>
+
+    <!-- 关于 -->
+    <section class="band band--black" id="about">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="about-tag">关于 · ABOUT</span>
+            <h2 class="h2" id="about-h2">科学与<span class="gold">艺术</span>之间</h2>
+          </div>
+          <p class="section__sub" id="about-sub"></p>
+        </div>
+        <div class="about-grid">
+          <div data-reveal>
+            <p class="long-intro" id="long-intro"></p>
+            <div class="about-meta" id="about-meta"></div>
+          </div>
+          <aside class="fact-card" data-reveal>
+            <span class="fact-card__title"><i>❰</i><span id="fact-title">档案</span></span>
+            <dl class="fact-list" id="fact-list"></dl>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- 兴趣 -->
+    <section class="band band--red" id="hobbies">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="hobbies-tag">兴趣 · HOBBIES</span>
+            <h2 class="h2" id="hobbies-h2">我的观察<em>镜头</em></h2>
+          </div>
+          <p class="section__sub" id="hobbies-sub" style="color:rgba(0,0,0,0.66)"></p>
+        </div>
+        <div class="hobbies" id="hobbies"></div>
+      </div>
+    </section>
+
+    <!-- 项目 / 技能 -->
+    <section class="band band--black" id="growing">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="growing-tag">技能 · 项目</span>
+            <h2 class="h2" id="growing-h2">正在<span class="gold">生长</span></h2>
+          </div>
+          <p class="section__sub" id="growing-sub"></p>
+        </div>
+        <div class="growing" id="growing"></div>
+      </div>
+    </section>
+
+    <!-- 联系 -->
+    <section class="band band--red" id="contact">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="contact-tag">联系 · CONTACT</span>
+            <h2 class="h2" id="contact-h2">找到<em>我</em></h2>
+          </div>
+          <p class="section__sub" id="contact-sub" style="color:rgba(0,0,0,0.66)"></p>
+        </div>
+        <div class="contact" id="contact"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <p id="footer"></p>
+      <span class="mono" id="footer-note"></span>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    "use strict";
+
+    /* ---------- 图标（黑红金，currentColor 可换色） ---------- */
+    const ICON = {
+      brush: '<svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 50 L42 20"/><path d="M42 20 L50 13 L54 17 L46 25 Z" fill="currentColor" stroke="none"/></g><circle cx="52" cy="22" r="3" fill="#c9a227"/></svg>',
+      dance: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><circle cx="42" cy="12" r="4"/><path d="M40 16 L32 30 L20 26"/><path d="M32 30 L34 50 L26 58"/><path d="M34 50 L46 56"/><path d="M32 30 L48 28"/></svg>',
+      photo: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><path d="M8 22 h10 a2 2 0 0 0 2-2 l1-2 h18 l1 2 a2 2 0 0 0 2 2 h10 a4 4 0 0 1 4 4 v20 a4 4 0 0 1 -4 4 H8 a4 4 0 0 1 -4-4 V26 a4 4 0 0 1 4-4 Z"/><circle cx="34" cy="37" r="8"/></svg>',
+      music: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><path d="M40 10 v34 c0 5 -7 8 -12 6 c-5-2 -5-9 -1-11 c4-2 9-1 13 1"/><path d="M40 10 L58 18"/></svg>',
+      film: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="12" width="52" height="40" rx="3"/><path d="M6 22 h52 M6 42 h52 M22 12 v40 M42 12 v40"/></svg>'
+    };
+
+    /* ---------- 内容数据（中 / EN） ---------- */
+    const COPY = {
+      zh: {
+        eyebrow: "脑机接口 × 艺术",
+        nameCn: "王悦为", nameEn: "Lia", alias: "WIL · NEURO · ART",
+        role: "智能医学工程（脑机接口方向）· 大一",
+        intro: "嗨，我是王悦为。钻研<strong>脑机接口</strong>，也爱绘画、舞蹈、摄影。记录生活，也探索生物学与人文艺术。很高兴认识你。",
+        cta: "进入档案",
+        nav: { about: "关于", hobbies: "兴趣", growing: "项目", contact: "联系" },
+        aboutTag: "关于 · ABOUT",
+        aboutH2: "科学与<span class=\"gold\">艺术</span>之间",
+        aboutSub: "从成都到深圳，从医学代码到画笔，一个随信号起舞的 08 后。",
+        longIntro: "我在两种语言里切换——<em>一支画笔</em>和一段代码。记录舞蹈的律动，也想读懂大脑的电波。生活与学习，都是我观察世界的镜头。",
+        aboutMeta: ["记录生活", "生物学", "人文艺术"],
+        factTitle: "档案",
+        facts: [
+          { k: "出生", v: "2008.04.23" }, { k: "家乡", v: "四川成都" }, { k: "常居", v: "广东深圳" },
+          { k: "学校", v: "天津大学香港理工大学深圳未来技术学院" }, { k: "专业", v: "智能医学工程（脑机接口方向）" }
+        ],
+        hobbiesTag: "兴趣 · HOBBIES",
+        hobbiesH2: "我的观察<em>镜头</em>",
+        hobbiesSub: "艺术与医学，是同一副镜头下的不同画面。",
+        hobbies: [
+          { icon: "brush", cn: "绘画", en: "Painting" },
+          { icon: "dance", cn: "舞蹈", en: "Dance" },
+          { icon: "photo", cn: "摄影", en: "Photography" },
+          { icon: "music", cn: "音乐", en: "Music" },
+          { icon: "film", cn: "电影", en: "Film" }
+        ],
+        growingTag: "技能 · 项目",
+        growingH2: "正在<span class=\"gold\">生长</span>",
+        growingSub: "技能与第一个作品仍在路上，欢迎常回来看看。",
+        growing: [
+          { no: "01", title: "技能学习", desc: "正在解锁新的工具与方向，边学边玩。", badge: "进行中" },
+          { no: "02", title: "项目经历", desc: "第一章作品正在酝酿，出炉一定大声宣告。", badge: "进行中" },
+          { no: "03", title: "更多可能", desc: "这里永远为下一个想法留着一页。", badge: "敬请期待" }
+        ],
+        contactTag: "联系 · CONTACT",
+        contactH2: "找到<em>我</em>",
+        contactSub: "一幅画、一支舞、一个想法，都欢迎来聊。",
+        contact: [
+          { k: "邮箱 · Email", v: "wil_19780117@tju.edu.cn", href: "mailto:wil_19780117@tju.edu.cn", tap: "寄封信" },
+          { k: "QQ", v: "3944174406", href: "#contact", tap: "来聊聊" },
+          { k: "微信 · WeChat", v: "Wil-2t", href: "#contact", tap: "报上名号" }
+        ],
+        footer: "© 2026 王悦为 · 保持好奇，持续创造",
+        footerNote: "黑 · 红 · 金"
+      },
+      en: {
+        eyebrow: "BCI × ART",
+        nameCn: "Wang Yuewei", nameEn: "Lia", alias: "WIL · NEURO · ART",
+        role: "Intelligent Medical Engineering (BCI) · Freshman",
+        intro: "Hi, I'm Lia. I dig into <strong>brain-computer interfaces</strong> and I paint, dance and shoot photos on the side. Documenting life, exploring biology and the humanities. Glad to meet you.",
+        cta: "Enter the file",
+        nav: { about: "About", hobbies: "Hobbies", growing: "Projects", contact: "Contact" },
+        aboutTag: "About · ABOUT",
+        aboutH2: "Between science & <span class=\"gold\">art</span>",
+        aboutSub: "From Chengdu to Shenzhen — a Gen-Z dancing to the signal between medical code and a paintbrush.",
+        longIntro: "I switch between two languages — <em>a paintbrush</em> and a line of code. Chasing the rhythm of dance while reading the brain's waves. Life and study are both lenses on my world.",
+        aboutMeta: ["Documenting life", "Biology", "Humanities"],
+        factTitle: "PROFILE",
+        facts: [
+          { k: "Born", v: "2008.04.23" }, { k: "Hometown", v: "Chengdu, Sichuan" }, { k: "Based in", v: "Shenzhen, Guangdong" },
+          { k: "School", v: "Shenzhen Future Tech Institute, TJU & PolyU" }, { k: "Major", v: "Intelligent Medical Eng. (BCI)" }
+        ],
+        hobbiesTag: "HOBBIES · HOBBIES",
+        hobbiesH2: "Through my <em>lens</em>",
+        hobbiesSub: "Art and medicine — different frames, one lens.",
+        hobbies: [
+          { icon: "brush", cn: "Painting", en: "绘画" },
+          { icon: "dance", cn: "Dance", en: "舞蹈" },
+          { icon: "photo", cn: "Photography", en: "摄影" },
+          { icon: "music", cn: "Music", en: "音乐" },
+          { icon: "film", cn: "Film", en: "电影" }
+        ],
+        growingTag: "SKILLS · PROJECTS",
+        growingH2: "Still <span class=\"gold\">growing</span>",
+        growingSub: "Skills and a first project are still on the way — check back soon.",
+        growing: [
+          { no: "01", title: "Skills", desc: "Unlocking new tools and directions, learning while playing.", badge: "WIP" },
+          { no: "02", title: "Projects", desc: "My first chapter is brewed in the lab. I'll shout it out soon.", badge: "WIP" },
+          { no: "03", title: "More to come", desc: "There's always a page here for the next idea.", badge: "SOON" }
+        ],
+        contactTag: "CONTACT · CONTACT",
+        contactH2: "Find <em>me</em>",
+        contactSub: "A painting, a dance, an idea — let's talk.",
+        contact: [
+          { k: "Email", v: "wil_19780117@tju.edu.cn", href: "mailto:wil_19780117@tju.edu.cn", tap: "Write a letter" },
+          { k: "QQ", v: "3944174406", href: "#contact", tap: "Say hi" },
+          { k: "WeChat", v: "Wil-2t", href: "#contact", tap: "Add me" }
+        ],
+        footer: "© 2026 Wang Yuewei · Stay curious, keep creating",
+        footerNote: "BLACK · RED · GOLD"
+      }
+    };
+
+    let lang = "zh";
+    const $ = (s) => document.querySelector(s);
+
+    function render() {
+      const t = COPY[lang];
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      document.title = `${t.nameCn} · WIL`;
+      $("#brand-name").textContent = t.nameCn;
+      $("#eyebrow").textContent = t.eyebrow;
+      $("#name-cn").textContent = t.nameCn;
+      $("#name-en").textContent = t.nameEn;
+      $("#alias").textContent = t.alias;
+      $("#role").textContent = t.role;
+      $("#intro").innerHTML = t.intro;
+      $("#cta").textContent = t.cta;
+
+      $("#nav-about").textContent = t.nav.about;
+      $("#nav-hobbies").textContent = t.nav.hobbies;
+      $("#nav-growing").textContent = t.nav.growing;
+      $("#nav-contact").textContent = t.nav.contact;
+
+      $("#about-tag").textContent = t.aboutTag;
+      $("#about-h2").innerHTML = t.aboutH2;
+      $("#about-sub").textContent = t.aboutSub;
+      $("#long-intro").innerHTML = t.longIntro;
+      $("#about-meta").innerHTML = t.aboutMeta.map((m, i) => `<span class="chip"><b>${String(i + 1).padStart(2, "0")}</b>${m}</span>`).join("");
+      $("#fact-title").textContent = t.factTitle;
+      $("#fact-list").innerHTML = t.facts.map((f) => `<div class="fact-row"><dt>${f.k}</dt><dd>${f.v}</dd></div>`).join("");
+
+      $("#hobbies-tag").textContent = t.hobbiesTag;
+      $("#hobbies-h2").innerHTML = t.hobbiesH2;
+      $("#hobbies-sub").textContent = t.hobbiesSub;
+      $("#hobbies").innerHTML = t.hobbies.map((h) => `
+        <button class="hobby" type="button" data-reveal>
+          ${ICON[h.icon]}
+          <span class="en">${h.en}</span>
+          <span class="cn">${h.cn}</span>
+        </button>`).join("");
+
+      $("#growing-tag").textContent = t.growingTag;
+      $("#growing-h2").innerHTML = t.growingH2;
+      $("#growing-sub").textContent = t.growingSub;
+      $("#growing").innerHTML = t.growing.map((g) => `
+        <article class="grow-card" data-reveal>
+          <div class="grow-card__no">CASE ${g.no}</div>
+          <h3>${g.title}</h3>
+          <p>${g.desc}</p>
+          <span class="grow-badge"><i></i>${g.badge}</span>
+        </article>`).join("");
+
+      $("#contact-tag").textContent = t.contactTag;
+      $("#contact-h2").innerHTML = t.contactH2;
+      $("#contact-sub").textContent = t.contactSub;
+      $("#contact").innerHTML = t.contact.map((c) => `
+        <a class="contact-item" href="${c.href}" target="${c.href.startsWith("http") ? "_blank" : "_self"}" data-reveal>
+          <span class="contact-item__k">${c.k}</span>
+          <span class="contact-item__v">${c.v}</span>
+          <span class="contact-item__tap">${c.tap}</span>
+        </a>`).join("");
+
+      $("#footer").textContent = t.footer;
+      $("#footer-note").textContent = t.footerNote;
+
+      document.querySelectorAll(".lang button").forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      observe();
+    }
+
+    /* ---------- 滚动浮现 ---------- */
+    let io = null;
+    function observe() {
+      if (io) io.disconnect();
+      io = new IntersectionObserver((es) => {
+        es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } });
+      }, { threshold: 0.14 });
+      document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+    }
+
+    function bindLang() {
+      document.querySelectorAll(".lang button").forEach((b) => b.addEventListener("click", () => {
+        if (b.dataset.lang !== lang) { lang = b.dataset.lang; render(); }
+      }));
+    }
+
+    function init() {
+      render();
+      bindLang();
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    else init();
+  })();
+  </script>
+</body>
+</html>

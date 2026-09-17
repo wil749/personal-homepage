@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="王悦为 Lia wil · 项目经历 · 红黑白 谋杀案海报风" />
+  <title>项目经历 · 王悦为 WIL</title>
+
+  <style>
+    :root {
+      --ink: #000000;        /* 纯黑 */
+      --red: #c00d1a;        /* 海报红（已降亮） */
+      --red-deep: #8a0a12;   /* 深红 */
+      --white: #ffffff;      /* 纯白 */
+      --off: #f3efe6;        /* 米白（正文用） */
+      --gray: #c9c6bd;       /* 灰白 */
+      --font: "方正姚体", "FZYaoti", "FZYaoTi", Georgia, "Times New Roman", "Source Han Serif SC", "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STZhongsong", "STSong", "SimSun", serif;
+      --disp: "方正姚体", "FZYaoti", "FZYaoTi", Georgia, "Times New Roman", "Source Han Serif SC", "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STZhongsong", "STSong", serif;
+      --bold: 0.03em;        /* 姚体无粗体字重，用描边加粗 */
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --wrap: 78rem;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--ink); color: var(--off); font-family: var(--font); -webkit-text-stroke: var(--bold) currentColor; line-height: 1.75; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    ::selection { background: var(--red); color: #fff; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: var(--font); -webkit-text-stroke: var(--bold) currentColor; }
+    h1,h2,h3,h4,p { margin: 0; }
+    .wrap { width: min(100% - clamp(1.2rem, 6vw, 4rem) * 2, var(--wrap)); margin-inline: auto; }
+
+    /* ---------------- 顶部栏 ---------------- */
+    .topbar { position: sticky; top: 0; z-index: 80; background: var(--ink); border-bottom: 2px solid var(--red); }
+    .topbar__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.8rem; }
+    .brand { display: inline-flex; align-items: center; gap: 0.55rem; font-weight: 900; letter-spacing: 0.06em; }
+    .brand svg { width: 1.5rem; height: 1.5rem; color: var(--red); }
+    .brand b { color: var(--white); }
+    .brand .sub { font-size: 0.66rem; letter-spacing: 0.26em; color: var(--gray); font-weight: 700; }
+    .topnav { display: flex; align-items: center; gap: clamp(0.8rem, 3vw, 1.6rem); }
+    .topnav a { font-size: 0.82rem; letter-spacing: 0.14em; color: var(--off); opacity: 0.78; font-weight: 700; transition: color .3s var(--ease), opacity .3s var(--ease); }
+    .topnav a:hover { color: var(--red); opacity: 1; }
+    .lang { display: inline-flex; padding: 0.16rem; border: 1px solid #444; border-radius: 2px; }
+    .lang button { padding: 0.24rem 0.62rem; border: 0; background: transparent; color: var(--off); font-size: 0.72rem; font-weight: 800; letter-spacing: .06em; cursor: pointer; transition: all .3s var(--ease); }
+    .lang button.is-active { background: var(--red); color: #fff; }
+
+    /* ---------------- 英雄区（红） ---------------- */
+    .hero { position: relative; overflow: hidden; background: var(--red); color: var(--ink); padding: clamp(3rem, 10vw, 6rem) 0; }
+    .hero__eyebrow { font-size: 0.74rem; font-weight: 800; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(0,0,0,0.68); display: inline-flex; align-items: center; gap: 0.6rem; }
+    .hero__eyebrow::before { content: ""; width: 1.8rem; height: 3px; background: var(--ink); }
+    .hero h1 { font-family: var(--disp); font-size: clamp(2.4rem, 8vw, 5rem); font-weight: 900; line-height: 1; letter-spacing: 0.02em; margin-top: 1rem; }
+    .hero h1 .acc { color: #fff; background: var(--ink); padding: 0 0.12em; }
+    .hero__sub { max-width: 40rem; margin-top: 1.2rem; font-size: clamp(1rem, 2.2vw, 1.14rem); color: rgba(0,0,0,0.76); }
+    .hero__back { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.8rem; padding: 0.7rem 1.5rem; background: var(--ink); color: #fff; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.82rem; transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease); }
+    .hero__back:hover { background: #fff; color: var(--red); transform: translateX(-3px); }
+    .hero__back::before { content: "←"; }
+
+    /* ---------------- 项目列表（黑） ---------------- */
+    .section { padding-block: clamp(3rem, 9vw, 6rem); }
+    .section__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.2rem; flex-wrap: wrap; margin-bottom: clamp(1.8rem, 4vw, 2.8rem); }
+    .label { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.34em; text-transform: uppercase; color: var(--white); }
+    .label::before { content: ""; width: 1.6rem; height: 3px; background: var(--red); }
+    .h2 { font-family: var(--disp); font-size: clamp(1.9rem, 6vw, 3.4rem); font-weight: 900; letter-spacing: 0.03em; line-height: 1.08; margin-top: 0.8rem; color: #fff; }
+    .section__sub { max-width: 32rem; color: var(--gray); font-size: 0.96rem; }
+
+    .proj { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1rem, 3vw, 2rem); }
+    .proj-card { border: 1px solid #333; padding: clamp(1.4rem, 3.5vw, 2.4rem); position: relative; overflow: hidden; transition: border-color .35s var(--ease), transform .35s var(--ease), background .35s var(--ease); }
+    .proj-card:hover { border-color: var(--red); transform: translateY(-6px); background: rgba(192,13,26,0.06); }
+    .proj-card__no { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.3em; color: var(--red); }
+    .proj-card h3 { margin: 0.8rem 0 0.4rem; font-size: clamp(1.25rem, 3vw, 1.8rem); font-weight: 900; color: #fff; }
+    .proj-card__en { display: block; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); font-weight: 700; margin-bottom: 1rem; }
+    .proj-card p { color: var(--gray); font-size: 0.95rem; }
+    .proj-meta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.2rem; }
+    .proj-tag { padding: 0.28rem 0.68rem; border: 1px solid #444; color: var(--gray); font-size: 0.76rem; font-weight: 700; }
+    .proj-tag b { color: var(--red); font-weight: 800; }
+    .proj-tag--tbd { border: 1px dashed var(--gray); }
+
+    /* ---------------- 占位提示（红） ---------------- */
+    .tbd-band { background: var(--red); color: var(--ink); padding: clamp(3rem, 8vw, 5rem) 0; }
+    .tbd-band .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1.6rem; flex-wrap: wrap; }
+    .tbd-band h2 { font-family: var(--disp); font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 900; }
+    .tbd-band p { max-width: 26rem; color: rgba(0,0,0,0.76); margin-top: 0.6rem; }
+    .tbd-band .cta { flex-shrink: 0; display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.85rem 2rem; background: var(--ink); color: #fff; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.88rem; transition: background .3s var(--ease), color .3s var(--ease); }
+    .tbd-band .cta:hover { background: #fff; color: var(--red); }
+    .tbd-band .cta::after { content: "→"; }
+
+    /* ---------------- 页脚 ---------------- */
+    .footer { background: var(--ink); border-top: 2px solid var(--red); padding-block: clamp(1.8rem, 4vw, 2.6rem); }
+    .footer__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer p { color: var(--gray); font-size: 0.86rem; }
+    .footer .mono { font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); }
+
+    /* ---------------- 动效 ---------------- */
+    [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+    [data-reveal].is-in { opacity: 1; transform: none; }
+
+    @media (max-width: 720px) {
+      .proj { grid-template-columns: 1fr; }
+      .topnav { gap: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="wyw个人主页-V2.2.html#top">
+        <svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M38 40 L46 12 L66 36 Z"/><path d="M62 40 L54 12 L34 36 Z"/><circle cx="50" cy="56" r="24"/><ellipse cx="43" cy="54" rx="3" ry="5" fill="#fff"/><ellipse cx="57" cy="54" rx="3" ry="5" fill="#fff"/></svg>
+        <b id="brand-name">王悦为</b><span class="sub">WIL · LIA</span>
+      </a>
+      <nav class="topnav" aria-label="导航">
+        <a href="wyw个人主页-V2.2.html#about">关于</a>
+        <a href="wyw个人主页-V2.2.html#growing">项目</a>
+        <a href="wyw个人主页-V2.2.html#hobbies">兴趣</a>
+        <a href="wyw个人主页-V2.2.html#contact">联系</a>
+        <div class="lang" role="group" aria-label="语言切换">
+          <button type="button" data-lang="zh" class="is-active">中</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <span class="hero__eyebrow" id="hero-tag">项目 · PROJECTS</span>
+      <h1 id="hero-title">第一章<span class="acc">作品</span></h1>
+      <p class="hero__sub" id="hero-sub">正在酝酿的作品，出炉一定大声宣告。这里记录每个正在生长的实验台。</p>
+      <a class="hero__back" href="wyw个人主页-V2.2.html#growing" id="hero-back">返回主页</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section__head">
+        <div data-reveal>
+          <span class="label" id="list-tag">项目名录 · CASE FILE</span>
+          <h2 class="h2" id="list-h2">进行中与</h2>
+        </div>
+        <p class="section__sub" id="list-sub"></p>
+      </div>
+
+      <div class="proj" id="proj-list"></div>
+    </div>
+  </section>
+
+  <section class="tbd-band">
+    <div class="wrap" data-reveal>
+      <div>
+        <h2 id="tbd-h2">More to come…</h2>
+        <p id="tbd-sub">这里永远为下一个灵感留着一页。</p>
+      </div>
+      <a class="cta" href="wyw个人主页-V2.2.html#growing" id="tbd-cta">回到档案</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <p id="footer">© 2026 Wang Yuewei · Stay curious, keep creating</p>
+      <span class="mono">BLACK · RED · WHITE</span>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    "use strict";
+
+    const COPY = {
+      zh: {
+        tag: "项目 · PROJECTS",
+        titleA: "第一章", titleB: "作品",
+        sub: "正在酝酿的作品，出炉一定大声宣告。这里记录每个正在生长的实验台。",
+        back: "返回主页",
+        listTag: "项目名录 · CASE FILE",
+        listH2: "进行中与",
+        listSub: "时间线待定 · 每一页都在路上",
+        items: [
+          { no: "P01", title: "脑机接口信号采集小实验", en: "BCI Signal Acquisition", desc: "正在搭建一套可穿戴脑电采集流程，从电极佩戴到信号可视化，一步步上手。", time: "时间：待定", stage: "阶段：筹备中" },
+          { no: "P02", title: "智能医学入门工具包", en: "MedTech Starter Kit", desc: "把医学图像、生理参数与代码练习揉在一起，做成一个小工具集方便实验。", time: "时间：待定", stage: "阶段：构思中" },
+          { no: "P03", title: "艺术 × 技术 交互作品", en: "Art × Tech", desc: "尝试把绘画、音乐与脑电波结合，做一个既像装置又像实验的作品。", time: "时间：待定", stage: "阶段：待定" },
+          { no: "P04", title: "更多项目，敬请期待", en: "More to come", desc: "实验室还在呼吸，每一项都可能成为下一章的主角。", time: "时间：待定", stage: "阶段：待定" }
+        ],
+        tbdH2: "More to come…",
+        tbdSub: "这里永远为下一个灵感留着一页。",
+        tbdCta: "回到档案",
+        footer: "© 2026 Wang Yuewei · Stay curious, keep creating"
+      },
+      en: {
+        tag: "PROJECTS",
+        titleA: "Chapter ", titleB: "One",
+        sub: "My first chapter is brewed in the lab. I'll shout it out soon. Every experiment bench is growing here.",
+        back: "Back to home",
+        listTag: "PROJECTS · CASE FILE",
+        listH2: "In progress ",
+        listSub: "Timeline TBD · Every page is on its way",
+        items: [
+          { no: "P01", title: "BCI Signal Acquisition", en: "脑机接口信号采集小实验", desc: "Setting up a wearable EEG pipeline, from electrode fit to signal visualization, step by step.", time: "Timeline: TBD", stage: "Stage: Preparing" },
+          { no: "P02", title: "MedTech Starter Kit", en: "智能医学入门工具包", desc: "Mixing medical imaging, physiological signals and code practice into a handy experiment toolkit.", time: "Timeline: TBD", stage: "Stage: Drafting" },
+          { no: "P03", title: "Art × Tech", en: "艺术 × 技术 交互作品", desc: "A try to blend drawing, music and brainwaves into a piece that's both installation and experiment.", time: "Timeline: TBD", stage: "Stage: TBD" },
+          { no: "P04", title: "More to come", en: "更多项目，敬请期待", desc: "The lab is still breathing; any of these could become the lead of the next chapter.", time: "Timeline: TBD", stage: "Stage: TBD" }
+        ],
+        tbdH2: "More to come…",
+        tbdSub: "There's always a page here for the next idea.",
+        tbdCta: "Back to file",
+        footer: "© 2026 Wang Yuewei · Stay curious, keep creating"
+      }
+    };
+
+    let lang = "zh";
+    const $ = (s) => document.querySelector(s);
+
+    function render() {
+      const t = COPY[lang];
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      $("#brand-name").textContent = lang === "zh" ? "王悦为" : "WIL";
+      $("#hero-tag").textContent = t.tag;
+      $("#hero-title").innerHTML = t.titleA + '<span class="acc">' + t.titleB + "</span>";
+      $("#hero-sub").textContent = t.sub;
+      $("#hero-back").textContent = t.back;
+      $("#list-tag").textContent = t.listTag;
+      $("#list-h2").textContent = t.listH2;
+      $("#list-sub").textContent = t.listSub;
+      $("#proj-list").innerHTML = t.items.map((it) => `
+        <article class="proj-card" data-reveal>
+          <div class="proj-card__no">${it.no}</div>
+          <h3>${it.title}</h3>
+          <span class="proj-card__en">${it.en}</span>
+          <p>${it.desc}</p>
+          <div class="proj-meta">
+            <span class="proj-tag"><b>${it.time.split("：")[0] || "Time"}</b>${it.time.split("：")[1] || ""}</span>
+            <span class="proj-tag proj-tag--tbd"><b>${it.stage.split("：")[0] || "Stage"}</b>${it.stage.split("：")[1] || ""}</span>
+          </div>
+        </article>`).join("");
+      $("#tbd-h2").textContent = t.tbdH2;
+      $("#tbd-sub").textContent = t.tbdSub;
+      $("#tbd-cta").textContent = t.tbdCta;
+      $("#footer").textContent = t.footer;
+
+      document.querySelectorAll(".lang button").forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      observe();
+    }
+
+    let io = null;
+    function observe() {
+      if (io) io.disconnect();
+      io = new IntersectionObserver((es) => {
+        es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+      document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+    }
+
+    function bindLang() {
+      document.querySelectorAll(".lang button").forEach((b) => b.addEventListener("click", () => {
+        if (b.dataset.lang !== lang) { lang = b.dataset.lang; render(); }
+      }));
+    }
+
+    function init() {
+      render();
+      bindLang();
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    else init();
+  })();
+  </script>
+</body>
+</html>

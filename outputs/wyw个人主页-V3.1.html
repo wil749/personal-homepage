@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="王悦为 Wil · 智能医学工程（脑机接口方向）大一学生 · 红黑白 谋杀案海报风" />
+  <title>王悦为 · WIL</title>
+
+  <!-- V3.1：样式与动效仍为纯自定义、离线自包含；
+       仅「访客留言」功能会按需从 CDN 加载 Supabase 客户端（未配置或加载失败时自动降级为本地演示模式，不影响页面其他部分） -->
+  <style>
+    :root {
+      --ink: #000000;        /* 纯黑 */
+      --red: #a80d18;        /* 海报高纯红 */
+      --red-deep: #770a10;   /* 深红 */
+      --white: #ffffff;      /* 纯白 */
+      --off: #f3efe6;        /* 米白（正文用） */
+      --gray: #c9c6bd;       /* 灰白 */
+      --font: "方正姚体", "FZYaoti", "FZYaoTi", Georgia, "Times New Roman", "Source Han Serif SC", "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STZhongsong", "STSong", "SimSun", serif;
+      --disp: "方正姚体", "FZYaoti", "FZYaoTi", Georgia, "Times New Roman", "Source Han Serif SC", "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STZhongsong", "STSong", serif;
+      --bold: 0.03em;        /* 姚体无粗体字重，用描边加粗 */
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --wrap: 78rem;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 4.4rem; }
+    body { margin: 0; background: var(--ink); color: var(--off); font-family: var(--font); -webkit-text-stroke: var(--bold) currentColor; line-height: 1.75; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    ::selection { background: var(--red); color: #fff; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: var(--font); -webkit-text-stroke: var(--bold) currentColor; }
+    h1,h2,h3,p { margin: 0; }
+    .wrap { width: min(100% - clamp(1.2rem, 6vw, 4rem) * 2, var(--wrap)); margin-inline: auto; }
+
+    /* ---------------- 顶部栏 ---------------- */
+    .topbar { position: sticky; top: 0; z-index: 80; background: var(--ink); border-bottom: 2px solid var(--red); }
+    .topbar__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.8rem; }
+    .brand { display: inline-flex; align-items: center; gap: 0.55rem; font-weight: 900; letter-spacing: 0.06em; }
+    .brand svg { width: 1.5rem; height: 1.5rem; color: var(--red); }
+    .brand b { color: var(--white); }
+    .brand .sub { font-size: 0.66rem; letter-spacing: 0.26em; color: var(--gray); font-weight: 700; }
+    .topnav { display: flex; align-items: center; gap: clamp(0.8rem, 3vw, 1.6rem); }
+    .topnav a { font-size: 0.82rem; letter-spacing: 0.14em; color: var(--off); opacity: 0.78; font-weight: 700; transition: color .3s var(--ease), opacity .3s var(--ease); }
+    .topnav a:hover { color: var(--red); opacity: 1; }
+    .lang { display: inline-flex; padding: 0.16rem; border: 1px solid #444; border-radius: 2px; }
+    .lang button { padding: 0.24rem 0.62rem; border: 0; background: transparent; color: var(--off); font-size: 0.72rem; font-weight: 800; letter-spacing: .06em; cursor: pointer; transition: all .3s var(--ease); }
+    .lang button.is-active { background: var(--red); color: #fff; }
+
+    /* ---------------- 色带 ---------------- */
+    .band { position: relative; overflow: hidden; }
+    .band--red { background: var(--red); color: var(--ink); }
+    .band--black { background: var(--ink); color: var(--white); }
+    .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.14; background-image: radial-gradient(rgba(0,0,0,0.32) 1.2px, transparent 1.4px); background-size: 8px 8px; mix-blend-mode: multiply; }
+    .label { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.34em; text-transform: uppercase; }
+    .label::before { content: ""; width: 1.6rem; height: 3px; background: currentColor; }
+    .band--red .label { color: var(--ink); }
+    .band--black .label { color: var(--white); }
+    .band--black .label::after { content: ""; width: 1.6rem; height: 3px; background: var(--red); }
+
+    /* ---------------- 封面 ----------------
+       上红下黑，标题黑色置于红底区，清晰区分 */
+    .cover { min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: clamp(3rem, 10vw, 6rem) clamp(1.2rem, 6vw, 4rem); background: linear-gradient(180deg, var(--red) 0%, var(--red) 58%, var(--ink) 58%, var(--ink) 100%); position: relative; }
+    .cover__scene { position: absolute; inset: 0; pointer-events: none; }
+    .cover__scene svg { position: absolute; }
+    .cover__scroll { animation: bgScroll 16s linear infinite; }
+    @keyframes bgScroll { from { transform: translateX(-1200px); } to { transform: translateX(0); } }
+    .cover__fade { position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 40%, rgba(0,0,0,0.16), rgba(0,0,0,0) 60%); pointer-events: none; }
+    .cover__inner { position: relative; z-index: 3; }
+    /* 文字版权块：承载环绕的红色老爷车 */
+    .cover__copy { position: relative; display: flex; flex-direction: column; max-width: 40rem; margin-inline: auto; z-index: 1; }
+    .cover__copy > p { position: relative; z-index: 2; }
+    .cover__car { order: 2; position: relative; display: block; width: clamp(16rem, 58vw, 31rem); height: auto; margin: 1.6rem auto 0; z-index: 0; pointer-events: none; filter: drop-shadow(0 10px 16px rgba(0,0,0,0.32)); }
+    .cover__car-bob { transform-origin: center bottom; animation: carBob 1.15s var(--ease) infinite; }
+    .cover__car .wheel { transform-box: fill-box; transform-origin: center; animation: wheelSpin 1.0s linear infinite; }
+    .cover__car .exhaust { animation: exhaust 2.4s ease-out infinite; }
+    @keyframes carBob {
+      0%   { transform: translateY(0) rotate(0deg); }
+      22%  { transform: translateY(-4px) rotate(-0.7deg); }
+      50%  { transform: translateY(0) rotate(0deg); }
+      74%  { transform: translateY(-3px) rotate(0.6deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+    @keyframes wheelSpin { to { transform: rotate(360deg); } }
+    @keyframes exhaust { 0% { opacity: 0; transform: translate(0,0) scale(0.5); } 35% { opacity: 0.45; } 100% { opacity: 0; transform: translate(6px,-13px) scale(1.5); } }
+
+    .eyebrow { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.5em; text-transform: uppercase; color: var(--white); opacity: 0.95; }
+    .cover__name { font-family: var(--disp); font-size: clamp(3rem, 14.5vw, 10rem); font-weight: 900; line-height: 0.9; letter-spacing: 0.16em; color: var(--white); margin-top: 1.6rem; display: inline-block; text-shadow: 0 0 2px var(--ink), 0 2px 18px rgba(0,0,0,0.45); }
+    .cover__name .ch { display: inline-block; opacity: 0; transform: perspective(800px) rotateY(-92deg); transform-origin: left center; backface-visibility: hidden; animation: chIn 0.9s var(--ease) forwards; }
+    .cover__name .en { letter-spacing: 0.34em; color: var(--white); text-shadow: 0 0 2px var(--red); }
+    .cover__rule { display: flex; align-items: center; justify-content: center; gap: 0.7rem; margin: 1.6rem auto 0; }
+    .cover__rule i { width: 3.4rem; height: 4px; background: var(--white); display: inline-block; }
+    .cover__role { font-family: var(--disp); font-size: clamp(0.95rem, 2.4vw, 1.15rem); font-weight: 700; letter-spacing: 0.16em; color: var(--white); margin-top: 0.9rem; }
+    .cover__intro { max-width: 40rem; margin: 0.9rem auto 0; font-size: clamp(1rem, 2.2vw, 1.16rem); color: rgba(255,255,255,0.95); }
+    .cover__intro strong { color: #fff; background: var(--red); padding: 0 0.3rem; }
+    .cover__cta { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 2.6rem; padding: 0.85rem 2rem; background: var(--ink); color: #fff; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.88rem; transition: transform .35s var(--ease), background .35s var(--ease), color .35s var(--ease); animation: pulseBox 2.6s var(--ease) infinite; }
+    .cover__cta:hover { background: #fff; color: var(--red); transform: translateY(-3px); }
+
+    .scroll-hint { position: absolute; z-index: 3; bottom: 1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.62rem; font-weight: 800; letter-spacing: 0.34em; text-transform: uppercase; color: var(--gray); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+    .scroll-hint::after { content: ""; width: 2px; height: 1.8rem; background: linear-gradient(var(--gray), transparent); margin-top: 0.1rem; }
+
+    /* ---------------- 章节 ---------------- */
+    .section { padding-block: clamp(3.2rem, 9vw, 6rem); position: relative; }
+    .section__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.2rem; flex-wrap: wrap; margin-bottom: clamp(1.8rem, 4vw, 2.8rem); position: relative; }
+    .h2 { font-family: var(--disp); font-size: clamp(2rem, 6.5vw, 4rem); font-weight: 900; letter-spacing: 0.04em; line-height: 1.05; margin-top: 0.8rem; }
+    .band--red .h2 { color: var(--ink); }
+    .band--black .h2 { color: var(--white); }
+    .h2 .hl { color: #fff; background: var(--red); padding: 0.02em 0.14em; }
+    .band--red .h2 .hl { color: var(--red); background: var(--ink); }
+    .section__sub { max-width: 30rem; color: var(--gray); font-size: 0.96rem; }
+    .band--red .section__sub { color: rgba(0,0,0,0.72); }
+
+    /* ---------------- 关于（黑） ---------------- */
+    .about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(1rem, 3vw, 2rem); align-items: stretch; position: relative; }
+    .long-intro { font-size: clamp(1.15rem, 3vw, 1.6rem); line-height: 1.6; color: var(--off); font-weight: 500; }
+    .long-intro em { font-style: normal; color: #fff; background: var(--red); padding: 0 0.22em; }
+    .about-meta { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1.6rem; }
+    .chip { padding: 0.28rem 0.68rem; border: 1px solid #444; color: var(--gray); font-size: 0.8rem; font-weight: 700; }
+    .chip b { color: var(--red); font-weight: 800; }
+    .fact-card { background: var(--red); color: #fff; padding: clamp(1.4rem, 3.5vw, 2.2rem); position: relative; overflow: hidden; }
+    .fact-card::after { content: ""; position: absolute; right: -3rem; bottom: -3rem; width: 9rem; height: 9rem; background: var(--ink); transform: rotate(45deg); opacity: 0.94; }
+    .fact-card__title { position: relative; z-index: 1; display: inline-flex; align-items: baseline; gap: 0.6rem; font-weight: 900; letter-spacing: 0.2em; font-size: 1rem; color: #fff; }
+    .fact-card__title i { font-style: normal; color: var(--ink); font-size: 1.1rem; }
+    .fact-list { position: relative; z-index: 1; display: flex; flex-direction: column; margin-top: 1rem; }
+    .fact-row { display: flex; justify-content: space-between; gap: 1rem; padding-block: 0.72rem; border-bottom: 1px solid rgba(255,255,255,0.3); }
+    .fact-row:last-child { border-bottom: 0; }
+    .fact-row dt { color: rgba(255,255,255,0.78); font-size: 0.82rem; flex-shrink: 0; }
+    .fact-row dd { margin: 0; font-weight: 800; text-align: right; font-size: 0.92rem; }
+
+    /* ---------------- 专业+爱好 图标带（红/黑 均鲜艳） ---------------- */
+    .motif-strip { display: flex; align-items: center; justify-content: center; gap: clamp(1rem, 4vw, 3rem); flex-wrap: wrap; margin-bottom: clamp(2rem, 5vw, 3.2rem); }
+    .seam { position: relative; height: clamp(2.4rem, 7vw, 4.2rem); overflow: hidden; background: var(--ink); border-top: 3px solid var(--red); border-bottom: 3px solid var(--red); }
+    .seam::before, .seam::after { content: ""; position: absolute; top: 0; bottom: 0; width: 50%; background: var(--red); }
+    .seam::before { left: 0; clip-path: polygon(0 0, 100% 0, 100% 100%, 18% 100%, 34% 58%, 22% 46%, 40% 26%, 28% 14% ); }
+    .seam::after { right: 0; clip-path: polygon(0 0, 100% 0, 100% 100%, 82% 100%, 66% 58%, 78% 46%, 60% 26%, 72% 14% ); }
+    .seam .zig { position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); width: 34%; background: var(--ink); clip-path: polygon(50% 0, 68% 34%, 52% 56%, 70% 100%, 30% 100%, 48% 56%, 32% 34%); }
+    .seam .dot { position: absolute; width: 9px; height: 9px; background: var(--ink); border-radius: 50%; top: 50%; }
+    .seam .dot.d1 { left: 12%; transform: translateY(-50%); }
+    .seam .dot.d2 { right: 12%; transform: translateY(-50%); }
+    .motif { display: inline-flex; flex-direction: column; align-items: center; gap: 0.5rem; opacity: 0.92; }
+    .motif svg { width: clamp(1.9rem, 3.6vw, 2.6rem); height: clamp(1.9rem, 3.6vw, 2.6rem); color: currentColor; }
+    .motif span { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
+    .band--black .motif { color: var(--white); }
+    .band--black .motif span { color: var(--gray); }
+    .band--red .motif { color: var(--ink); }
+    .band--red .motif span { color: rgba(0,0,0,0.62); }
+
+    /* ---------------- 兴趣（红底翻书：黑色牛皮封皮 + 泛黄牛皮纸内页） ---------------- */
+    .hobbies { position: relative; }
+    .book-wrap { position: relative; }
+    .book { position: relative; width: min(1040px, 94vw); height: clamp(360px, 50vw, 540px); margin-inline: auto; perspective: 2400px; perspective-origin: 50% 45%; }
+    .book__inner { position: absolute; inset: 0; transform-style: preserve-3d; transform: translateX(-25%); transition: transform 1.05s cubic-bezier(.2,.72,.28,1); }
+    .book.is-open .book__inner { transform: translateX(0); }
+    /* 黑色牛皮：书脊 / 封底内页 / 内封 */
+    .leather { background:
+        radial-gradient(120% 90% at 28% 12%, rgba(255,255,255,.07), transparent 58%),
+        repeating-linear-gradient(43deg, rgba(255,255,255,.022) 0 1.5px, rgba(0,0,0,.05) 1.5px 3px),
+        linear-gradient(155deg, #1b1714 0%, #0c0a09 55%, #17120e 100%);
+      box-shadow: inset 0 0 70px rgba(0,0,0,.92), inset 0 0 0 1px #2a221c, 0 26px 60px rgba(0,0,0,.55); }
+    .book__base { position: absolute; top: 0; bottom: 0; width: 50%; z-index: 1; }
+    .book__base--right { right: 0; border-radius: 3px 8px 8px 3px; }
+    /* 书页：右侧半页，沿左边缘翻转 */
+    .leaf { position: absolute; top: 0; left: 50%; width: 50%; height: 100%; transform-origin: left center; transform-style: preserve-3d; transition: transform .9s cubic-bezier(.25,.75,.3,1); transform: rotateY(0deg); will-change: transform; }
+    .leaf.is-flipped { transform: rotateY(-180deg); }
+    .leaf--cover { z-index: 100; transition: transform 1.05s cubic-bezier(.2,.72,.28,1) .1s; }
+    .book.is-open .leaf--cover { transform: rotateY(-180deg); }
+    .book.is-open.is-settled .leaf--cover { z-index: 10; }
+    .leaf__face { position: absolute; inset: 0; overflow: hidden; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 3px 8px 8px 3px; }
+    .leaf__face--back { transform: rotateY(180deg); border-radius: 8px 3px 3px 8px; }
+    /* 泛黄牛皮纸内页 */
+    .pg { position: absolute; inset: 0; padding: clamp(1.1rem, 3.2vw, 2.4rem); display: flex; flex-direction: column; text-align: left; color: #3b2a14;
+      background:
+        radial-gradient(85% 70% at 18% 8%, rgba(150,108,46,.18), transparent 60%),
+        radial-gradient(90% 80% at 88% 96%, rgba(120,78,28,.22), transparent 62%),
+        repeating-linear-gradient(0deg, rgba(120,80,30,.045) 0 1px, transparent 1px 4px),
+        linear-gradient(160deg, #f4e5c2 0%, #ecd8ac 52%, #dfc791 100%);
+      box-shadow: inset 0 0 46px rgba(120,78,28,.28), inset 0 0 0 1px rgba(120,78,28,.18); }
+    .pg--back { text-align: right; align-items: flex-end; }
+    .pg__no { font-family: var(--disp); font-size: clamp(1.3rem, 3vw, 2rem); color: rgba(90,58,20,.5); letter-spacing: .08em; }
+    .pg__icon { margin-top: auto; color: #7a1a12; }
+    .pg__icon svg { width: clamp(3rem, 9vw, 5.2rem); height: clamp(3rem, 9vw, 5.2rem); }
+    .pg__title { font-family: var(--disp); font-weight: 900; font-size: clamp(1.5rem, 4vw, 2.6rem); margin-top: .6rem; color: #33220e; }
+    .pg__en { font-size: .66rem; letter-spacing: .26em; text-transform: uppercase; font-weight: 800; color: rgba(90,58,20,.66); margin-top: .25rem; }
+    .pg__rule { width: 3rem; height: 2px; background: rgba(122,26,18,.7); margin: .9rem 0; }
+    .pg--back .pg__rule { margin-left: auto; margin-right: 0; }
+    .pg__desc { font-size: clamp(.88rem, 1.6vw, 1.02rem); line-height: 1.9; color: #4a3317; max-width: 26rem; }
+    .pg__water { position: absolute; right: -2%; bottom: -6%; color: rgba(122,26,18,.10); }
+    .pg__water svg { width: clamp(6rem, 20vw, 12rem); height: clamp(6rem, 20vw, 12rem); }
+    .pg__folio { margin-top: auto; font-size: .66rem; letter-spacing: .22em; font-weight: 800; color: rgba(90,58,20,.6); }
+    .pg--cover { align-items: center; justify-content: center; text-align: center; color: #e8dcc2;
+      background:
+        radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.08), transparent 60%),
+        repeating-linear-gradient(43deg, rgba(255,255,255,.02) 0 1.5px, rgba(0,0,0,.06) 1.5px 3px),
+        linear-gradient(155deg, #1c1815 0%, #0b0908 55%, #191310 100%);
+      box-shadow: inset 0 0 70px rgba(0,0,0,.9), inset 0 0 0 1px #322a22; }
+    .pg--cover .pg__title { color: #f0e6cf; margin-top: .8rem; }
+    .pg--cover .pg__en { color: rgba(232,220,194,.7); }
+    .pg--cover .pg__line { font-size: clamp(.82rem, 1.5vw, .95rem); line-height: 1.9; color: rgba(232,220,194,.72); max-width: 20rem; margin-top: .2rem; }
+    .pg__emblem { color: #a80d18; }
+    .pg__emblem svg { width: clamp(3.4rem, 10vw, 5.6rem); height: auto; }
+    /* 书脊阴影 */
+    .book__spine { position: absolute; left: 50%; top: 0; bottom: 0; width: 46px; margin-left: -23px; z-index: 200; pointer-events: none;
+      background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.34) 42%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.34) 58%, rgba(0,0,0,0) 100%); }
+    .book__hint { margin: clamp(1.4rem, 3vw, 2rem) auto 0; text-align: center; font-size: .78rem; font-weight: 800; letter-spacing: .1em; color: rgba(0,0,0,.62); }
+    @media (max-width: 620px) { .book { height: clamp(320px, 96vw, 460px); } .pg { padding: 1rem; } }
+
+    /* ---------------- 项目（黑） ---------------- */
+    .growing { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 3vw, 2rem); }
+    .grow-card { border: 1px solid #333; padding: clamp(1.4rem, 3.5vw, 2.2rem); position: relative; transition: border-color .35s var(--ease), transform .35s var(--ease), background .35s var(--ease); display: flex; flex-direction: column; cursor: pointer; }
+    .grow-card:hover { border-color: var(--red); transform: translateY(-6px); background: rgba(168,13,24,0.06); }
+    .grow-card__go { margin-top: 1.1rem; font-size: 0.76rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); display: inline-flex; align-items: center; gap: 0.4rem; transition: color .3s var(--ease), letter-spacing .3s var(--ease); }
+    .grow-card__go::after { content: "→"; color: var(--red); transition: transform .3s var(--ease); }
+    .grow-card:hover .grow-card__go { color: #fff; }
+    .grow-card:hover .grow-card__go::after { transform: translateX(4px); }
+    .grow-card[href="#"] .grow-card__go { color: var(--gray); opacity: 0.6; }
+    .grow-card__no { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.3em; color: var(--gray); }
+    .grow-card h3 { margin: 0.7rem 0 0.5rem; font-size: clamp(1.2rem, 2.6vw, 1.5rem); font-weight: 900; color: #fff; }
+    .grow-card p { color: var(--gray); font-size: 0.94rem; }
+    .grow-badge { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem; color: var(--red); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+    .grow-badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: pulse 2s var(--ease) infinite; }
+
+    /* ---------------- 问答互动区（问题菜单 + 对话窗） ---------------- */
+    .qa-stage { display: grid; grid-template-columns: minmax(15rem, .82fr) minmax(0, 1.45fr); border: 2px solid var(--red); min-height: 37rem; background: #080808; box-shadow: 0 24px 70px rgba(0,0,0,.34); position: relative; overflow: hidden; }
+    .qa-stage::after { content: "CASE / Q&A"; position: absolute; right: -2.1rem; top: 2.6rem; transform: rotate(90deg); color: rgba(255,255,255,.13); font-size: .62rem; letter-spacing: .32em; font-weight: 900; pointer-events: none; }
+    .qa-menu { padding: clamp(1.3rem, 3vw, 2.2rem); background: var(--red); color: #fff; display: flex; flex-direction: column; position: relative; }
+    .qa-menu::before { content: "?"; position: absolute; right: .8rem; bottom: -3.6rem; color: rgba(0,0,0,.16); font-family: var(--disp); font-size: 15rem; font-weight: 900; line-height: 1; }
+    .qa-menu__eyebrow { color: var(--ink); font-size: .7rem; font-weight: 900; letter-spacing: .26em; text-transform: uppercase; position: relative; z-index: 1; }
+    .qa-menu__title { font-family: var(--disp); font-size: clamp(1.65rem, 3.4vw, 2.5rem); line-height: 1.15; margin-top: .65rem; position: relative; z-index: 1; }
+    .qa-options { display: flex; flex-direction: column; gap: .65rem; margin-top: 1.7rem; position: relative; z-index: 1; max-height: 23rem; overflow-y: auto; padding-right: .2rem; }
+    .qa-option { width: 100%; border: 1px solid rgba(255,255,255,.48); background: transparent; color: #fff; padding: .82rem .9rem; text-align: left; font-size: .88rem; font-weight: 800; line-height: 1.45; cursor: pointer; display: grid; grid-template-columns: 1.8rem 1fr; gap: .45rem; transition: background .25s var(--ease), color .25s var(--ease), transform .25s var(--ease); }
+    .qa-option span { color: var(--ink); }
+    .qa-option:hover, .qa-option.is-active { background: var(--ink); color: #fff; transform: translateX(5px); border-color: var(--ink); }
+    .qa-option:hover span, .qa-option.is-active span { color: var(--red); }
+    .qa-chat { padding: clamp(1.2rem, 3.5vw, 2.4rem); display: flex; flex-direction: column; min-width: 0; }
+    .qa-chat__bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #333; }
+    .qa-agent { display: flex; align-items: center; gap: .75rem; }
+    .qa-agent__mark { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; background: var(--red); color: #fff; font-family: var(--disp); font-weight: 900; }
+    .qa-agent b { display: block; color: #fff; font-size: .9rem; letter-spacing: .14em; }
+    .qa-agent small { display: block; color: var(--gray); font-size: .68rem; letter-spacing: .08em; }
+    .qa-status { color: var(--gray); font-size: .7rem; letter-spacing: .14em; }
+    .qa-status::before { content: ""; display: inline-block; width: .48rem; height: .48rem; margin-right: .45rem; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 4px rgba(168,13,24,.16); }
+    .qa-messages { flex: 1; min-height: 17rem; max-height: 25rem; overflow-y: auto; padding: 1.5rem .2rem; display: flex; flex-direction: column; gap: 1rem; scrollbar-color: var(--red) #171717; }
+    .qa-message { max-width: min(88%, 38rem); animation: qaIn .42s var(--ease) both; }
+    .qa-message--bot { align-self: flex-start; }
+    .qa-message--user { align-self: flex-end; }
+    .qa-message__who { display: block; margin-bottom: .28rem; color: var(--gray); font-size: .62rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+    .qa-message--user .qa-message__who { text-align: right; color: var(--red); }
+    .qa-message__bubble { padding: .85rem 1rem; font-size: .94rem; line-height: 1.75; border: 1px solid #333; background: #121212; color: var(--off); }
+    .qa-message--bot .qa-message__bubble { border-left: 4px solid var(--red); }
+    .qa-message--user .qa-message__bubble { background: var(--red); color: #fff; border-color: var(--red); }
+    .qa-typing { display: inline-flex; gap: .3rem; align-items: center; min-width: 4rem; }
+    .qa-typing i { width: .38rem; height: .38rem; border-radius: 50%; background: var(--gray); animation: qaDot 1s infinite alternate; }
+    .qa-typing i:nth-child(2) { animation-delay: .16s; }
+    .qa-typing i:nth-child(3) { animation-delay: .32s; }
+    .qa-chat__hint { border-top: 1px solid #333; padding-top: .9rem; color: #777; font-size: .72rem; letter-spacing: .08em; }
+    @keyframes qaIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    @keyframes qaDot { to { opacity: .25; transform: translateY(-3px); } }
+
+    /* 打字光标 · 重点高亮 · 对话区与选项滚动条 */
+    .qa-caret { display: inline-block; width: .5em; height: 1.05em; margin-left: .1em; background: var(--red); vertical-align: -.16em; animation: qaCaret .72s steps(1, end) infinite; }
+    @keyframes qaCaret { 50% { opacity: 0; } }
+    .qa-message__bubble strong { color: #fff; background: var(--red); padding: 0 .18em; font-weight: 900; }
+    .qa-message--user .qa-message__bubble strong { background: rgba(0,0,0,.32); }
+    .qa-messages::-webkit-scrollbar { width: 8px; }
+    .qa-messages::-webkit-scrollbar-track { background: #141414; }
+    .qa-messages::-webkit-scrollbar-thumb { background: var(--red); }
+    .qa-options::-webkit-scrollbar { width: 6px; }
+    .qa-options::-webkit-scrollbar-track { background: rgba(0,0,0,.18); }
+    .qa-options::-webkit-scrollbar-thumb { background: rgba(0,0,0,.45); }
+
+    /* ---------------- 联系方式（合并大板块） ---------------- */
+    .contact-panel { background: var(--ink); color: #fff; border: 2px solid var(--red); padding: clamp(1.6rem, 4vw, 3rem); position: relative; overflow: hidden; }
+    .contact-panel::before { content: ""; position: absolute; top: 0; right: 0; width: 6rem; height: 6rem; background: var(--red); clip-path: polygon(100% 0, 0 0, 100% 100%); }
+    .contact-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.8rem; position: relative; z-index: 1; }
+    .contact-head h3 { font-family: var(--disp); font-size: clamp(1.7rem, 4.5vw, 2.8rem); font-weight: 900; letter-spacing: 0.04em; }
+    .contact-head h3 .hl { color: var(--red); background: #fff; padding: 0 0.14em; }
+    .contact-head p { color: var(--gray); font-size: 0.92rem; max-width: 22rem; }
+    .contact-list { position: relative; z-index: 1; display: flex; flex-direction: column; }
+    .contact-line { display: flex; align-items: center; gap: clamp(0.8rem, 2vw, 1.4rem); padding-block: clamp(1rem, 2.6vw, 1.6rem); border-top: 1px solid #2b2b2b; transition: background .3s var(--ease), padding-left .3s var(--ease); }
+    .contact-line:last-child { border-bottom: 1px solid #2b2b2b; }
+    .contact-line:hover { background: rgba(168,13,24,0.1); padding-left: 1rem; }
+    .contact-badge { display: inline-flex; align-items: center; gap: 0.5rem; width: clamp(6.5rem, 18vw, 10rem); flex-shrink: 0; }
+    .contact-badge svg { width: 1.4rem; height: 1.4rem; color: var(--ink); flex-shrink: 0; background: #fff; border-radius: 50%; padding: 0.22rem; box-sizing: content-box; }
+    .contact-badge b { font-size: 0.78rem; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--red); padding: 0.14rem 0.5rem; border-radius: 2px; }
+    .contact-line__v { font-weight: 900; font-size: clamp(1.05rem, 2.8vw, 1.5rem); letter-spacing: 0.02em; word-break: break-all; flex: 1; }
+    .contact-line__tap { flex-shrink: 0; font-size: 0.8rem; color: var(--gray); display: inline-flex; align-items: center; gap: 0.4rem; }
+    .contact-line__tap::after { content: "→"; color: var(--red); transition: transform .3s var(--ease); }
+    .contact-line:hover .contact-line__tap::after { transform: translateX(4px); }
+
+    /* ---------------- 页脚 ---------------- */
+    .footer { background: var(--ink); border-top: 2px solid var(--red); padding-block: clamp(1.8rem, 4vw, 2.6rem); }
+    .footer__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer p { color: var(--gray); font-size: 0.86rem; }
+    .footer .mono { font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); }
+    .footer b { color: #fff; }
+
+    /* ---------------- 动效 ---------------- */
+    [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+    [data-reveal].is-in { opacity: 1; transform: none; }
+    .mask-in { display: inline-block; position: relative; overflow: hidden; vertical-align: bottom; }
+    .mask-in > span { display: inline-block; transform: translateY(110%); transition: transform 0.9s var(--ease); }
+    .is-in .mask-in > span, [data-reveal].is-in .mask-in > span { transform: translateY(0); }
+    @keyframes chIn { from { opacity: 0; transform: perspective(800px) rotateY(-92deg); } to { opacity: 1; transform: perspective(800px) rotateY(0); } }
+    @keyframes pulseBox { 0%,100% { box-shadow: 0 0 0 0 rgba(168,13,24,0.55); } 50% { box-shadow: 0 0 0 12px rgba(168,13,24,0); } }
+    @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } }
+    @keyframes floatY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @keyframes rain { 0% { transform: translateY(-10%); opacity: 0; } 12% { opacity: 1; } 100% { transform: translateY(110vh); opacity: 0; } }
+    @keyframes dash { to { stroke-dashoffset: 0; } }
+    .fall { position: absolute; width: 10px; height: 10px; background: #fff; opacity: 0; animation: rain linear infinite; }
+    .fall.r { background: var(--red); }
+    .fall.k { background: #26261f; }
+    .art-float { animation: floatY 6s var(--ease) infinite; }
+    .brain-pulse { stroke-dasharray: 6 6; animation: dash 1.4s linear infinite; }
+
+    /* ---------------- 响应式 ---------------- */
+    @media (max-width: 900px) {
+      .topnav > a { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .hobbies { grid-template-columns: repeat(2, 1fr); }
+      .growing { grid-template-columns: 1fr; }
+      .qa-stage { grid-template-columns: 1fr; }
+      .qa-menu::before { font-size: 10rem; }
+      .qa-messages { min-height: 15rem; max-height: 22rem; }
+      .qa-options { max-height: none; overflow: visible; padding-right: 0; }
+      .contact-line { flex-wrap: wrap; }
+      .contact-badge { width: 100%; }
+    }
+    @media (max-width: 480px) { .hobbies { grid-template-columns: 1fr; } .cover__name { letter-spacing: 0.08em; } }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      [data-reveal], .mask-in > span, .cover__name .ch, .fall, .art-float, .cover__cta, .grow-badge i, .brain-pulse, .cover__scroll, .qa-caret, .qa-typing i { animation: none !important; transition: none !important; }
+      [data-reveal] { opacity: 1; transform: none; }
+      .cover__name .ch { opacity: 1; transform: none; }
+      .mask-in > span { transform: none; }
+    }
+
+    /* ===== 开场动画：黑场 -> 红底城市小景 -> 闪黑放大 -> 封面静态开门 -> 闪黑进入主页 ===== */
+    body.opening { overflow: hidden; }
+    .opening { position: fixed; inset: 0; z-index: 9999; background: #000; overflow: hidden; transition: background-color .6s ease, opacity .6s ease; }
+    .opening.is-red { background: var(--red); }
+    .opening.is-clear { background: rgba(0, 0, 0, 0); }
+    .opening.is-done { opacity: 0; pointer-events: none; }
+    .opening__city { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; transition: opacity .6s ease; }
+    .opening__city.is-in { opacity: 1; }
+    .opening__city.is-out { opacity: 0; }
+    .opening__city svg { width: clamp(190px, 40vw, 520px); height: auto; filter: brightness(0); transition: width .9s var(--ease); }
+    .opening__city.is-big svg { width: clamp(320px, 74vw, 1080px); }
+    .opening__cap { position: absolute; top: 7%; left: 0; right: 0; display: grid; place-items: center; padding: 0 5vw; pointer-events: none; }
+    .opening__cap span { display: inline-block; max-width: min(46rem, 92vw); text-align: center; background: #050505; color: var(--off); font-family: var(--disp); font-size: clamp(1rem, 2.2vw, 1.55rem); line-height: 1.5; padding: 0.72em 1.3em; border-radius: 12px; border: 1px solid rgba(243, 239, 230, 0.16); box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55); opacity: 0; }
+    .opening__cap span.is-in { animation: capIn .5s var(--ease) forwards; }
+    .opening__cap span.is-out { animation: capOut .45s var(--ease) forwards; }
+    @keyframes capIn { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes capOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-30px); } }
+    .opening__skip { position: absolute; right: 1.3rem; bottom: 1.3rem; z-index: 6; background: transparent; color: rgba(243, 239, 230, 0.72); border: 1px solid rgba(243, 239, 230, 0.32); border-radius: 999px; padding: 0.45em 1.1em; font-size: 0.8rem; letter-spacing: 0.14em; cursor: pointer; }
+    .opening__skip:hover { color: #fff; border-color: #fff; }
+    /* 圆形波纹：点击中心提示标后由中心扩散铺满，在纯黑帧内完成场景切换，再退去揭示下一幕 */
+    .opening__wave { position: absolute; left: 50%; top: 50%; width: 150vmax; height: 150vmax; margin: -75vmax 0 0 -75vmax; border-radius: 50%; background: #000; opacity: 0; transform: scale(0); pointer-events: none; z-index: 2; }
+    .opening__prompt { position: absolute; left: 50%; top: 50%; z-index: 5; width: clamp(84px, 12vw, 116px); height: clamp(84px, 12vw, 116px); margin: 0; padding: 0; border: 1px solid rgba(255,255,255,.85); border-radius: 50%; background: rgba(8,8,10,.55); color: #fff; cursor: pointer; display: grid; place-items: center; opacity: 0; visibility: hidden; transform: translate(-50%, -50%) scale(.88); transition: opacity .45s ease, transform .45s var(--ease), visibility 0s linear .45s; }
+    .opening__prompt.is-show { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); transition: opacity .45s ease, transform .45s var(--ease); }
+    .opening__prompt-arrow { position: relative; z-index: 2; display: block; width: 46%; height: 46%; color: #fff; animation: opArrow 1.9s var(--ease) infinite; }
+    .opening__prompt-arrow svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+    @keyframes opArrow { 0%, 100% { transform: translateY(-14%); } 50% { transform: translateY(16%); } }
+    .opening__prompt-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.75); animation: opRing 2.4s ease-out infinite; }
+    .opening__prompt-ring:nth-child(2) { animation-delay: 1.2s; }
+    @keyframes opRing { 0% { transform: scale(.86); opacity: .9; } 100% { transform: scale(1.85); opacity: 0; } }
+    /* 闪黑纯黑帧内瞬时切换场景：禁用底层过渡，避免城市放大/主页内容露出穿帮中间帧 */
+    .opening.is-switching,
+    .opening.is-switching .opening__city,
+    .opening.is-switching .opening__city svg,
+    body.is-scene-switching .topbar,
+    body.is-scene-switching .eyebrow,
+    body.is-scene-switching .cover__name,
+    body.is-scene-switching .cover__rule,
+    body.is-scene-switching .cover__role,
+    body.is-scene-switching .cover__intro,
+    body.is-scene-switching .cover__cta,
+    body.is-scene-switching .scroll-hint,
+    body.is-scene-switching .cover__car .car-door-open { transition: none !important; }
+    /* 第三幕：冻结封面所有动效，并让老爷车车门呈打开状 */
+    body.is-frozen .cover, body.is-frozen .cover * { animation-play-state: paused !important; }
+    .cover__car .car-door-open { opacity: 0; transition: opacity .35s ease; }
+    body.is-frozen .cover__car .car-door-open { opacity: 1; }
+    /* 第三幕：隐去主页文字，只留画面与字幕 */
+    .topbar, .eyebrow, .cover__name, .cover__rule, .cover__role, .cover__intro, .cover__cta, .scroll-hint { transition: opacity .5s ease; }
+    body.is-frozen .topbar,
+    body.is-frozen .eyebrow,
+    body.is-frozen .cover__name,
+    body.is-frozen .cover__rule,
+    body.is-frozen .cover__role,
+    body.is-frozen .cover__intro,
+    body.is-frozen .cover__cta,
+    body.is-frozen .scroll-hint { opacity: 0 !important; }
+    /* 羽毛笔光标：白底/黑底为红笔，红底为白笔 */
+    html.has-quill, html.has-quill * { cursor: none !important; }
+.quill { position: fixed; left: 0; top: 0; width: 34px; height: 102px; color: #ece9e1; pointer-events: none; z-index: 100000; opacity: 0; transition: opacity .25s ease; will-change: transform; transform: translate(-50%, -100%) rotate(32deg); transform-origin: 50% 100%; }
+html.has-quill .quill { opacity: 1; }
+.quill svg { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, .45)); }
+.quill__vane { fill: var(--red); transition: fill .2s ease; }
+.quill__shaft { fill: currentColor; transition: fill .2s ease; }
+.quill.is-onred { color: var(--red-deep); }
+.quill.is-onred .quill__vane { fill: #fff; }
+    @media (prefers-reduced-motion: reduce) { .opening { display: none !important; } }
+
+    /* ==================== 访客留言（V3.1 新增） ==================== */
+    .fb-grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); gap: clamp(1.4rem, 3.5vw, 2.6rem); align-items: start; }
+    .fb-panel { background: #0d0d0d; border: 2px solid var(--red); padding: clamp(1.4rem, 3.6vw, 2.6rem) clamp(1.4rem, 3.6vw, 2.6rem) clamp(1.5rem, 3.6vw, 2.4rem); position: relative; overflow: hidden; }
+    .fb-panel::before { content: ""; position: absolute; top: 0; right: 0; width: 4.2rem; height: 4.2rem; background: var(--red); clip-path: polygon(100% 0, 0 0, 100% 100%); }
+    .fb-field { position: relative; z-index: 1; margin-bottom: 1.15rem; }
+    .fb-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .fb-field > label { display: block; margin-bottom: .5rem; font-size: .72rem; font-weight: 900; letter-spacing: .2em; text-transform: uppercase; color: var(--gray); }
+    .fb-field > label i { font-style: normal; color: var(--red); }
+    .fb-input, .fb-textarea { width: 100%; background: #000; border: 1px solid #3a3a3a; color: var(--off); font-family: var(--font); -webkit-text-stroke: var(--bold) currentColor; font-size: .95rem; padding: .78rem .9rem; transition: border-color .3s var(--ease), background .3s var(--ease); }
+    .fb-input:focus, .fb-textarea:focus { outline: none; border-color: var(--red); background: #060606; }
+    .fb-input::placeholder, .fb-textarea::placeholder { color: #6a6a63; }
+    .fb-textarea { min-height: 8.5rem; resize: vertical; line-height: 1.7; }
+    .fb-moods { display: flex; flex-wrap: wrap; gap: .5rem; position: relative; z-index: 1; }
+    .fb-mood { border: 1px solid #3f3f3f; background: transparent; color: var(--gray); font-family: var(--font); -webkit-text-stroke: var(--bold) currentColor; font-size: .8rem; font-weight: 800; padding: .34rem .78rem; cursor: pointer; transition: background .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease); }
+    .fb-mood:hover { border-color: var(--red); color: #fff; }
+    .fb-mood.is-on { background: var(--red); border-color: var(--red); color: #fff; }
+    .fb-foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; position: relative; z-index: 1; margin-top: 1.5rem; }
+    .fb-count { font-size: .74rem; color: #80807a; letter-spacing: .08em; }
+    .fb-count b { color: var(--red); font-weight: 900; }
+    .fb-submit { display: inline-flex; align-items: center; gap: .6rem; border: 0; background: var(--red); color: #fff; font-family: var(--font); -webkit-text-stroke: var(--bold) currentColor; font-size: .88rem; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; padding: .86rem 1.9rem; cursor: pointer; transition: transform .3s var(--ease), background .3s var(--ease), opacity .3s var(--ease); }
+    .fb-submit:hover { transform: translateY(-2px); background: var(--red-deep); }
+    .fb-submit:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+    .fb-hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+    .fb-msg { display: none; margin-top: 1.1rem; font-size: .88rem; line-height: 1.72; position: relative; z-index: 1; }
+    .fb-msg.is-show { display: block; }
+    .fb-msg--ok { color: #fff; border-left: 3px solid var(--red); padding-left: .85rem; }
+    .fb-msg--err { color: #ffbcbc; border-left: 3px solid #ff5b5b; padding-left: .85rem; }
+    .fb-msg--warn { color: var(--gray); border-left: 3px solid #6a6a63; padding-left: .85rem; }
+    .fb-ok-card { display: none; position: relative; z-index: 1; text-align: center; padding: clamp(1.8rem, 4vw, 2.8rem) .9rem; border: 1px dashed var(--red); margin-top: .4rem; }
+    .fb-ok-card.is-show { display: block; }
+    .fb-ok-card b { display: block; font-family: var(--disp); font-size: clamp(1.35rem, 3vw, 1.85rem); color: #fff; }
+    .fb-ok-card p { color: var(--gray); font-size: .9rem; margin-top: .55rem; }
+    .fb-again { margin-top: 1.2rem; background: transparent; border: 1px solid var(--red); color: var(--red); font-family: var(--font); -webkit-text-stroke: var(--bold) currentColor; font-size: .8rem; font-weight: 900; letter-spacing: .14em; padding: .5rem 1.25rem; cursor: pointer; transition: background .3s var(--ease), color .3s var(--ease); }
+    .fb-again:hover { background: var(--red); color: #fff; }
+    .fb-side__card { border: 1px solid #333; padding: clamp(1.3rem, 3vw, 1.9rem); background: rgba(168, 13, 24, .06); }
+    .fb-side__card h3 { font-family: var(--disp); font-size: clamp(1.15rem, 2.4vw, 1.5rem); color: #fff; }
+    .fb-side__card > p { color: var(--gray); font-size: .9rem; margin-top: .7rem; }
+    .fb-steps { list-style: none; margin: 1.2rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .72rem; }
+    .fb-steps li { display: grid; grid-template-columns: 1.8rem 1fr; gap: .6rem; color: var(--gray); font-size: .88rem; line-height: 1.7; }
+    .fb-steps li b { color: var(--red); font-weight: 900; letter-spacing: .06em; }
+    .fb-note { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px dashed #3a3a3a; font-size: .78rem; color: #8b8b84; line-height: 1.7; }
+    .fb-note code { font-family: Consolas, Menlo, monospace; color: var(--gray); background: rgba(255,255,255,.06); padding: 0 .3em; }
+    .fb-status { display: inline-flex; align-items: center; gap: .5rem; margin-top: 1.1rem; font-size: .7rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--gray); }
+    .fb-status i { width: 7px; height: 7px; border-radius: 50%; background: #80807a; }
+    .fb-status.is-live i { background: #37c46a; box-shadow: 0 0 0 4px rgba(55,196,106,.18); }
+    .fb-status.is-demo i { background: #e0a72d; box-shadow: 0 0 0 4px rgba(224,167,45,.18); }
+    .fb-admin-link { display: inline-flex; align-items: center; gap: .45rem; margin-top: .9rem; font-size: .78rem; letter-spacing: .1em; color: var(--gray); border-bottom: 1px solid #3f3f3f; padding-bottom: .1rem; transition: color .3s var(--ease), border-color .3s var(--ease); }
+    .fb-admin-link:hover { color: var(--red); border-color: var(--red); }
+    @media (max-width: 900px) {
+      .fb-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .fb-row { grid-template-columns: 1fr; }
+      .fb-foot { flex-direction: column; align-items: stretch; }
+      .fb-submit { justify-content: center; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 羽毛笔光标 -->
+  <div class="quill" id="quill" aria-hidden="true">
+    <svg viewBox="0 0 40 120"><path class="quill__vane" d="M21 4 C16 20 13.6 40 15.2 57 C16.4 66 16.6 72 15.2 79 L17.4 88 C18.7 78 19.4 73 19.9 69 C20.6 73 21.8 79 23.6 88 C26.9 76 28.7 60 29.2 46 C29.9 27 26.6 13 21 4 Z"/><path class="quill__shaft" d="M19.6 5 L21.2 5 L20.9 78 L20.7 120 L19.3 120 L18.2 78 L19.6 78 Z"/></svg>
+  </div>
+  <!-- 开场动画：黑场 -> 红底城市远景 -> 闪黑放大 -> 闪黑（封面静态 + 车门打开）-> 闪黑进入主页 -->
+  <div class="opening" id="opening" aria-hidden="true">
+    <div class="opening__city" id="op-city">
+      <svg viewBox="0 60 1200 400" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><use href="#mansion-art"/></svg>
+    </div>
+    <div class="opening__cap" id="op-cap"><span id="op-cap-text"></span></div>
+    <div class="opening__wave" id="op-wave"></div>
+    <button class="opening__skip" id="op-skip" type="button">跳过 SKIP</button>
+    <button class="opening__prompt" id="op-prompt" type="button" aria-label="点击继续">
+      <span class="opening__prompt-ring" aria-hidden="true"></span>
+      <span class="opening__prompt-ring" aria-hidden="true"></span>
+      <span class="opening__prompt-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 4 V19.2"/><path d="M5.6 12.8 L12 19.4 L18.4 12.8"/></svg>
+      </span>
+    </button>
+  </div>
+
+  <!-- 顶部栏 -->
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="#top">
+        <svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M38 40 L46 12 L66 36 Z"/><path d="M62 40 L54 12 L34 36 Z"/><circle cx="50" cy="56" r="24"/><ellipse cx="43" cy="54" rx="3" ry="5" fill="#fff"/><ellipse cx="57" cy="54" rx="3" ry="5" fill="#fff"/></svg>
+        <b id="brand-name">王悦为</b><span class="sub">WIL</span>
+      </a>
+      <nav class="topnav" aria-label="导航">
+        <a id="nav-about" href="#about">关于</a>
+        <a id="nav-growing" href="#growing">项目</a>
+        <a id="nav-hobbies" href="#hobbies">兴趣</a>
+        <a id="nav-ask" href="#ask">问答</a>
+        <a id="nav-contact" href="#contact">联系</a>
+        <a id="nav-feedback" href="#feedback">留言</a>
+        <div class="lang" role="group" aria-label="语言切换">
+          <button type="button" data-lang="zh" class="is-active">中</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 封面：上红下黑 + 剪影场景 -->
+    <section class="cover" id="top">
+      <div class="cover__scene" aria-hidden="true">
+        <!-- 黑色庄园剪影 + 成排红窗（顶端） -->
+        <svg class="cover__bg" viewBox="0 0 1200 460" preserveAspectRatio="xMidYMax meet" style="top:0;left:0;width:100%;z-index:1;">
+          <g class="cover__scroll">
+          <g id="mansion-art">
+          <g fill="#000">
+            <!-- base slab (full width keeps the scroll seamless) -->
+            <rect x="0" y="412" width="1200" height="48"/>
+            <!-- far-left stub -->
+            <rect x="20" y="372" width="44" height="40"/>
+            <!-- stepped deco tower -->
+            <rect x="76" y="330" width="110" height="82"/>
+            <rect x="88" y="302" width="86" height="28"/>
+            <rect x="102" y="280" width="58" height="22"/>
+            <rect x="120" y="262" width="22" height="18"/>
+            <rect x="129" y="196" width="4" height="66"/>
+            <!-- tall tower -->
+            <rect x="214" y="150" width="124" height="262"/>
+            <rect x="252" y="124" width="48" height="26"/>
+            <!-- slim antenna mast -->
+            <rect x="358" y="386" width="26" height="26"/>
+            <rect x="369" y="70" width="4" height="316"/>
+            <!-- mid block -->
+            <rect x="418" y="250" width="74" height="162"/>
+            <rect x="452" y="224" width="3" height="26"/>
+            <!-- twin-antenna tower -->
+            <rect x="520" y="150" width="124" height="262"/>
+            <rect x="546" y="92" width="4" height="58"/>
+            <rect x="614" y="92" width="4" height="58"/>
+            <!-- stepped mid building -->
+            <rect x="676" y="268" width="96" height="144"/>
+            <rect x="696" y="244" width="56" height="24"/>
+            <!-- striped tower -->
+            <rect x="800" y="180" width="92" height="232"/>
+            <rect x="818" y="156" width="56" height="24"/>
+            <!-- low stepped block -->
+            <rect x="910" y="300" width="70" height="112"/>
+            <rect x="928" y="278" width="34" height="22"/>
+            <!-- right tall tower -->
+            <rect x="1010" y="170" width="120" height="242"/>
+            <rect x="1046" y="146" width="44" height="24"/>
+            <!-- far-right stub -->
+            <rect x="1152" y="350" width="30" height="62"/>
+          </g>
+          <g fill="#a80d18">
+            <!-- stepped tower: vertical stripe windows -->
+            <rect x="86" y="344" width="3" height="56"/><rect x="96" y="344" width="3" height="56"/><rect x="106" y="344" width="3" height="56"/><rect x="116" y="344" width="3" height="56"/><rect x="126" y="344" width="3" height="56"/><rect x="136" y="344" width="3" height="56"/><rect x="146" y="344" width="3" height="56"/><rect x="156" y="344" width="3" height="56"/><rect x="166" y="344" width="3" height="56"/><rect x="176" y="344" width="3" height="56"/>
+            <!-- tall tower: paired windows 3x4 -->
+            <rect x="232" y="176" width="9" height="40"/><rect x="248" y="176" width="9" height="40"/>
+            <rect x="266" y="176" width="9" height="40"/><rect x="282" y="176" width="9" height="40"/>
+            <rect x="300" y="176" width="9" height="40"/><rect x="316" y="176" width="9" height="40"/>
+            <rect x="232" y="230" width="9" height="40"/><rect x="248" y="230" width="9" height="40"/>
+            <rect x="266" y="230" width="9" height="40"/><rect x="282" y="230" width="9" height="40"/>
+            <rect x="300" y="230" width="9" height="40"/><rect x="316" y="230" width="9" height="40"/>
+            <rect x="232" y="284" width="9" height="40"/><rect x="248" y="284" width="9" height="40"/>
+            <rect x="266" y="284" width="9" height="40"/><rect x="282" y="284" width="9" height="40"/>
+            <rect x="300" y="284" width="9" height="40"/><rect x="316" y="284" width="9" height="40"/>
+            <rect x="232" y="338" width="9" height="40"/><rect x="248" y="338" width="9" height="40"/>
+            <rect x="266" y="338" width="9" height="40"/><rect x="282" y="338" width="9" height="40"/>
+            <rect x="300" y="338" width="9" height="40"/><rect x="316" y="338" width="9" height="40"/>
+            <!-- mid block windows -->
+            <rect x="428" y="272" width="9" height="30"/><rect x="444" y="272" width="9" height="30"/>
+            <rect x="462" y="272" width="9" height="30"/><rect x="478" y="272" width="9" height="30"/>
+            <rect x="428" y="318" width="9" height="30"/><rect x="444" y="318" width="9" height="30"/>
+            <rect x="462" y="318" width="9" height="30"/><rect x="478" y="318" width="9" height="30"/>
+            <rect x="428" y="364" width="9" height="30"/><rect x="444" y="364" width="9" height="30"/>
+            <rect x="462" y="364" width="9" height="30"/><rect x="478" y="364" width="9" height="30"/>
+            <!-- twin-antenna tower: paired windows 3x4 -->
+            <rect x="538" y="176" width="9" height="40"/><rect x="554" y="176" width="9" height="40"/>
+            <rect x="572" y="176" width="9" height="40"/><rect x="588" y="176" width="9" height="40"/>
+            <rect x="606" y="176" width="9" height="40"/><rect x="622" y="176" width="9" height="40"/>
+            <rect x="538" y="230" width="9" height="40"/><rect x="554" y="230" width="9" height="40"/>
+            <rect x="572" y="230" width="9" height="40"/><rect x="588" y="230" width="9" height="40"/>
+            <rect x="606" y="230" width="9" height="40"/><rect x="622" y="230" width="9" height="40"/>
+            <rect x="538" y="284" width="9" height="40"/><rect x="554" y="284" width="9" height="40"/>
+            <rect x="572" y="284" width="9" height="40"/><rect x="588" y="284" width="9" height="40"/>
+            <rect x="606" y="284" width="9" height="40"/><rect x="622" y="284" width="9" height="40"/>
+            <rect x="538" y="338" width="9" height="40"/><rect x="554" y="338" width="9" height="40"/>
+            <rect x="572" y="338" width="9" height="40"/><rect x="588" y="338" width="9" height="40"/>
+            <rect x="606" y="338" width="9" height="40"/><rect x="622" y="338" width="9" height="40"/>
+            <!-- stepped mid building windows -->
+            <rect x="696" y="288" width="9" height="30"/><rect x="712" y="288" width="9" height="30"/>
+            <rect x="730" y="288" width="9" height="30"/><rect x="746" y="288" width="9" height="30"/>
+            <rect x="696" y="332" width="9" height="30"/><rect x="712" y="332" width="9" height="30"/>
+            <rect x="730" y="332" width="9" height="30"/><rect x="746" y="332" width="9" height="30"/>
+            <rect x="696" y="376" width="9" height="30"/><rect x="712" y="376" width="9" height="30"/>
+            <rect x="730" y="376" width="9" height="30"/><rect x="746" y="376" width="9" height="30"/>
+            <!-- striped tower windows -->
+            <rect x="810" y="196" width="3" height="204"/><rect x="820" y="196" width="3" height="204"/><rect x="830" y="196" width="3" height="204"/><rect x="840" y="196" width="3" height="204"/><rect x="850" y="196" width="3" height="204"/><rect x="860" y="196" width="3" height="204"/><rect x="870" y="196" width="3" height="204"/><rect x="880" y="196" width="3" height="204"/>
+            <!-- low stepped block windows -->
+            <rect x="920" y="318" width="9" height="28"/><rect x="936" y="318" width="9" height="28"/>
+            <rect x="950" y="318" width="9" height="28"/><rect x="966" y="318" width="9" height="28"/>
+            <rect x="920" y="356" width="9" height="28"/><rect x="936" y="356" width="9" height="28"/>
+            <rect x="950" y="356" width="9" height="28"/><rect x="966" y="356" width="9" height="28"/>
+            <!-- right tall tower: paired windows 3x4 -->
+            <rect x="1028" y="194" width="9" height="40"/><rect x="1044" y="194" width="9" height="40"/>
+            <rect x="1062" y="194" width="9" height="40"/><rect x="1078" y="194" width="9" height="40"/>
+            <rect x="1096" y="194" width="9" height="40"/><rect x="1112" y="194" width="9" height="40"/>
+            <rect x="1028" y="248" width="9" height="40"/><rect x="1044" y="248" width="9" height="40"/>
+            <rect x="1062" y="248" width="9" height="40"/><rect x="1078" y="248" width="9" height="40"/>
+            <rect x="1096" y="248" width="9" height="40"/><rect x="1112" y="248" width="9" height="40"/>
+            <rect x="1028" y="302" width="9" height="40"/><rect x="1044" y="302" width="9" height="40"/>
+            <rect x="1062" y="302" width="9" height="40"/><rect x="1078" y="302" width="9" height="40"/>
+            <rect x="1096" y="302" width="9" height="40"/><rect x="1112" y="302" width="9" height="40"/>
+            <rect x="1028" y="356" width="9" height="40"/><rect x="1044" y="356" width="9" height="40"/>
+            <rect x="1062" y="356" width="9" height="40"/><rect x="1078" y="356" width="9" height="40"/>
+            <rect x="1096" y="356" width="9" height="40"/><rect x="1112" y="356" width="9" height="40"/>
+          </g>
+          </g>
+          <use href="#mansion-art" x="1200"/>
+          </g></svg>
+
+        
+
+        
+
+        
+
+        <!-- 脑电波（BCI）装饰曲线，横贯封面上部 -->
+        <svg class="cover__bg" viewBox="0 0 1200 160" preserveAspectRatio="none" style="left:0;top:44%;width:100%;z-index:2;opacity:.9;">
+          <g class="cover__scroll">
+          <polyline points="0,110 90,64 160,118 240,40 320,120 400,70 480,112 560,30 640,118 720,64 800,112 880,44 960,118 1040,66 1120,112 1200,110"
+            fill="none" stroke="#000" stroke-width="3" stroke-dasharray="10 8" class="brain-pulse"/>
+          <g transform="translate(1200,0)">
+            <polyline points="0,110 90,64 160,118 240,40 320,120 400,70 480,112 560,30 640,118 720,64 800,112 880,44 960,118 1040,66 1120,112 1200,110"
+              fill="none" stroke="#000" stroke-width="3" stroke-dasharray="10 8" class="brain-pulse"/>
+          </g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="cover__fade" aria-hidden="true"></div>
+
+      <div class="cover__inner">
+        <p class="eyebrow" id="eyebrow">脑机接口 × 艺术</p>
+        <h1 class="cover__name"><span id="name-cn">王悦为</span></h1>
+        <div class="cover__rule" aria-hidden="true"><i></i></div>
+        <div class="cover__copy">
+          <!-- 红色老爷车：环绕文字，持续上下颠簸行驶 -->
+          <svg class="cover__car" viewBox="0 0 320 140" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <g class="cover__car-bob">
+              <!-- 地面阴影 -->
+              <ellipse cx="160" cy="133" rx="148" ry="5.5" fill="rgba(0,0,0,0.30)"/>
+              <!-- 车身主体：长车头 + 溜背车顶 -->
+              <path d="M16 110 L11 98 C11 91 15 86 24 83 C40 77 60 75 82 74 L120 72 C134 71 144 74 152 80 L178 48 L200 44 L236 44 C246 44 252 48 256 54 L268 70 L292 73 C303 76 310 85 310 94 L308 101 L303 110 Z" fill="#a80d18"/>
+              <!-- 车身下部暗面 / 侧裙 -->
+              <rect x="30" y="104" width="272" height="6" fill="#770a10" opacity="0.7"/>
+              <!-- 腰线镀铬饰条 -->
+              <path d="M34 99 L300 99" stroke="#cfd0cb" stroke-width="1.6" fill="none" opacity="0.9"/>
+              <!-- 车门分割线 -->
+              <path d="M202 78 L206 108" stroke="#770a10" stroke-width="1.4" fill="none" opacity="0.7"/>
+              <rect x="208" y="83" width="11" height="3" rx="1.5" fill="#d9d6cf"/>
+              <!-- 引擎盖散热口 -->
+              <g stroke="#770a10" stroke-width="1.4" opacity="0.7"><path d="M84 78 L104 77"/><path d="M84 81 L106 80"/><path d="M84 84 L106 83"/></g>
+              <!-- 翼子板侧通风口 -->
+              <g>
+                <rect x="112" y="86" width="20" height="10" rx="2" fill="#2a1418"/>
+                <path d="M114 88.5 H130 M114 91 H130 M114 93.5 H130" stroke="#c9c6bd" stroke-width="0.9"/>
+                <rect x="112" y="86" width="20" height="10" rx="2" fill="none" stroke="#cfd0cb" stroke-width="1"/>
+              </g>
+              <!-- 前圆头灯 -->
+              <circle cx="30" cy="80" r="8.5" fill="#0e0e0e"/>
+              <circle cx="30" cy="80" r="7" fill="#dfe3e6"/>
+              <circle cx="30" cy="80" r="7" fill="none" stroke="#cfd0cb" stroke-width="1.2"/>
+              <circle cx="27" cy="77" r="2.6" fill="#fff" opacity="0.9"/>
+              <!-- 前格栅 -->
+              <rect x="13" y="85" width="22" height="15" rx="2" fill="#20100f"/>
+              <path d="M18.5 86 V99 M23.5 86 V99 M28.5 86 V99" stroke="#cfd0cb" stroke-width="0.9"/>
+              <rect x="13" y="85" width="22" height="15" rx="2" fill="none" stroke="#cfd0cb" stroke-width="1"/>
+              <!-- 前后镀铬保险杠 -->
+              <path d="M6 95 C20 93 34 93 48 95" stroke="#d9d6cf" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+              <path d="M272 95 C286 93 300 93 314 95" stroke="#d9d6cf" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+              <!-- 车窗玻璃 + 支柱 -->
+              <path d="M158 78 L182 51 L204 49 L234 49 C242 49 246 52 249 57 L258 68 L210 79 Z" fill="#16242a"/>
+              <path d="M186 53 L202 52 L190 76 L180 77 Z" fill="#ffffff" opacity="0.10"/>
+              <path d="M210 49 L208 78" stroke="#a80d18" stroke-width="3"/>
+              <path d="M156 79 L181 50" stroke="#cfd0cb" stroke-width="1.4" fill="none"/>
+              <path d="M156 79 L258 68" stroke="#cfd0cb" stroke-width="1.2" fill="none" opacity="0.85"/>
+              <!-- 打开状的车门（仅开场第三幕显示） -->
+              <g class="car-door-open">
+                <!-- 座舱开口 -->
+                <path d="M156 79 L207 77 L207 105 L156 105 Z" fill="#17080b"/>
+                <!-- 座椅 + 头枕 -->
+                <rect x="188" y="84" width="13" height="19" rx="3" fill="#3a1116"/>
+                <rect x="190" y="81" width="9" height="5" rx="2" fill="#3a1116"/>
+                <!-- 门板：绕前缘向外打开（透视缩短） -->
+                <g transform="matrix(0.62 0.16 0 1 59.3 -24.96)">
+                  <path d="M156 79 L207 77 L207 105 L156 105 Z" fill="#a80d18" stroke="#770a10" stroke-width="1.2"/>
+                  <path d="M161 83 L202 81 L203 101 L160 101 Z" fill="#770a10"/>
+                  <rect x="190" y="94" width="10" height="3" rx="1.5" fill="#d9d6cf"/>
+                </g>
+              </g>
+              <!-- 前轮：钢丝辐条 + 白边胎 -->
+              <circle cx="74" cy="100" r="30" fill="#14060a"/>
+              <g class="wheel">
+                <circle cx="74" cy="100" r="27" fill="#151515"/>
+                <circle cx="74" cy="100" r="20" fill="#eceae4"/>
+                <circle cx="74" cy="100" r="15" fill="#c8ccd1"/>
+                <g stroke="#6f7377" stroke-width="0.9"><path d="M74 100 L74 86 M74 100 L74 114 M74 100 L60 100 M74 100 L88 100 M74 100 L64 90 M74 100 L84 90 M74 100 L64 110 M74 100 L84 110"/></g>
+                <circle cx="74" cy="100" r="8" fill="none" stroke="#8d9196" stroke-width="1"/>
+                <circle cx="74" cy="100" r="4" fill="#8d9196"/>
+                <circle cx="74" cy="100" r="1.6" fill="#3a3d40"/>
+              </g>
+              <!-- 后轮 -->
+              <circle cx="250" cy="100" r="30" fill="#14060a"/>
+              <g class="wheel">
+                <circle cx="250" cy="100" r="27" fill="#151515"/>
+                <circle cx="250" cy="100" r="20" fill="#eceae4"/>
+                <circle cx="250" cy="100" r="15" fill="#c8ccd1"/>
+                <g stroke="#6f7377" stroke-width="0.9"><path d="M250 100 L250 86 M250 100 L250 114 M250 100 L236 100 M250 100 L264 100 M250 100 L240 90 M250 100 L260 90 M250 100 L240 110 M250 100 L260 110"/></g>
+                <circle cx="250" cy="100" r="8" fill="none" stroke="#8d9196" stroke-width="1"/>
+                <circle cx="250" cy="100" r="4" fill="#8d9196"/>
+                <circle cx="250" cy="100" r="1.6" fill="#3a3d40"/>
+              </g>
+              <!-- 排气管 + 尾气 -->
+              <rect x="300" y="104" width="10" height="3" rx="1.5" fill="#8d9196"/>
+              <circle class="exhaust" cx="309" cy="103" r="4" fill="#c9c6bd"/>
+            </g>
+          </svg>
+          <p class="cover__role" id="role">智能医学工程（脑机接口方向）· 大一</p>
+          <p class="cover__intro" id="intro"></p>
+        </div>
+        <a class="cover__cta" href="#about"><span id="cta">进入档案</span> →</a>
+      </div>
+      <div class="scroll-hint" aria-hidden="true">下滑 · Scroll</div>
+    </section>
+
+    <!-- 关于 -->
+    <section class="band band--black" id="about">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="about-tag">关于 · ABOUT</span>
+            <h2 class="h2" id="about-h2">科学与<span class="mask-in"><span>艺术</span></span>之间</h2>
+          </div>
+          <p class="section__sub" id="about-sub"></p>
+        </div>
+
+        <!-- 专业 + 爱好图标带 -->
+        <div class="motif-strip" data-reveal>
+          <span class="motif"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M32 16 L28 30 L38 38 L30 52"/><circle cx="32" cy="16" r="3" fill="currentColor"/><circle cx="28" cy="30" r="3" fill="currentColor"/><circle cx="38" cy="38" r="3" fill="currentColor"/><circle cx="30" cy="52" r="3" fill="currentColor"/><path d="M8 40 L22 40 L28 32 L36 48 L42 40 L58 40" stroke-dasharray="5 5"/></svg><span>BCI</span></span>
+          <span class="motif"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 50 L42 20"/><path d="M42 20 L50 13 L54 17 L46 25 Z" fill="currentColor" stroke="none"/></svg><span>Paint</span></span>
+          <span class="motif"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><path d="M40 10 v34 c0 5 -7 8 -12 6 c-5-2 -5-9 -1-11 c4-2 9-1 13 1"/><path d="M40 10 L58 18"/></svg><span>Music</span></span>
+          <span class="motif"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><path d="M8 22 h10 a2 2 0 0 0 2-2 l1-2 h18 l1 2 a2 2 0 0 0 2 2 h10 a4 4 0 0 1 4 4 v20 a4 4 0 0 1 -4 4 H8 a4 4 0 0 1 -4-4 V26 a4 4 0 0 1 4-4 Z"/><circle cx="34" cy="37" r="8"/></svg><span>Photo</span></span>
+          <span class="motif"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="12" width="52" height="40" rx="3"/><path d="M6 22 h52 M6 42 h52 M22 12 v40 M42 12 v40"/></svg><span>Film</span></span>
+          <span class="motif"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><circle cx="42" cy="12" r="4"/><path d="M40 16 L32 30 L20 26"/><path d="M32 30 L34 50 L26 58"/><path d="M34 50 L46 56"/><path d="M32 30 L48 28"/></svg><span>Dance</span></span>
+        </div>
+
+        <div class="about-grid">
+          <div data-reveal>
+            <p class="long-intro" id="long-intro"></p>
+            <div class="about-meta" id="about-meta"></div>
+          </div>
+          <aside class="fact-card" data-reveal>
+            <span class="fact-card__title"><i>▷</i><span id="fact-title">档案</span></span>
+            <dl class="fact-list" id="fact-list"></dl>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- 项目 / 技能 -->
+    <section class="band band--black" id="growing">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="growing-tag">技能 · 项目</span>
+            <h2 class="h2" id="growing-h2">正在<span class="mask-in"><span>生长</span></span></h2>
+          </div>
+          <p class="section__sub" id="growing-sub"></p>
+        </div>
+        <div class="growing" id="growing-cards"></div>
+      </div>
+    </section>
+
+    <!-- 红黑过渡装饰（更多可能 → 兴趣） -->
+    <div class="seam" aria-hidden="true"><span class="zig"></span><span class="dot d1"></span><span class="dot d2"></span></div>
+
+    <!-- 兴趣 -->
+    <section class="band band--red" id="hobbies">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="hobbies-tag">兴趣 · HOBBIES</span>
+            <h2 class="h2" id="hobbies-h2">我的观察<span class="mask-in"><span>镜头</span></span></h2>
+          </div>
+          <p class="section__sub" id="hobbies-sub" style="color:rgba(0,0,0,0.72)"></p>
+        </div>
+        <div class="hobbies" id="hobbies-book"></div>
+      </div>
+    </section>
+
+    <!-- 问答互动区（位于联系方式之前 · 黑底） -->
+    <section class="band band--black" id="ask">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="ask-tag">问答 · ASK</span>
+            <h2 class="h2" id="ask-h2">你问我<span class="mask-in"><span>答</span></span></h2>
+          </div>
+          <p class="section__sub" id="ask-sub"></p>
+        </div>
+
+        <div class="qa-stage" data-reveal>
+          <!-- 左：问题菜单（红底） -->
+          <div class="qa-menu">
+            <span class="qa-menu__eyebrow" id="qa-eyebrow">CASE FILE · Q&A</span>
+            <h3 class="qa-menu__title" id="qa-title">点一个问题，开始对话</h3>
+            <div class="qa-options" id="qa-options" role="group" aria-label="常见问题列表"></div>
+          </div>
+          <!-- 右：对话窗（黑底） -->
+          <div class="qa-chat">
+            <div class="qa-chat__bar">
+              <div class="qa-agent">
+                <span class="qa-agent__mark" id="qa-mark" aria-hidden="true">W</span>
+                <div>
+                  <b id="qa-agent-name">王悦为 · Wil</b>
+                  <small id="qa-agent-role">脑机接口方向 · 大一</small>
+                </div>
+              </div>
+              <span class="qa-status" id="qa-status">在线 · ONLINE</span>
+            </div>
+            <div class="qa-messages" id="qa-messages" role="log" aria-live="polite" aria-label="问答对话内容"></div>
+            <p class="qa-chat__hint" id="qa-hint"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 联系方式（合并大板块） -->
+    <section class="band band--red" id="contact">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="contact-tag">联系 · CONTACT</span>
+            <h2 class="h2" id="contact-h2">找到<span class="mask-in"><span>我</span></span></h2>
+          </div>
+          <p class="section__sub" id="contact-sub" style="color:rgba(0,0,0,0.72)"></p>
+        </div>
+        <div data-reveal>
+          <div class="contact-panel">
+            <div class="contact-head">
+              <h3><span id="contact-title">联系方式</span> <span class="hl" id="contact-hl">/ Contact</span></h3>
+              <p id="contact-note">一幅画、一支舞、一个想法，都欢迎来聊。</p>
+            </div>
+            <div class="contact-list" id="contact-lines"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 访客留言（V3.1 新增 · 内容不公开展示，仅作者在后台可见） -->
+    <section class="band band--black" id="feedback">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="fb-tag">留言 · FEEDBACK</span>
+            <h2 class="h2" id="fb-h2">给我<span class="mask-in"><span>留言</span></span></h2>
+          </div>
+          <p class="section__sub" id="fb-sub"></p>
+        </div>
+
+        <div class="fb-grid" data-reveal>
+          <!-- 左：留言表单 -->
+          <form class="fb-panel" id="fb-form" novalidate>
+            <div id="fb-fields">
+              <div class="fb-row">
+                <div class="fb-field">
+                  <label for="fb-name" id="fb-lb-name">称呼 <i>*</i></label>
+                  <input class="fb-input" id="fb-name" name="name" type="text" maxlength="40" autocomplete="nickname" placeholder="怎么称呼你" />
+                </div>
+                <div class="fb-field">
+                  <label for="fb-contact" id="fb-lb-contact">联系方式</label>
+                  <input class="fb-input" id="fb-contact" name="contact" type="text" maxlength="120" autocomplete="email" placeholder="邮箱 / 微信，方便我回复" />
+                </div>
+              </div>
+
+              <div class="fb-field">
+                <label id="fb-lb-mood">想聊的话题</label>
+                <div class="fb-moods" id="fb-moods" role="group" aria-labelledby="fb-lb-mood"></div>
+              </div>
+
+              <div class="fb-field">
+                <label for="fb-message" id="fb-lb-message">留言内容 <i>*</i></label>
+                <textarea class="fb-textarea" id="fb-message" name="message" maxlength="1000" placeholder="想说的话、想问的问题、想聊的作品，都写在这里"></textarea>
+              </div>
+
+              <input class="fb-hp" id="fb-hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+              <div class="fb-foot">
+                <span class="fb-count" id="fb-count"></span>
+                <button class="fb-submit" id="fb-submit" type="submit">发送留言</button>
+              </div>
+
+              <p class="fb-msg" id="fb-msg" role="status" aria-live="polite"></p>
+            </div>
+
+            <div class="fb-ok-card" id="fb-ok">
+              <b id="fb-ok-title">已收到</b>
+              <p id="fb-ok-desc"></p>
+              <button class="fb-again" id="fb-again" type="button">再写一条</button>
+            </div>
+          </form>
+
+          <!-- 右：说明 -->
+          <div class="fb-side">
+            <div class="fb-side__card">
+              <h3 id="fb-side-title">留言只发给我一个人</h3>
+              <p id="fb-side-desc"></p>
+              <ol class="fb-steps" id="fb-steps"></ol>
+              <p class="fb-note" id="fb-side-note"></p>
+              <span class="fb-status" id="fb-status"><i></i><span id="fb-status-text"></span></span>
+              <br />
+              <a class="fb-admin-link" href="admin.html" id="fb-admin-link">作者入口 · ADMIN →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <p id="footer"></p>
+      <span class="mono" id="footer-note"></span>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    "use strict";
+
+    /* ==================================================================
+       访客留言 · Supabase 配置（V3.1 新增）
+       ------------------------------------------------------------------
+       把下面两项填成你自己的 Supabase 项目凭证，留言就会存进数据库：
+
+         SUPABASE_URL      —— 形如 https://xxxxxxxxxxxx.supabase.co
+         SUPABASE_ANON_KEY —— 形如 eyJhbGciOiJIUzI1NiIs...（很长的一串）
+
+       获取位置：Supabase 控制台 → Project Settings → API Keys
+       两项留空 = 演示模式：留言只写进访客本机浏览器，不上传、也不丢。
+       ⚠️ anon key 是公开密钥，放前端是正常做法；真正的安全由数据库
+          的 RLS 行级安全策略保证（详见 docs/supabase-接入指南.md）。
+       ================================================================== */
+    const SUPABASE_URL = "";
+    const SUPABASE_ANON_KEY = "";
+    const GUESTBOOK_TABLE = "guestbook";
+    const SB_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js";
+
+    /* 按需加载 Supabase 客户端：页面首屏完全不依赖网络，只有真要提交/查状态时才拉 CDN */
+    let sbPromise = null;
+    function loadSupabase() {
+      if (window.supabase && window.supabase.createClient) return Promise.resolve(window.supabase);
+      if (sbPromise) return sbPromise;
+      sbPromise = new Promise(function (resolve, reject) {
+        const s = document.createElement("script");
+        s.src = SB_CDN;
+        s.async = true;
+        s.onload = function () {
+          if (window.supabase && window.supabase.createClient) resolve(window.supabase);
+          else { sbPromise = null; reject(new Error("supabase-global-missing")); }
+        };
+        s.onerror = function () { sbPromise = null; reject(new Error("supabase-cdn-blocked")); };
+        document.head.appendChild(s);
+      });
+      return sbPromise;
+    }
+    /* 是否已填好凭证（不依赖正则，写法越简单越好） */
+    function isConfigured() {
+      const url = String(SUPABASE_URL).trim();
+      const key = String(SUPABASE_ANON_KEY).trim();
+      return url.slice(0, 4) === "http" && key.length > 20;
+    }
+
+    /* ---------- 工具图标 ---------- */
+    const ICON = {
+      brush: '<svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 50 L42 20"/><path d="M42 20 L50 13 L54 17 L46 25 Z" fill="currentColor" stroke="none"/></g><circle cx="52" cy="22" r="3" fill="#fff"/></svg>',
+      dance: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><circle cx="42" cy="12" r="4"/><path d="M40 16 L32 30 L20 26"/><path d="M32 30 L34 50 L26 58"/><path d="M34 50 L46 56"/><path d="M32 30 L48 28"/></svg>',
+      photo: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><path d="M8 22 h10 a2 2 0 0 0 2-2 l1-2 h18 l1 2 a2 2 0 0 0 2 2 h10 a4 4 0 0 1 4 4 v20 a4 4 0 0 1 -4 4 H8 a4 4 0 0 1 -4-4 V26 a4 4 0 0 1 4-4 Z"/><circle cx="34" cy="37" r="8"/></svg>',
+      music: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><path d="M40 10 v34 c0 5 -7 8 -12 6 c-5-2 -5-9 -1-11 c4-2 9-1 13 1"/><path d="M40 10 L58 18"/></svg>',
+      film: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="12" width="52" height="40" rx="3"/><path d="M6 22 h52 M6 42 h52 M22 12 v40 M42 12 v40"/></svg>'
+    };
+    /* 联系类型图标 */
+    const BADGE = {
+      mail: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="14" width="36" height="24" rx="3"/><path d="M6 16 L24 30 L42 16"/></svg>',
+      qq:   '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><circle cx="24" cy="22" r="13"/><ellipse cx="24" cy="16" rx="7" ry="9"/><circle cx="19" cy="20" r="2.5" fill="currentColor"/><circle cx="29" cy="20" r="2.5" fill="currentColor"/><path d="M24 31 L21 38 L24 36 L27 38 Z" fill="currentColor"/></svg>',
+      wechat:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><path d="M30 24 C30 16 24 12 17 12 C10 12 4 17 6 26 C8 32 10 36 10 36 L6 40 L16 38 C22 40 30 36 30 24 Z"/><path d="M34 22 C41 22 46 27 44 34 C43 38 42 40 42 40 L45 43 L40 42 C36 43 33 40 34 34 Z"/></svg>'
+    };
+
+    /* ---------- 内容数据 ---------- */
+    const COPY = {
+      zh: {
+        eyebrow: "脑机接口 × 艺术",
+        nameCn: "王悦为", nameEn: "Wil",
+        role: "智能医学工程（脑机接口方向）· 大一",
+        intro: "嗨，我是王悦为。钻研<strong>脑机接口</strong>，也爱绘画、舞蹈、摄影。记录生活，也探索生物学与人文艺术。很高兴认识你。",
+        cta: "进入档案",
+        opContinue: "点击继续",
+        nav: { about: "关于", hobbies: "兴趣", growing: "项目", ask: "问答", contact: "联系", feedback: "留言" },
+        aboutTag: "关于 · ABOUT",
+        aboutH2a: "科学与", aboutH2b: "艺术", aboutH2c: "之间",
+        aboutSub: "从成都到深圳，从医学代码到画笔，一个随信号起舞的 08 后。",
+        longIntro: "我在两种语言里切换——<em>一支画笔</em>和一段代码。记录舞蹈的律动，也想读懂大脑的电波。生活与学习，都是我观察世界的镜头。",
+        aboutMeta: ["记录生活", "生物学", "人文艺术"],
+        factTitle: "档案",
+        facts: [
+          { k: "出生", v: "2008.04.23" }, { k: "家乡", v: "四川成都" }, { k: "常居", v: "广东深圳" },
+          { k: "学校", v: "天津大学香港理工大学深圳未来技术学院" }, { k: "专业", v: "智能医学工程（脑机接口方向）" }
+        ],
+        hobbiesTag: "兴趣 · HOBBIES",
+        hobbiesH2a: "我的观察", hobbiesH2b: "镜头",
+        hobbiesSub: "艺术与医学，是同一副镜头下的不同画面。",
+        hobbies: [
+          { icon: "brush", cn: "绘画", en: "Painting", desc: "用画笔记录情绪，也把看到的颜色留在一张纸上。" },
+          { icon: "dance", cn: "舞蹈", en: "Dance", desc: "在节奏里松开身体，舞台是我最直接的语言。" },
+          { icon: "photo", cn: "摄影", en: "Photography", desc: "按下快门，把光线和瞬间一起收进口袋。" },
+          { icon: "music", cn: "音乐", en: "Music", desc: "耳机里的旋律，是学习与生活的背景音。" },
+          { icon: "film", cn: "电影", en: "Film", desc: "在别人的故事里，学会理解更多不同的世界。" }
+        ],
+        bookTitle: "兴趣手册", bookNote: "HOBBIES · 五则", bookTag: "兴趣",
+        bookCoverLine: "五种喜欢，都收在这一册里。",
+        bookHint: "点击右页向右翻 · 点击左页向左翻",
+        growingTag: "技能 · 项目",
+        growingH2a: "正在", growingH2b: "生长",
+        growingSub: "技能与第一个作品仍在路上，欢迎常回来看看。",
+        growing: [
+          { no: "01", title: "项目经历", desc: "第一章作品正在酝酿，出炉一定大声宣告。", badge: "查看项目", href: "wyw个人主页-projects.html" },
+          { no: "02", title: "技能成长", desc: "正在解锁新的工具与方向，边学边玩。", badge: "查看技能", href: "wyw个人主页-skills.html" },
+          { no: "03", title: "更多可能", desc: "这里永远为下一个想法留着一页。", badge: "敬请期待", href: "#" }
+        ],
+        askTag: "问答 · ASK",
+        askH2a: "你问我", askH2b: "答",
+        askSub: "常被问到的四个问题，点一下，我用对话回答你。",
+        qaEyebrow: "CASE FILE · Q&A",
+        qaTitle: "点一个问题，开始对话",
+        qaMark: "W",
+        qaAgentName: "王悦为 · Wil",
+        qaAgentRole: "脑机接口方向 · 大一",
+        qaStatus: "在线 · ONLINE",
+        qaHint: "点击左侧任意问题 · 回答会以对话形式出现在这里 · 随语言切换",
+        qaHello: "你好，我是王悦为（Wil）。左边是我最常被问到的四个问题，点一个，我在这里回答你。",
+        qaUserLabel: "访客 · VISITOR",
+        qaBotLabel: "王悦为 · WIL",
+        qa: [
+          { q: "你是怎么对脑机接口产生兴趣的？", a: "最初的震撼来自电影《黑客帝国》——当\"意识\"与\"代码\"被放进同一个命题里，我意识到人类对自身的想象可以被重新书写。后来这份好奇心慢慢落到了现实：我既着迷于生物本身精密而柔软的构造，也对计算机与前沿科技的可能性抱有持续的兴趣。脑机接口刚好站在两者的交界处——它是生物学的问题，也是工程学的问题，更是关于\"人究竟是什么\"的问题。" },
+          { q: "你的绘画经历是怎样的？", a: "我从六岁开始正式学画，画到今天是件很自然的事。我最擅长的是人物速写和漫画相关的内容——捕捉一个人的神态、姿态、一瞬间的情绪，是我最享受的部分。目前我正在尝试学习色彩，从线条与结构走向光影与色调，算是给自己打开了一个新的维度。" },
+          { q: "你的音乐品味如何？", a: "我的口味比较杂，但也偏爱一些方向：POP、R&B、JAZZ、DREAM POP、迷幻摇滚都在我的歌单里，而且我喜欢的作品往往来自不同语种。艺人方面，Glass Animals、Lana Del Rey、Ariana Grande、Lauv、Lady Gaga、Men I Trust 都是我反复循环的名字。对我来说，音乐不只是背景音，它决定了一天的氛围和情绪的颜色。" },
+          { q: "你的日常是什么样的？", a: "看电影、citywalk、看展，是我最常做的三件事。我喜欢在城市的街道上随意走一走，也喜欢在展厅里慢慢停留，让眼睛和脑子都被好东西重新校准。某种意义上，我是一个始终在路上，立志于提升品位与眼界、让生命在美中寻求意义的文艺青年。" }
+        ],
+        contactTag: "联系 · CONTACT",
+        contactH2a: "找到", contactH2b: "我",
+        contactSub: "三种方式，任选其一。",
+        contactTitle: "联系方式", contactHl: "Contact",
+        contactNote: "一幅画、一支舞、一个想法，都欢迎来聊。",
+        contact: [
+          { badge: "mail", type: "邮箱", v: "wil_19780117@tju.edu.cn", href: "mailto:wil_19780117@tju.edu.cn", tap: "写封信" },
+          { badge: "qq", type: "QQ", v: "3944174406", href: "#contact", tap: "来聊聊" },
+          { badge: "wechat", type: "微信", v: "Wil-2t", href: "#contact", tap: "报个名号" }
+        ],
+        footer: "© 2026 王悦为 · 保持好奇，持续创造",
+        footerNote: "黑 · 红 · 白",
+        /* ---- 访客留言 ---- */
+        fbTag: "留言 · FEEDBACK",
+        fbH2a: "给我", fbH2b: "留言",
+        fbSub: "有话想说、有问题想问？写在这里——只有我能看到。",
+        fbLbName: "称呼", fbLbContact: "联系方式", fbLbMood: "想聊的话题", fbLbMessage: "留言内容",
+        fbMoods: [
+          { k: "paint", t: "画画" }, { k: "dance", t: "舞蹈" }, { k: "photo", t: "摄影" },
+          { k: "music", t: "音乐" }, { k: "bci", t: "脑机接口" }, { k: "chat", t: "随便聊聊" }
+        ],
+        fbPhName: "怎么称呼你", fbPhContact: "邮箱 / 微信，方便我回复", fbPhMsg: "想说的话、想问的问题，都写在这里",
+        fbSubmit: "发送留言", fbSending: "发送中…",
+        fbCount: "还可以写 <b>{n}</b> 字",
+        fbOKTitle: "已收到", fbOKTitleOff: "先替你收着", fbOKDesc: "谢谢你写给我。我会尽快看完，如果留了联系方式，我会主动回复你。", fbAgain: "再写一条",
+        fbSideTitle: "留言只发给我一个人",
+        fbSideDesc: "这里不是公开留言板：你写下的内容只有我能看到，不会出现在网页上。",
+        fbSteps: [
+          ["01", "填好称呼和留言内容，其它可以留空。"],
+          ["02", "点「发送留言」，内容会直接进入我的后台数据库。"],
+          ["03", "我在后台看到后，会按你留下的方式回复你。"]
+        ],
+        fbSideNote: "没有做成公开留言墙，是希望你能放心写下真实的话。留言仅作者可见，不会用于其它用途。",
+        fbStatusLive: "已连接数据库 · 留言实时送达",
+        fbStatusDemo: "演示模式 · 尚未接入数据库",
+        fbAdminLink: "作者入口 · ADMIN →",
+        fbErrName: "请先填一个称呼吧。",
+        fbErrMsg: "留言内容还空着哦。",
+        fbErrShort: "再写长一点点，至少 2 个字。",
+        fbErrLimit: "发送有点频繁，请等一会儿再试。",
+        fbErrNet: "网络不太顺畅，留言没发出去，请稍后再试一次。",
+        fbErrCfg: "留言已暂存在这台设备上（演示模式），接入数据库后才会真正送达。",
+        fbDemoSaved: "已保存到本机（演示模式）。配置好 Supabase 后，留言会自动进入后台数据库。",
+        fbStatusFail: "数据库暂时连不上 · 留言先存在本机"
+      },
+      en: {
+        eyebrow: "BCI × ART",
+        nameCn: "Wang Yuewei", nameEn: "Wil",
+        role: "Intelligent Medical Engineering (BCI) · Freshman",
+        intro: "Hi, I'm Wil. I dig into <strong>brain-computer interfaces</strong> and I paint, dance and shoot photos on the side. Documenting life, exploring biology and the humanities. Glad to meet you.",
+        cta: "Enter the file",
+        opContinue: "CLICK TO CONTINUE",
+        nav: { about: "About", hobbies: "Hobbies", growing: "Projects", ask: "Q&A", contact: "Contact", feedback: "Note" },
+        aboutTag: "About · ABOUT",
+        aboutH2a: "Between science & ", aboutH2b: "art", aboutH2c: "",
+        aboutSub: "From Chengdu to Shenzhen — a Gen-Z dancing to the signal between medical code and a paintbrush.",
+        longIntro: "I switch between two languages — <em>a paintbrush</em> and a line of code. Chasing the rhythm of dance while reading the brain's waves. Life and study are both lenses on my world.",
+        aboutMeta: ["Documenting life", "Biology", "Humanities"],
+        factTitle: "PROFILE",
+        facts: [
+          { k: "Born", v: "2008.04.23" }, { k: "Hometown", v: "Chengdu, Sichuan" }, { k: "Based in", v: "Shenzhen, Guangdong" },
+          { k: "School", v: "Shenzhen Future Tech Institute, TJU & PolyU" }, { k: "Major", v: "Intelligent Medical Eng. (BCI)" }
+        ],
+        hobbiesTag: "HOBBIES",
+        hobbiesH2a: "Through my ", hobbiesH2b: "lens",
+        hobbiesSub: "Art and medicine — different frames, one lens.",
+        hobbies: [
+          { icon: "brush", cn: "Painting", en: "绘画", desc: "I paint to keep the colours and feelings I see." },
+          { icon: "dance", cn: "Dance", en: "舞蹈", desc: "Moving to the beat — the stage is my clearest voice." },
+          { icon: "photo", cn: "Photography", en: "摄影", desc: "One press of the shutter, and light becomes a memory." },
+          { icon: "music", cn: "Music", en: "音乐", desc: "Melodies are the soundtrack of my study and my days." },
+          { icon: "film", cn: "Film", en: "电影", desc: "Stories on screen teach me to understand other worlds." }
+        ],
+        bookTitle: "Hobby Booklet", bookNote: "兴趣手册 · FIVE", bookTag: "Hobby",
+        bookCoverLine: "Five little loves, bound in one book.",
+        bookHint: "Click the right page to turn forward · the left page to turn back",
+        growingTag: "SKILLS · PROJECTS",
+        growingH2a: "Still ", growingH2b: "growing",
+        growingSub: "Skills and a first project are still on the way — check back soon.",
+        growing: [
+          { no: "01", title: "Projects", desc: "My first chapter is brewed in the lab. I'll shout it out soon.", badge: "Projects", href: "wyw个人主页-projects.html" },
+          { no: "02", title: "Skills", desc: "Unlocking new tools and directions, learning while playing.", badge: "Skills", href: "wyw个人主页-skills.html" },
+          { no: "03", title: "More to come", desc: "There's always a page here for the next idea.", badge: "SOON", href: "#" }
+        ],
+        askTag: "ASK · Q&A",
+        askH2a: "Ask me ", askH2b: "anything",
+        askSub: "Four questions I get asked the most — tap one and it answers itself.",
+        qaEyebrow: "CASE FILE · Q&A",
+        qaTitle: "Tap a question to start",
+        qaMark: "W",
+        qaAgentName: "Wang Yuewei · Wil",
+        qaAgentRole: "BCI track · Freshman",
+        qaStatus: "ONLINE",
+        qaHint: "Tap any question on the left · Answers appear here as a chat · Follows language",
+        qaHello: "Hi, I'm Wil. On the left are the four questions I get asked most — tap one and I'll answer you right here.",
+        qaUserLabel: "VISITOR",
+        qaBotLabel: "WANG YUEWEI · WIL",
+        qa: [
+          { q: "How did you first get into brain-computer interfaces?", a: "The first shock came from the film The Matrix — when \"consciousness\" and \"code\" are placed inside the same proposition, I realised that our image of ourselves can be rewritten. That curiosity then came down to earth: I'm drawn both to how precise and how soft biology is, and to the possibilities of computers and frontier tech. BCI stands right on the border between the two — a question of biology, a question of engineering, and above all a question of what a human being really is." },
+          { q: "What's your history with painting?", a: "I started formal training at six, and painting still feels like the most natural thing. I'm best at figure sketches and comic-related work — catching someone's expression, their posture, a fleeting emotion is what I enjoy most. Right now I'm learning colour, moving from line and structure into light and tone — a new dimension I'm opening for myself." },
+          { q: "What kind of music do you listen to?", a: "My taste is pretty mixed, with a few clear directions: POP, R&B, JAZZ, DREAM POP and psychedelic rock all live in my playlists, and much of what I love comes from different languages. On repeat: Glass Animals, Lana Del Rey, Ariana Grande, Lauv, Lady Gaga, Men I Trust. Music isn't just background sound to me — it sets the mood of a day and the colour of it." },
+          { q: "What does an ordinary day look like for you?", a: "Films, city walks and exhibitions are the three things I do most. I like wandering a city's streets with no particular goal, and lingering slowly in a gallery, letting my eyes and my head be recalibrated by good things. In a way, I'm a young soul always on the road — set on sharpening my taste and widening my horizons, looking for meaning in beauty." }
+        ],
+        contactTag: "CONTACT",
+        contactH2a: "Find ", contactH2b: "me",
+        contactSub: "Pick any one of three.",
+        contactTitle: "Contact", contactHl: "联系方式",
+        contactNote: "A painting, a dance, an idea — let's talk.",
+        contact: [
+          { badge: "mail", type: "Email", v: "wil_19780117@tju.edu.cn", href: "mailto:wil_19780117@tju.edu.cn", tap: "Write" },
+          { badge: "qq", type: "QQ", v: "3944174406", href: "#contact", tap: "Say hi" },
+          { badge: "wechat", type: "WeChat", v: "Wil-2t", href: "#contact", tap: "Add me" }
+        ],
+        footer: "© 2026 Wang Yuewei · Stay curious, keep creating",
+        footerNote: "BLACK · RED · WHITE",
+        /* ---- guest feedback ---- */
+        fbTag: "FEEDBACK",
+        fbH2a: "Leave me a ", fbH2b: "note",
+        fbSub: "Something to say, something to ask? Write it here — only I can read it.",
+        fbLbName: "Your name", fbLbContact: "Contact", fbLbMood: "Topic", fbLbMessage: "Message",
+        fbMoods: [
+          { k: "paint", t: "Painting" }, { k: "dance", t: "Dance" }, { k: "photo", t: "Photography" },
+          { k: "music", t: "Music" }, { k: "bci", t: "BCI" }, { k: "chat", t: "Just saying hi" }
+        ],
+        fbPhName: "What should I call you", fbPhContact: "Email / WeChat, so I can reply", fbPhMsg: "Anything you want to say or ask — write it here",
+        fbSubmit: "Send message", fbSending: "Sending…",
+        fbCount: "<b>{n}</b> characters left",
+        fbOKTitle: "Got it", fbOKTitleOff: "Kept for you", fbOKDesc: "Thank you for writing to me. I'll read it soon, and reply through the contact you left.", fbAgain: "Write another",
+        fbSideTitle: "Your note stays private",
+        fbSideDesc: "This is not a public guestbook: whatever you write is visible only to me and never shown on the page.",
+        fbSteps: [
+          ["01", "Fill in your name and message — the rest is optional."],
+          ["02", "Hit \"Send message\" and it goes straight into my database."],
+          ["03", "I'll read it in my admin panel and reply the way you left behind."]
+        ],
+        fbSideNote: "I deliberately left out a public wall so you can write honestly. Notes are visible to the author only, and used for nothing else.",
+        fbStatusLive: "Database connected · messages arrive live",
+        fbStatusDemo: "Demo mode · database not connected yet",
+        fbAdminLink: "Author entry · ADMIN →",
+        fbErrName: "Please leave a name first.",
+        fbErrMsg: "Your message is still empty.",
+        fbErrShort: "A little longer please — at least 2 characters.",
+        fbErrLimit: "Too many sends — please wait a moment.",
+        fbErrNet: "The network hiccuped and your note was not sent. Please try again.",
+        fbErrCfg: "Your note is stored on this device (demo mode) — it will reach me once the database is connected.",
+        fbDemoSaved: "Saved locally (demo mode). Once Supabase is configured, notes go into the database.",
+        fbStatusFail: "Database unreachable · notes are stored locally"
+      }
+    };
+
+    let lang = "zh";
+    const $ = (s) => document.querySelector(s);
+
+    function buildH2(a, b, c) {
+      const bold = b ? `<span class="mask-in"><span>${b}</span></span>` : "";
+      return a + bold + (c || "");
+    }
+
+    function splitChars(el) {
+      const text = el.textContent;
+      el.textContent = "";
+      const frag = document.createDocumentFragment();
+      [...text].forEach((ch) => {
+        const s = document.createElement("span");
+        s.className = "ch";
+        s.textContent = ch;
+        frag.appendChild(s);
+      });
+      el.appendChild(frag);
+      Array.from(el.children).forEach((s, i) => { s.style.animationDelay = (0.25 + i * 0.08) + "s"; });
+    }
+
+    function render() {
+      const t = COPY[lang];
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      document.title = `${t.nameCn} · WIL`;
+      $("#brand-name").textContent = t.nameCn;
+      $("#eyebrow").textContent = t.eyebrow;
+      const ncn = $("#name-cn"); ncn.textContent = t.nameCn; splitChars(ncn);
+      $("#role").textContent = t.role;
+      $("#intro").innerHTML = t.intro;
+      $("#cta").textContent = t.cta;
+
+      $("#nav-about").textContent = t.nav.about;
+      $("#nav-hobbies").textContent = t.nav.hobbies;
+      $("#nav-growing").textContent = t.nav.growing;
+      $("#nav-ask").textContent = t.nav.ask;
+      $("#nav-contact").textContent = t.nav.contact;
+      $("#nav-feedback").textContent = t.nav.feedback;
+
+      $("#about-tag").textContent = t.aboutTag;
+      $("#about-h2").innerHTML = buildH2(t.aboutH2a, t.aboutH2b, t.aboutH2c);
+      $("#about-sub").textContent = t.aboutSub;
+      $("#long-intro").innerHTML = t.longIntro;
+      $("#about-meta").innerHTML = t.aboutMeta.map((m, i) => `<span class="chip"><b>${String(i + 1).padStart(2, "0")}</b>${m}</span>`).join("");
+      $("#fact-title").textContent = t.factTitle;
+      $("#fact-list").innerHTML = t.facts.map((f) => `<div class="fact-row"><dt>${f.k}</dt><dd>${f.v}</dd></div>`).join("");
+
+      /* 修复：原先三个板块的挂载 div 与各自的 <section> 用了同一个 id（#growing / #hobbies /
+         #contact），querySelector 只会命中前面的 <section>，于是「填充内容」这句会把整个
+         section 的内部（含标题、副标题、.wrap 限宽容器、内容栅格）一起替换掉，导致这三块的
+         标题/面板一直不显示，并且再次赋值时抛 TypeError 中断 render()，切换语言后
+         「项目 / 问答 / 联系方式 / 页脚」全部不再更新。现已将挂载点改为唯一 id。 */
+      $("#hobbies-tag").textContent = t.hobbiesTag;
+      $("#hobbies-h2").innerHTML = buildH2(t.hobbiesH2a, t.hobbiesH2b, "");
+      $("#hobbies-sub").textContent = t.hobbiesSub;
+      $("#hobbies-book").innerHTML = bookHTML(t);
+      mountBook();
+
+      $("#growing-tag").textContent = t.growingTag;
+      $("#growing-h2").innerHTML = buildH2(t.growingH2a, t.growingH2b, "");
+      $("#growing-sub").textContent = t.growingSub;
+      $("#growing-cards").innerHTML = t.growing.map((g) => `
+        <a class="grow-card" data-reveal href="${g.href}"${g.href && g.href !== "#" ? ' target="_self"' : ""}>
+          <div class="grow-card__no">CASE ${g.no}</div>
+          <h3>${g.title}</h3>
+          <p>${g.desc}</p>
+          <span class="grow-badge"><i></i>${g.badge}</span>
+          <span class="grow-card__go">查看详情 →</span>
+        </a>`).join("");
+
+      $("#ask-tag").textContent = t.askTag;
+      $("#ask-h2").innerHTML = buildH2(t.askH2a, t.askH2b, "");
+      $("#ask-sub").textContent = t.askSub;
+      qaRender(t);
+
+      $("#contact-tag").textContent = t.contactTag;
+      $("#contact-h2").innerHTML = buildH2(t.contactH2a, t.contactH2b, "");
+      $("#contact-sub").textContent = t.contactSub;
+      $("#contact-title").textContent = t.contactTitle;
+      $("#contact-hl").textContent = t.contactHl;
+      $("#contact-note").textContent = t.contactNote;
+      $("#contact-lines").innerHTML = t.contact.map((c) => `
+        <a class="contact-line" href="${c.href}" target="${c.href.startsWith("http") ? "_blank" : "_self"}">
+          <span class="contact-badge">${BADGE[c.badge]}<b>${c.type}</b></span>
+          <span class="contact-line__v">${c.v}</span>
+          <span class="contact-line__tap">${c.tap}</span>
+        </a>`).join("");
+
+      $("#footer").textContent = t.footer;
+      $("#footer-note").textContent = t.footerNote;
+
+      /* 访客留言区（V3.1） */
+      fbRender(t);
+
+      document.querySelectorAll(".lang button").forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      observe();
+    }
+
+    /* ---------- 滚动浮现 ---------- */
+    let io = null;
+    function observe() {
+      if (io) io.disconnect();
+      io = new IntersectionObserver((es) => {
+        es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } });
+      }, { threshold: 0.14 });
+      document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+    }
+
+    function bindLang() {
+      document.querySelectorAll(".lang button").forEach((b) => b.addEventListener("click", () => {
+        if (b.dataset.lang !== lang) { lang = b.dataset.lang; render(); }
+      }));
+    }
+
+    /* ==================== 访客留言（V3.1 新增） ====================
+       留言写入 Supabase 的 guestbook 表；未配置凭证时自动降级为
+       「本机演示模式」，只写 localStorage，不影响页面其它功能。 */
+    const FB_LS_KEY = "wil_guestbook_demo";
+    const FB_LAST_KEY = "wil_fb_last";
+    const FB_COOLDOWN = 60 * 1000;   /* 同一浏览器两次留言的最小间隔 */
+    const FB_MAX = 1000;             /* 与数据库 check 约束保持一致 */
+    const fbState = { mood: "", sending: false, mode: "unknown" };
+
+    function fbUpdateCount() {
+      const t = COPY[lang];
+      const el = $("#fb-message");
+      if (!el) return;
+      $("#fb-count").innerHTML = t.fbCount.replace("{n}", String(Math.max(0, FB_MAX - el.value.length)));
+    }
+
+    function fbSetStatus(mode) {
+      const t = COPY[lang];
+      const box = $("#fb-status");
+      if (!box) return;
+      box.classList.remove("is-live", "is-demo");
+      if (mode === "live") { box.classList.add("is-live"); $("#fb-status-text").textContent = t.fbStatusLive; }
+      else if (mode === "demo") { box.classList.add("is-demo"); $("#fb-status-text").textContent = t.fbStatusDemo; }
+      else { $("#fb-status-text").textContent = t.fbStatusFail; }
+    }
+
+    function fbMsgShow(kind, text) {
+      const el = $("#fb-msg");
+      el.className = "fb-msg is-show fb-msg--" + kind;
+      el.textContent = text;
+    }
+    function fbMsgHide() {
+      const el = $("#fb-msg");
+      if (el) { el.className = "fb-msg"; el.textContent = ""; }
+    }
+
+    function fbRender(t) {
+      $("#fb-tag").textContent = t.fbTag;
+      $("#fb-h2").innerHTML = buildH2(t.fbH2a, t.fbH2b, "");
+      $("#fb-sub").textContent = t.fbSub;
+      $("#fb-lb-name").innerHTML = t.fbLbName + " <i>*</i>";
+      $("#fb-lb-contact").textContent = t.fbLbContact;
+      $("#fb-lb-mood").textContent = t.fbLbMood;
+      $("#fb-lb-message").innerHTML = t.fbLbMessage + " <i>*</i>";
+      $("#fb-name").placeholder = t.fbPhName;
+      $("#fb-contact").placeholder = t.fbPhContact;
+      $("#fb-message").placeholder = t.fbPhMsg;
+      $("#fb-ok-title").textContent = t.fbOKTitle;
+      $("#fb-ok-desc").textContent = t.fbOKDesc;
+      $("#fb-again").textContent = t.fbAgain;
+      $("#fb-side-title").textContent = t.fbSideTitle;
+      $("#fb-side-desc").textContent = t.fbSideDesc;
+      $("#fb-steps").innerHTML = t.fbSteps.map((s) => `<li><b>${s[0]}</b><span>${s[1]}</span></li>`).join("");
+      $("#fb-side-note").textContent = t.fbSideNote;
+      $("#fb-admin-link").textContent = t.fbAdminLink;
+      if (!fbState.sending) $("#fb-submit").textContent = t.fbSubmit;
+
+      /* 话题按钮随语言重绘，已选中的 key 保持不变 */
+      const moods = $("#fb-moods");
+      moods.innerHTML = t.fbMoods.map((m) =>
+        `<button class="fb-mood${fbState.mood === m.k ? " is-on" : ""}" type="button" data-mood="${m.k}">${m.t}</button>`
+      ).join("");
+      moods.querySelectorAll(".fb-mood").forEach((b) => b.addEventListener("click", () => {
+        fbState.mood = fbState.mood === b.dataset.mood ? "" : b.dataset.mood;
+        moods.querySelectorAll(".fb-mood").forEach((x) => x.classList.toggle("is-on", x.dataset.mood === fbState.mood));
+      }));
+
+      if (fbState.mode === "unknown") fbState.mode = isConfigured() ? "live" : "demo";
+      fbUpdateCount();
+      fbSetStatus(fbState.mode);
+    }
+
+    function fbLocalSave(row) {
+      try {
+        const list = JSON.parse(localStorage.getItem(FB_LS_KEY) || "[]");
+        list.unshift(Object.assign({ created_at: new Date().toISOString(), is_read: false, is_hidden: false }, row));
+        localStorage.setItem(FB_LS_KEY, JSON.stringify(list.slice(0, 200)));
+      } catch (err) { /* 隐私模式下 localStorage 可能不可用，忽略 */ }
+    }
+
+    function fbReset() {
+      const t = COPY[lang];
+      $("#fb-fields").style.display = "";
+      $("#fb-ok").classList.remove("is-show");
+      $("#fb-ok-title").textContent = t.fbOKTitle;
+      $("#fb-ok-desc").textContent = t.fbOKDesc;
+      $("#fb-message").value = "";
+      fbState.mood = "";
+      $("#fb-moods").querySelectorAll(".fb-mood").forEach((x) => x.classList.remove("is-on"));
+      fbMsgHide();
+      fbUpdateCount();
+      $("#fb-message").focus();
+    }
+
+    async function fbSubmit(e) {
+      e.preventDefault();
+      if (fbState.sending) return;
+      const t = COPY[lang];
+      const name = $("#fb-name").value.trim();
+      const contact = $("#fb-contact").value.trim();
+      const message = $("#fb-message").value.trim();
+
+      /* 蜜罐字段：正常访客看不见，只有脚本会填 */
+      if ($("#fb-hp").value) { fbMsgShow("err", t.fbErrName); return; }
+      if (!name) { fbMsgShow("err", t.fbErrName); $("#fb-name").focus(); return; }
+      if (!message) { fbMsgShow("err", t.fbErrMsg); $("#fb-message").focus(); return; }
+      if (message.length < 2) { fbMsgShow("err", t.fbErrShort); $("#fb-message").focus(); return; }
+
+      let last = 0;
+      try { last = Number(localStorage.getItem(FB_LAST_KEY) || 0); } catch (err) {}
+      if (last && Date.now() - last < FB_COOLDOWN) { fbMsgShow("err", t.fbErrLimit); return; }
+
+      fbState.sending = true;
+      const btn = $("#fb-submit");
+      btn.disabled = true;
+      btn.textContent = t.fbSending;
+      fbMsgHide();
+
+      const row = {
+        name: name.slice(0, 40),
+        contact: contact ? contact.slice(0, 120) : null,
+        message: message.slice(0, FB_MAX),
+        mood: fbState.mood || null,
+        lang: lang,
+        page: location.pathname.split("/").pop() || "index.html"
+      };
+
+      let saved = false;
+      let reason = "";
+
+      if (isConfigured()) {
+        try {
+          const sb = await loadSupabase();
+          const client = sb.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+          const res = await client.from(GUESTBOOK_TABLE).insert(row);
+          if (res && res.error) throw res.error;
+          saved = true;
+          fbState.mode = "live";
+        } catch (err) {
+          reason = t.fbErrNet;
+          fbState.mode = "fail";
+        }
+      } else {
+        reason = t.fbErrCfg;
+        fbState.mode = "demo";
+      }
+
+      if (!saved) fbLocalSave(row);
+      try { localStorage.setItem(FB_LAST_KEY, String(Date.now())); } catch (err) {}
+
+      fbState.sending = false;
+      btn.disabled = false;
+      btn.textContent = t.fbSubmit;
+
+      $("#fb-fields").style.display = "none";
+      $("#fb-ok").classList.add("is-show");
+      $("#fb-ok-title").textContent = saved ? t.fbOKTitle : t.fbOKTitleOff;
+      $("#fb-ok-desc").textContent = saved ? t.fbOKDesc : reason;
+      fbSetStatus(fbState.mode);
+    }
+
+    function fbBind() {
+      fbState.mode = isConfigured() ? "live" : "demo";
+      $("#fb-form").addEventListener("submit", fbSubmit);
+      $("#fb-again").addEventListener("click", fbReset);
+      $("#fb-message").addEventListener("input", fbUpdateCount);
+      /* 已配置凭证时提前静默预热客户端，正式提交就不用等 CDN */
+      if (isConfigured()) loadSupabase().catch(() => {});
+    }
+
+    /* ---------- 兴趣翻书（红底 + 黑色牛皮封皮 + 泛黄牛皮纸内页） ---------- */
+    const CREST = '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"><path d="M32 14 C26 9 17 9 11 12 V50 C17 47 26 47 32 52 C38 47 47 47 53 50 V12 C47 9 38 9 32 14 Z"/><path d="M32 14 V52"/></svg>';
+    const bookState = { opened: false, flipped: 0, el: null, leaves: [], io: null };
+
+    function bookHTML(t) {
+      const total = String(t.hobbies.length).padStart(2, "0");
+      const cover = `
+        <div class="leaf leaf--cover" data-leaf="0">
+          <div class="leaf__face leaf__face--front">
+            <div class="pg pg--cover">
+              <span class="pg__emblem">${CREST}</span>
+              <h3 class="pg__title">${t.bookTitle}</h3>
+              <div class="pg__en">${t.bookNote}</div>
+              <p class="pg__line">${t.bookCoverLine}</p>
+            </div>
+          </div>
+          <div class="leaf__face leaf__face--back">
+            <div class="pg pg--cover">
+              <span class="pg__emblem">${CREST}</span>
+              <h3 class="pg__title">${t.bookTitle}</h3>
+              <div class="pg__en">${t.bookNote}</div>
+            </div>
+          </div>
+        </div>`;
+      const leaves = t.hobbies.map(function (h, i) {
+        const no = String(i + 1).padStart(2, "0");
+        return `
+        <div class="leaf" data-leaf="${i + 1}">
+          <div class="leaf__face leaf__face--front">
+            <div class="pg">
+              <span class="pg__no">${no}</span>
+              <span class="pg__icon">${ICON[h.icon]}</span>
+              <h3 class="pg__title">${h.cn}</h3>
+              <div class="pg__en">${h.en}</div>
+              <span class="pg__folio">${t.bookTag} · ${no}</span>
+            </div>
+          </div>
+          <div class="leaf__face leaf__face--back">
+            <div class="pg pg--back">
+              <span class="pg__water" aria-hidden="true">${ICON[h.icon]}</span>
+              <h3 class="pg__title">${h.cn}</h3>
+              <div class="pg__en">${h.en}</div>
+              <div class="pg__rule"></div>
+              <p class="pg__desc">${h.desc}</p>
+              <span class="pg__folio">${no} / ${total}</span>
+            </div>
+          </div>
+        </div>`;
+      }).join("");
+      return `
+      <div class="book-wrap">
+        <div class="book" id="book">
+          <div class="book__inner">
+            <div class="book__base book__base--right leather"></div>
+            ${leaves}
+            ${cover}
+            <div class="book__spine" aria-hidden="true"></div>
+          </div>
+        </div>
+        <p class="book__hint" id="book-hint">${t.bookHint}</p>
+      </div>`;
+    }
+
+    function applyFlip() {
+      bookState.leaves.forEach(function (leaf, i) {
+        const idx = i + 1;
+        const flipped = idx <= bookState.flipped;
+        leaf.classList.toggle("is-flipped", flipped);
+        leaf.style.zIndex = String(flipped ? 60 + idx : 60 - idx);
+      });
+    }
+
+    function openBook() {
+      const book = bookState.el;
+      if (!book || bookState.opened) return;
+      bookState.opened = true;
+      book.classList.add("is-open");
+      setTimeout(function () { if (bookState.el === book) book.classList.add("is-settled"); }, 1300);
+    }
+
+    function setFlipped(next) {
+      if (!bookState.opened) return;
+      const total = bookState.leaves.length;
+      if (next < 0 || next > total || next === bookState.flipped) return;
+      const moving = bookState.leaves[(next > bookState.flipped ? next : bookState.flipped) - 1];
+      bookState.flipped = next;
+      applyFlip();
+      if (moving) moving.style.zIndex = "300";
+      setTimeout(function () { applyFlip(); }, 950);
+    }
+
+    function onBookClick(e) {
+      const book = bookState.el;
+      if (!book) return;
+      if (!bookState.opened) { openBook(); return; }
+      const r = book.getBoundingClientRect();
+      if (e.clientX - r.left >= r.width / 2) setFlipped(bookState.flipped + 1);
+      else setFlipped(bookState.flipped - 1);
+    }
+
+    function mountBook() {
+      const book = document.getElementById("book");
+      if (bookState.io) { bookState.io.disconnect(); bookState.io = null; }
+      bookState.el = book;
+      bookState.leaves = book ? Array.prototype.slice.call(book.querySelectorAll(".leaf:not(.leaf--cover)")) : [];
+      if (!book) return;
+      if (bookState.opened) book.classList.add("is-open", "is-settled");
+      applyFlip();
+      book.addEventListener("click", onBookClick);
+      if (!bookState.opened) {
+        bookState.io = new IntersectionObserver(function (es) {
+          es.forEach(function (e) {
+            if (e.isIntersecting) {
+              openBook();
+              if (bookState.io) { bookState.io.disconnect(); bookState.io = null; }
+            }
+          });
+        }, { threshold: 0.35 });
+        bookState.io.observe(book);
+      }
+    }
+
+    /* ---------- 问答互动区：点击问题 → 对话式回答 ---------- */
+    const QAS = { busy: false, timer: null };
+
+    function qaEsc(s) {
+      return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    /* 把 **文字** 拆成“普通 / 加粗”片段，供打字机逐字渲染 */
+    function qaSegs(text) {
+      const segs = [];
+      String(text).split("**").forEach(function (part, i) {
+        if (part) segs.push({ text: part, bold: i % 2 === 1 });
+      });
+      return segs;
+    }
+
+    function qaTypedHTML(segs, n) {
+      let out = "";
+      let used = 0;
+      for (let i = 0; i < segs.length && used < n; i++) {
+        const s = segs[i];
+        const take = Math.min(s.text.length, n - used);
+        const piece = qaEsc(s.text.slice(0, take));
+        out += s.bold ? "<strong>" + piece + "</strong>" : piece;
+        used += take;
+      }
+      return out;
+    }
+
+    function qaScroll() {
+      const box = document.getElementById("qa-messages");
+      if (box) box.scrollTop = box.scrollHeight;
+    }
+
+    function qaTrim() {
+      const box = document.getElementById("qa-messages");
+      while (box && box.children.length > 16) box.removeChild(box.firstElementChild);
+    }
+
+    function qaPush(kind, who, html) {
+      const box = document.getElementById("qa-messages");
+      if (!box) return null;
+      const el = document.createElement("div");
+      el.className = "qa-message qa-message--" + kind;
+      const name = document.createElement("span");
+      name.className = "qa-message__who";
+      name.textContent = who;
+      const bubble = document.createElement("div");
+      bubble.className = "qa-message__bubble";
+      bubble.innerHTML = html;
+      el.appendChild(name);
+      el.appendChild(bubble);
+      box.appendChild(el);
+      qaTrim();
+      qaScroll();
+      return el;
+    }
+
+    /* 打字机：逐字显示，**文字** 渲染为红底高亮，末尾带闪动光标 */
+    function qaType(bubble, text, done) {
+      const segs = qaSegs(text);
+      const total = segs.reduce(function (a, s) { return a + s.text.length; }, 0);
+      let n = 0;
+      clearInterval(QAS.timer);
+      QAS.timer = setInterval(function () {
+        n += 2;
+        const finished = n >= total;
+        if (finished) { n = total; clearInterval(QAS.timer); }
+        bubble.innerHTML = qaTypedHTML(segs, n) + (finished ? "" : '<i class="qa-caret" aria-hidden="true"></i>');
+        qaScroll();
+        if (finished && done) done();
+      }, 22);
+    }
+
+    function qaAsk(index, btn) {
+      const t = COPY[lang];
+      const item = t.qa && t.qa[index];
+      if (!item || QAS.busy) return;
+      QAS.busy = true;
+      document.querySelectorAll(".qa-option").forEach(function (b) {
+        b.classList.toggle("is-active", b === btn);
+      });
+      qaPush("user", t.qaUserLabel, qaEsc(item.q));
+      const el = qaPush("bot", t.qaBotLabel, '<span class="qa-typing" aria-label="正在输入"><i></i><i></i><i></i></span>');
+      if (!el) { QAS.busy = false; return; }
+      const bubble = el.querySelector(".qa-message__bubble");
+      setTimeout(function () {
+        qaType(bubble, item.a, function () { QAS.busy = false; });
+      }, 560);
+    }
+
+    function qaRender(t) {
+      const box = document.getElementById("qa-messages");
+      const opts = document.getElementById("qa-options");
+      if (!box || !opts || !t.qa) return;
+      clearInterval(QAS.timer);
+      QAS.busy = false;
+      document.getElementById("qa-eyebrow").textContent = t.qaEyebrow;
+      document.getElementById("qa-title").textContent = t.qaTitle;
+      document.getElementById("qa-mark").textContent = t.qaMark;
+      document.getElementById("qa-agent-name").textContent = t.qaAgentName;
+      document.getElementById("qa-agent-role").textContent = t.qaAgentRole;
+      document.getElementById("qa-status").textContent = t.qaStatus;
+      document.getElementById("qa-hint").textContent = t.qaHint;
+      opts.innerHTML = t.qa.map(function (item, i) {
+        return '<button class="qa-option" type="button" data-qa="' + i + '">' +
+          "<span>" + String(i + 1).padStart(2, "0") + "</span>" + qaEsc(item.q) +
+          "</button>";
+      }).join("");
+      box.innerHTML = "";
+      qaPush("bot", t.qaBotLabel, qaEsc(t.qaHello));
+    }
+
+    function bindQa() {
+      const opts = document.getElementById("qa-options");
+      if (!opts) return;
+      opts.addEventListener("click", function (e) {
+        const btn = e.target.closest ? e.target.closest(".qa-option") : null;
+        if (btn) qaAsk(Number(btn.dataset.qa), btn);
+      });
+    }
+
+    /* ---------- 开场动画 ---------- */
+    function startOpening() {
+      const op = document.getElementById("opening");
+      if (!op) return;
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { op.style.display = "none"; return; }
+      const city = document.getElementById("op-city");
+      const cap = document.getElementById("op-cap-text");
+      const prompt = document.getElementById("op-prompt");
+      const wave = document.getElementById("op-wave");
+      const skip = document.getElementById("op-skip");
+      const body = document.body;
+      let timers = [];
+      let done = false;
+      let busy = false;
+
+      function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+      function say(text) {
+        cap.textContent = text;
+        cap.classList.remove("is-in");
+        cap.classList.remove("is-out");
+        void cap.offsetWidth;
+        cap.classList.add("is-in");
+      }
+      function showPrompt() {
+        if (prompt) prompt.setAttribute("aria-label", (COPY[lang] && COPY[lang].opContinue) || "点击继续");
+        if (prompt) prompt.classList.add("is-show");
+      }
+      function hidePrompt() { if (prompt) prompt.classList.remove("is-show"); }
+      function releaseSwitch() {
+        op.classList.remove("is-switching");
+        city.classList.remove("is-switching");
+        body.classList.remove("is-scene-switching");
+      }
+      /* 圆形波纹：由中心扩散铺满 -> 纯黑帧内切换场景 -> 波纹退去揭示下一幕 */
+      function ripple(switchFn, afterFn) {
+        if (busy || done) return;
+        busy = true;
+        hidePrompt();
+        wave.style.transition = "none";
+        wave.style.transform = "scale(0)";
+        wave.style.opacity = "0";
+        void wave.offsetWidth;
+        wave.style.transition = "transform .58s cubic-bezier(.32,.72,.36,1), opacity .22s linear";
+        wave.style.transform = "scale(1)";
+        wave.style.opacity = "1";
+        later(function () {
+          if (done) return;
+          op.classList.add("is-switching");
+          city.classList.add("is-switching");
+          body.classList.add("is-scene-switching");
+          switchFn();
+        }, 600);
+        later(function () {
+          if (done) return;
+          releaseSwitch();
+          wave.style.transition = "opacity .65s ease";
+          wave.style.opacity = "0";
+          busy = false;
+          if (afterFn) afterFn();
+        }, 720);
+      }
+      function finish() {
+        if (done) return;
+        done = true;
+        timers.forEach(clearTimeout);
+        releaseSwitch();
+        hidePrompt();
+        wave.style.transition = "none";
+        wave.style.transform = "scale(0)";
+        wave.style.opacity = "0";
+        op.classList.add("is-done");
+        body.classList.remove("is-frozen");
+        body.classList.remove("opening");
+        setTimeout(function () { op.style.display = "none"; }, 680);
+      }
+      function onPrompt() {
+        if (!prompt || done || busy) return;
+        /* 第三幕（主页封面已可见）：最后一次波纹 -> 揭开正常主页 */
+        if (!op.classList.contains("is-red")) {
+          ripple(function () {
+            body.classList.remove("is-frozen");
+            later(finish, 1500);
+          }, null);
+          return;
+        }
+        /* 第一幕 -> 第二幕：黑色城市瞬时放大 */
+        if (!city.classList.contains("is-big")) {
+          ripple(function () { city.classList.add("is-big"); }, function () {
+            say("Ready for an adventure?");
+            later(showPrompt, 1400);
+          });
+          return;
+        }
+        /* 第二幕 -> 第三幕：切到冻结封面（主页内容被黑幕遮住） */
+        ripple(function () {
+          op.classList.remove("is-red");
+          op.classList.add("is-clear");
+          city.classList.add("is-out");
+          body.classList.add("is-frozen");
+        }, function () {
+          say("If so, please get in the car.");
+          later(showPrompt, 1600);
+        });
+      }
+
+      body.classList.add("opening");
+
+      /* 第一幕：红底 + 城市远景（小，居中）+ 字幕 + 中心圆形波纹提示标 */
+      later(function () {
+        op.classList.add("is-red");
+        city.classList.add("is-in");
+        say("Hello, welcome to my homepage.");
+        later(showPrompt, 1600);
+      }, 600);
+
+      if (prompt) prompt.addEventListener("click", onPrompt);
+      if (skip) skip.addEventListener("click", finish);
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") finish(); });
+    }
+
+    /* ---------- 羽毛笔光标：按所在背景自动换色 ---------- */
+    function startQuill() {
+      const quill = document.getElementById("quill");
+      if (!quill) return;
+      document.documentElement.classList.add("has-quill");
+
+      function redSurface(el, y) {
+        const op = document.getElementById("opening");
+        if (op && op.style.display !== "none" && !op.classList.contains("is-done")) {
+          if (op.classList.contains("is-red")) return !(el && el.closest && el.closest(".opening__cap"));
+          const cover = document.querySelector(".cover");
+          if (cover) { const rc = cover.getBoundingClientRect(); return (y - rc.top) < rc.height * 0.58; }
+          return false;
+        }
+        let n = el;
+        while (n && n.nodeType === 1 && n !== document.documentElement) {
+          const bg = getComputedStyle(n).backgroundColor;
+          const m = bg && bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+          if (m && (m[4] === undefined || parseFloat(m[4]) > 0.5)) {
+            const r = +m[1], g = +m[2], b = +m[3];
+            if (r + g + b < 12) return false;
+            return r > g * 1.7 && r > b * 1.7 && r > 90;
+          }
+          if (n.classList && n.classList.contains("cover")) {
+            const rc = n.getBoundingClientRect();
+            return (y - rc.top) < rc.height * 0.58;
+          }
+          n = n.parentElement;
+        }
+        return false;
+      }
+
+      let tx = window.innerWidth / 2, ty = window.innerHeight / 2;
+      let x = tx, y = ty, lastX = tx, flip = false;
+
+      window.addEventListener("mousemove", function (e) {
+        tx = e.clientX; ty = e.clientY;
+        if (e.clientX < lastX - 0.8) flip = true;
+        else if (e.clientX > lastX + 0.8) flip = false;
+        lastX = e.clientX;
+        quill.classList.toggle("is-onred", redSurface(document.elementFromPoint(tx, ty), ty));
+      }, { passive: true });
+
+      (function loop() {
+        x += (tx - x) * 0.3;
+        y += (ty - y) * 0.3;
+        quill.style.transform = "translate(" + x + "px," + y + "px) translate(-50%,-100%) rotate(32deg)" + (flip ? " scaleX(-1)" : "");
+        requestAnimationFrame(loop);
+      })();
+    }
+
+    function init() {
+      render();
+      bindLang();
+      bindQa();
+      fbBind();
+      startOpening();
+      startQuill();
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    else init();
+  })();
+  </script>
+</body>
+</html>

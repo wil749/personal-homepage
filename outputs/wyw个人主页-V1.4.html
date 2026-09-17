@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="王悦为 Lia wil · 智能医学工程（脑机接口方向）大一学生 · 红黑白 谋杀案海报风" />
+  <title>王悦为 · WIL</title>
+
+  <!-- 纯自定义样式，无外部依赖，彻底离线自包含 -->
+  <style>
+    :root {
+      --ink: #000000;        /* 纯黑 */
+      --red: #d40b1c;        /* 海报高纯红 */
+      --red-deep: #9c0b15;   /* 深红 */
+      --white: #ffffff;      /* 纯白 */
+      --off: #f3efe6;        /* 米白（正文用） */
+      --gray: #c9c6bd;       /* 灰白 */
+      --font: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Helvetica Neue", Arial, sans-serif;
+      --disp: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", Arial, sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --wrap: 78rem;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 4.4rem; }
+    body { margin: 0; background: var(--ink); color: var(--off); font-family: var(--font); line-height: 1.75; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    ::selection { background: var(--red); color: #fff; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: var(--font); }
+    h1,h2,h3,p { margin: 0; }
+    .wrap { width: min(100% - clamp(1.2rem, 6vw, 4rem) * 2, var(--wrap)); margin-inline: auto; }
+
+    /* ---------------- 顶部栏 ---------------- */
+    .topbar { position: sticky; top: 0; z-index: 80; background: var(--ink); border-bottom: 2px solid var(--red); }
+    .topbar__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.8rem; }
+    .brand { display: inline-flex; align-items: center; gap: 0.55rem; font-weight: 900; letter-spacing: 0.06em; }
+    .brand svg { width: 1.5rem; height: 1.5rem; color: var(--red); }
+    .brand b { color: var(--white); }
+    .brand .sub { font-size: 0.66rem; letter-spacing: 0.26em; color: var(--gray); font-weight: 700; }
+    .topnav { display: flex; align-items: center; gap: clamp(0.8rem, 3vw, 1.6rem); }
+    .topnav a { font-size: 0.82rem; letter-spacing: 0.14em; color: var(--off); opacity: 0.78; font-weight: 700; transition: color .3s var(--ease), opacity .3s var(--ease); }
+    .topnav a:hover { color: var(--red); opacity: 1; }
+    .lang { display: inline-flex; padding: 0.16rem; border: 1px solid #444; border-radius: 2px; }
+    .lang button { padding: 0.24rem 0.62rem; border: 0; background: transparent; color: var(--off); font-size: 0.72rem; font-weight: 800; letter-spacing: .06em; cursor: pointer; transition: all .3s var(--ease); }
+    .lang button.is-active { background: var(--red); color: #fff; }
+
+    /* ---------------- 色带 ---------------- */
+    .band { position: relative; overflow: hidden; }
+    .band--red { background: var(--red); color: var(--ink); }
+    .band--black { background: var(--ink); color: var(--white); }
+    .grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.14; background-image: radial-gradient(rgba(0,0,0,0.32) 1.2px, transparent 1.4px); background-size: 8px 8px; mix-blend-mode: multiply; }
+    .label { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.34em; text-transform: uppercase; }
+    .label::before { content: ""; width: 1.6rem; height: 3px; background: currentColor; }
+    .band--red .label { color: var(--ink); }
+    .band--black .label { color: var(--white); }
+    .band--black .label::after { content: ""; width: 1.6rem; height: 3px; background: var(--red); }
+
+    /* ---------------- 封面 ----------------
+       上红下黑，标题黑色置于红底区，清晰区分 */
+    .cover { min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: clamp(3rem, 10vw, 6rem) clamp(1.2rem, 6vw, 4rem); background: linear-gradient(180deg, var(--red) 0%, var(--red) 58%, var(--ink) 58%, var(--ink) 100%); position: relative; }
+    .cover__scene { position: absolute; inset: 0; pointer-events: none; }
+    .cover__scene svg { position: absolute; }
+    .cover__fade { position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 40%, rgba(0,0,0,0.16), rgba(0,0,0,0) 60%); pointer-events: none; }
+    .cover__inner { position: relative; z-index: 3; }
+
+    .eyebrow { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.5em; text-transform: uppercase; color: var(--ink); opacity: 0.9; }
+    .cover__name { font-family: var(--disp); font-size: clamp(3rem, 14.5vw, 10rem); font-weight: 900; line-height: 0.9; letter-spacing: 0.16em; color: var(--ink); margin-top: 1.6rem; }
+    .cover__name .ch { display: inline-block; opacity: 0; transform: translateY(0.35em); animation: chIn 0.7s var(--ease) forwards; }
+    .cover__name .en { letter-spacing: 0.34em; color: var(--white); text-shadow: 0 0 2px var(--red); }
+    .cover__rule { display: flex; align-items: center; justify-content: center; gap: 0.7rem; margin: 1.6rem auto 0; }
+    .cover__rule i { width: 3.4rem; height: 4px; background: var(--ink); display: inline-block; }
+    .cover__role { font-family: var(--disp); font-size: clamp(0.95rem, 2.4vw, 1.15rem); font-weight: 700; letter-spacing: 0.16em; color: var(--ink); margin-top: 1.2rem; }
+    .cover__intro { max-width: 40rem; margin: 1.2rem auto 0; font-size: clamp(1rem, 2.2vw, 1.16rem); color: rgba(255,255,255,0.95); }
+    .cover__intro strong { color: #fff; background: var(--red); padding: 0 0.3rem; }
+    .cover__cta { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 2.2rem; padding: 0.85rem 2rem; background: var(--ink); color: #fff; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.88rem; transition: transform .35s var(--ease), background .35s var(--ease), color .35s var(--ease); animation: pulseBox 2.6s var(--ease) infinite; }
+    .cover__cta:hover { background: #fff; color: var(--red); transform: translateY(-3px); }
+
+    .scroll-hint { position: absolute; z-index: 3; bottom: 1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.62rem; font-weight: 800; letter-spacing: 0.34em; text-transform: uppercase; color: var(--gray); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+    .scroll-hint::after { content: ""; width: 2px; height: 1.8rem; background: linear-gradient(var(--gray), transparent); margin-top: 0.1rem; }
+
+    /* ---------------- 章节 ---------------- */
+    .section { padding-block: clamp(3.2rem, 9vw, 6rem); position: relative; }
+    .section__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.2rem; flex-wrap: wrap; margin-bottom: clamp(1.8rem, 4vw, 2.8rem); position: relative; }
+    .h2 { font-family: var(--disp); font-size: clamp(2rem, 6.5vw, 4rem); font-weight: 900; letter-spacing: 0.04em; line-height: 1.05; margin-top: 0.8rem; }
+    .band--red .h2 { color: var(--ink); }
+    .band--black .h2 { color: var(--white); }
+    .h2 .hl { color: #fff; background: var(--red); padding: 0.02em 0.14em; }
+    .band--red .h2 .hl { color: var(--red); background: var(--ink); }
+    .section__sub { max-width: 30rem; color: var(--gray); font-size: 0.96rem; }
+    .band--red .section__sub { color: rgba(0,0,0,0.72); }
+
+    /* ---------------- 关于（黑） ---------------- */
+    .about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(1rem, 3vw, 2rem); align-items: stretch; position: relative; }
+    .long-intro { font-size: clamp(1.15rem, 3vw, 1.6rem); line-height: 1.6; color: var(--off); font-weight: 500; }
+    .long-intro em { font-style: normal; color: #fff; background: var(--red); padding: 0 0.22em; }
+    .about-meta { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1.6rem; }
+    .chip { padding: 0.28rem 0.68rem; border: 1px solid #444; color: var(--gray); font-size: 0.8rem; font-weight: 700; }
+    .chip b { color: var(--red); font-weight: 800; }
+    .fact-card { background: var(--red); color: #fff; padding: clamp(1.4rem, 3.5vw, 2.2rem); position: relative; overflow: hidden; }
+    .fact-card::after { content: ""; position: absolute; right: -3rem; bottom: -3rem; width: 9rem; height: 9rem; background: var(--ink); transform: rotate(45deg); opacity: 0.94; }
+    .fact-card__title { position: relative; z-index: 1; display: inline-flex; align-items: baseline; gap: 0.6rem; font-weight: 900; letter-spacing: 0.2em; font-size: 1rem; color: #fff; }
+    .fact-card__title i { font-style: normal; color: var(--ink); font-size: 1.1rem; }
+    .fact-list { position: relative; z-index: 1; display: flex; flex-direction: column; margin-top: 1rem; }
+    .fact-row { display: flex; justify-content: space-between; gap: 1rem; padding-block: 0.72rem; border-bottom: 1px solid rgba(255,255,255,0.3); }
+    .fact-row:last-child { border-bottom: 0; }
+    .fact-row dt { color: rgba(255,255,255,0.78); font-size: 0.82rem; flex-shrink: 0; }
+    .fact-row dd { margin: 0; font-weight: 800; text-align: right; font-size: 0.92rem; }
+
+    /* ---------------- 专业+爱好 图标带（红/黑 均鲜艳） ---------------- */
+    .motif-strip { display: flex; align-items: center; justify-content: center; gap: clamp(1rem, 4vw, 3rem); flex-wrap: wrap; margin-bottom: clamp(2rem, 5vw, 3.2rem); }
+    .motif { display: inline-flex; flex-direction: column; align-items: center; gap: 0.5rem; opacity: 0.92; }
+    .motif svg { width: clamp(1.9rem, 3.6vw, 2.6rem); height: clamp(1.9rem, 3.6vw, 2.6rem); color: currentColor; }
+    .motif span { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
+    .band--black .motif { color: var(--white); }
+    .band--black .motif span { color: var(--gray); }
+    .band--red .motif { color: var(--ink); }
+    .band--red .motif span { color: rgba(0,0,0,0.62); }
+
+    /* ---------------- 兴趣（红） ---------------- */
+    .hobbies { display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(0.8rem, 2vw, 1.3rem); }
+    .hobby { position: relative; background: var(--ink); color: #fff; padding: clamp(1.1rem, 2.6vw, 2rem) 1rem; text-align: left; border: 0; cursor: pointer; display: flex; flex-direction: column; gap: 1rem; transition: transform .35s var(--ease), background .35s var(--ease), color .35s var(--ease); }
+    .hobby:hover { transform: translateY(-6px); background: #fff; color: var(--ink); }
+    .hobby svg { width: clamp(2rem, 4vw, 3rem); height: clamp(2rem, 4vw, 3rem); color: var(--red); }
+    .hobby .cn { font-weight: 900; font-size: clamp(1.1rem, 2.4vw, 1.5rem); }
+    .hobby .en { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gray); font-weight: 800; }
+    .hobby::before { content: ""; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--red); }
+
+    /* ---------------- 项目（黑） ---------------- */
+    .growing { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 3vw, 2rem); }
+    .grow-card { border: 1px solid #333; padding: clamp(1.4rem, 3.5vw, 2.2rem); position: relative; transition: border-color .35s var(--ease), transform .35s var(--ease), background .35s var(--ease); }
+    .grow-card:hover { border-color: var(--red); transform: translateY(-6px); background: rgba(212,11,28,0.06); }
+    .grow-card__no { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.3em; color: var(--gray); }
+    .grow-card h3 { margin: 0.7rem 0 0.5rem; font-size: clamp(1.2rem, 2.6vw, 1.5rem); font-weight: 900; color: #fff; }
+    .grow-card p { color: var(--gray); font-size: 0.94rem; }
+    .grow-badge { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem; color: var(--red); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+    .grow-badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: pulse 2s var(--ease) infinite; }
+
+    /* ---------------- 联系方式（合并大板块） ---------------- */
+    .contact-panel { background: var(--ink); color: #fff; border: 2px solid var(--red); padding: clamp(1.6rem, 4vw, 3rem); position: relative; overflow: hidden; }
+    .contact-panel::before { content: ""; position: absolute; top: 0; right: 0; width: 6rem; height: 6rem; background: var(--red); clip-path: polygon(100% 0, 0 0, 100% 100%); }
+    .contact-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.8rem; position: relative; z-index: 1; }
+    .contact-head h3 { font-family: var(--disp); font-size: clamp(1.7rem, 4.5vw, 2.8rem); font-weight: 900; letter-spacing: 0.04em; }
+    .contact-head h3 .hl { color: var(--red); background: #fff; padding: 0 0.14em; }
+    .contact-head p { color: var(--gray); font-size: 0.92rem; max-width: 22rem; }
+    .contact-list { position: relative; z-index: 1; display: flex; flex-direction: column; }
+    .contact-line { display: flex; align-items: center; gap: clamp(0.8rem, 2vw, 1.4rem); padding-block: clamp(1rem, 2.6vw, 1.6rem); border-top: 1px solid #2b2b2b; transition: background .3s var(--ease), padding-left .3s var(--ease); }
+    .contact-line:last-child { border-bottom: 1px solid #2b2b2b; }
+    .contact-line:hover { background: rgba(212,11,28,0.1); padding-left: 1rem; }
+    .contact-badge { display: inline-flex; align-items: center; gap: 0.5rem; width: clamp(6.5rem, 18vw, 10rem); flex-shrink: 0; }
+    .contact-badge svg { width: 1.35rem; height: 1.35rem; color: var(--red); flex-shrink: 0; }
+    .contact-badge b { font-size: 0.78rem; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); }
+    .contact-line__v { font-weight: 900; font-size: clamp(1.05rem, 2.8vw, 1.5rem); letter-spacing: 0.02em; word-break: break-all; flex: 1; }
+    .contact-line__tap { flex-shrink: 0; font-size: 0.8rem; color: var(--gray); display: inline-flex; align-items: center; gap: 0.4rem; }
+    .contact-line__tap::after { content: "→"; color: var(--red); transition: transform .3s var(--ease); }
+    .contact-line:hover .contact-line__tap::after { transform: translateX(4px); }
+
+    /* ---------------- 页脚 ---------------- */
+    .footer { background: var(--ink); border-top: 2px solid var(--red); padding-block: clamp(1.8rem, 4vw, 2.6rem); }
+    .footer__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer p { color: var(--gray); font-size: 0.86rem; }
+    .footer .mono { font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); }
+    .footer b { color: #fff; }
+
+    /* ---------------- 动效 ---------------- */
+    [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+    [data-reveal].is-in { opacity: 1; transform: none; }
+    .mask-in { display: inline-block; position: relative; overflow: hidden; vertical-align: bottom; }
+    .mask-in > span { display: inline-block; transform: translateY(110%); transition: transform 0.9s var(--ease); }
+    .is-in .mask-in > span, [data-reveal].is-in .mask-in > span { transform: translateY(0); }
+    @keyframes chIn { to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulseBox { 0%,100% { box-shadow: 0 0 0 0 rgba(212,11,28,0.55); } 50% { box-shadow: 0 0 0 12px rgba(212,11,28,0); } }
+    @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } }
+    @keyframes floatY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @keyframes rain { 0% { transform: translateY(-10%); opacity: 0; } 12% { opacity: 1; } 100% { transform: translateY(110vh); opacity: 0; } }
+    @keyframes dash { to { stroke-dashoffset: 0; } }
+    .fall { position: absolute; width: 10px; height: 10px; background: #fff; opacity: 0; animation: rain linear infinite; }
+    .fall.r { background: var(--red); }
+    .fall.k { background: #26261f; }
+    .art-float { animation: floatY 6s var(--ease) infinite; }
+    .brain-pulse { stroke-dasharray: 6 6; animation: dash 1.4s linear infinite; }
+
+    /* ---------------- 响应式 ---------------- */
+    @media (max-width: 900px) {
+      .topnav > a { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .hobbies { grid-template-columns: repeat(2, 1fr); }
+      .growing { grid-template-columns: 1fr; }
+      .contact-line { flex-wrap: wrap; }
+      .contact-badge { width: 100%; }
+    }
+    @media (max-width: 480px) { .hobbies { grid-template-columns: 1fr; } .cover__name { letter-spacing: 0.08em; } }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      [data-reveal], .mask-in > span, .cover__name .ch, .fall, .art-float, .cover__cta, .grow-badge i, .brain-pulse { animation: none !important; transition: none !important; }
+      [data-reveal] { opacity: 1; transform: none; }
+      .cover__name .ch { opacity: 1; transform: none; }
+      .mask-in > span { transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 顶部栏 -->
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="#top">
+        <svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M38 40 L46 12 L66 36 Z"/><path d="M62 40 L54 12 L34 36 Z"/><circle cx="50" cy="56" r="24"/><ellipse cx="43" cy="54" rx="3" ry="5" fill="#fff"/><ellipse cx="57" cy="54" rx="3" ry="5" fill="#fff"/></svg>
+        <b id="brand-name">王悦为</b><span class="sub">WIL · LIA</span>
+      </a>
+      <nav class="topnav" aria-label="导航">
+        <a id="nav-about" href="#about">关于</a>
+        <a id="nav-hobbies" href="#hobbies">兴趣</a>
+        <a id="nav-growing" href="#growing">项目</a>
+        <a id="nav-contact" href="#contact">联系</a>
+        <div class="lang" role="group" aria-label="语言切换">
+          <button type="button" data-lang="zh" class="is-active">中</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 封面：上红下黑 + 剪影场景 -->
+    <section class="cover" id="top">
+      <div class="cover__scene" aria-hidden="true">
+        <!-- 黑色庄园剪影 + 成排红窗（顶端） -->
+        <svg viewBox="0 0 1200 460" preserveAspectRatio="xMidYMax meet" style="top:0;left:0;width:100%;z-index:1;">
+          <g fill="#000">
+            <path d="M0 460 L0 120 L120 40 L240 120 L240 460 Z"/>
+            <rect x="200" y="80" width="150" height="380"/>
+            <path d="M200 80 L275 10 L350 80 Z"/>
+            <rect x="470" y="60" width="120" height="400"/>
+            <path d="M470 60 L530 0 L590 60 Z"/>
+            <rect x="620" y="60" width="26" height="400"/>
+            <rect x="740" y="120" width="180" height="340"/>
+            <path d="M740 120 L830 50 L920 120 Z"/>
+            <rect x="1040" y="90" width="90" height="370"/>
+            <path d="M1040 90 L1085 30 L1130 90 Z"/>
+            <!-- 烟囱 -->
+            <rect x="300" y="30" width="26" height="90"/><rect x="880" y="55" width="22" height="70"/>
+          </g>
+          <g fill="#d40b1c">
+            <rect x="40" y="150" width="22" height="52"/><rect x="88" y="150" width="22" height="52"/>
+            <rect x="40" y="230" width="22" height="52"/><rect x="88" y="230" width="22" height="52"/>
+            <rect x="40" y="310" width="22" height="52"/><rect x="88" y="310" width="22" height="52"/>
+            <rect x="40" y="390" width="22" height="52"/><rect x="88" y="390" width="22" height="52"/>
+            <rect x="225" y="120" width="26" height="46"/><rect x="277" y="120" width="26" height="46"/>
+            <rect x="225" y="200" width="26" height="46"/><rect x="277" y="200" width="26" height="46"/>
+            <rect x="225" y="280" width="26" height="46"/><rect x="277" y="280" width="26" height="46"/>
+            <rect x="225" y="360" width="26" height="46"/><rect x="277" y="360" width="26" height="46"/>
+            <rect x="492" y="110" width="26" height="52"/><rect x="544" y="110" width="26" height="52"/>
+            <rect x="492" y="230" width="26" height="52"/><rect x="544" y="230" width="26" height="52"/>
+            <rect x="492" y="350" width="26" height="52"/><rect x="544" y="350" width="26" height="52"/>
+            <rect x="762" y="170" width="26" height="52"/><rect x="814" y="170" width="26" height="52"/><rect x="866" y="170" width="26" height="52"/>
+            <rect x="762" y="270" width="26" height="52"/><rect x="814" y="270" width="26" height="52"/><rect x="866" y="270" width="26" height="52"/>
+            <rect x="762" y="370" width="26" height="52"/><rect x="814" y="370" width="26" height="52"/><rect x="866" y="370" width="26" height="52"/>
+            <rect x="1060" y="150" width="24" height="52"/><rect x="1060" y="250" width="24" height="52"/>
+          </g>
+        </svg>
+
+        <!-- 红色老爷车（右中） -->
+        <svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid meet" style="right:4%;top:32%;width:25%;z-index:2;">
+          <g>
+            <path d="M30 92 C30 78 42 74 60 74 C72 70 78 54 104 50 C138 46 176 48 200 58 C204 60 206 64 208 68 C232 68 248 76 248 88 L248 96 C248 104 236 108 226 108 L12 108 C6 108 0 104 0 96 Z" fill="#d40b1c"/>
+            <path d="M138 50 L160 50 L178 68 L150 68 Z" fill="#d40b1c"/>
+            <rect x="120" y="50" width="28" height="20" rx="2" fill="#c0c4c9"/>
+            <rect x="150" y="52" width="24" height="16" rx="2" fill="#a9adb3"/>
+            <rect x="60" y="52" width="26" height="16" rx="2" fill="#a9adb3"/>
+            <circle cx="46" cy="94" r="14" fill="#000"/><circle cx="46" cy="94" r="6" fill="#fff"/>
+            <circle cx="212" cy="94" r="14" fill="#000"/><circle cx="212" cy="94" r="6" fill="#fff"/>
+            <rect x="16" y="74" width="20" height="18" fill="#9c0b15"/>
+            <rect x="250" y="76" width="22" height="18" fill="#9c0b15"/>
+          </g>
+        </svg>
+
+        <!-- 精致人物剪影：戴帽侦探（红底黑影，左下） -->
+        <svg viewBox="0 0 200 360" preserveAspectRatio="xMidYMax meet" style="left:4%;bottom:6%;width:21%;z-index:2;">
+          <g fill="#000">
+            <!-- 帽檐 -->
+            <path d="M56 96 L144 96 L136 78 C126 66 112 60 100 60 C88 60 74 66 64 78 Z"/>
+            <!-- 帽顶 -->
+            <path d="M68 76 C68 54 88 46 100 46 C112 46 132 54 132 76 Z"/>
+            <!-- 头 / 脸 -->
+            <path d="M72 96 C72 120 84 132 100 132 C116 132 128 120 128 96 Z"/>
+            <!-- 风衣袖口卷起：肩 -->
+            <path d="M66 132 C48 142 40 156 42 172 L70 178 L82 146 Z"/>
+            <path d="M134 132 C152 142 160 156 158 172 L130 178 L118 146 Z"/>
+            <!-- 躯干风衣 -->
+            <path d="M62 150 C48 190 44 260 50 344 L150 344 C156 260 152 190 138 150 Z"/>
+            <!-- 风衣前襟 -->
+            <path d="M100 178 L100 344" stroke="#d40b1c" stroke-width="5" opacity="0.85"/>
+            <!-- 领带 -->
+            <path d="M93 150 L100 176 L107 150 Z" fill="#d40b1c"/>
+            <!-- 手臂 -->
+            <path d="M66 156 L54 220 L76 226" stroke="#000" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <path d="M134 156 L146 220 L124 226" stroke="#000" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <path d="M64 220 L50 232" stroke="#000" stroke-width="12" stroke-linecap="round" fill="none"/>
+            <path d="M136 220 L150 232" stroke="#000" stroke-width="12" stroke-linecap="round" fill="none"/>
+          </g>
+        </svg>
+
+        <!-- 精致人物剪影：女子长发裙摆（交界处，红影立于黑区左前） -->
+        <svg viewBox="0 0 200 380" preserveAspectRatio="xMidYMax meet" style="right:6%;bottom:0;width:20%;z-index:3;">
+          <g fill="#d40b1c">
+            <!-- 后颈长卷发 -->
+            <path d="M96 70 C80 78 72 116 78 150 C82 170 90 184 104 190 L104 170 C90 158 84 120 90 92 Z"/>
+            <!-- 头 -->
+            <ellipse cx="112" cy="96" rx="26" ry="30"/>
+            <!-- 发顶 -->
+            <path d="M86 92 C86 58 98 44 112 44 C126 44 138 58 138 92 C128 74 96 74 86 92 Z" fill="#9c0b15"/>
+            <!-- 髋部 / 裙 -->
+            <path d="M96 148 C70 176 62 250 74 344 L150 344 C160 250 152 176 128 148 Z"/>
+            <!-- 领口 -->
+            <path d="M96 148 L104 172 L120 172 L128 148 Z" fill="#9c0b15"/>
+            <!-- 手臂 -->
+            <path d="M96 160 C80 176 72 200 78 224" stroke="#d40b1c" stroke-width="13" stroke-linecap="round" fill="none"/>
+            <path d="M128 160 C144 172 152 194 148 216" stroke="#d40b1c" stroke-width="13" stroke-linecap="round" fill="none"/>
+            <!-- 手臂剪影里的提包 -->
+            <path d="M78 224 L104 228 L100 244 L72 240 Z" fill="#000"/>
+          </g>
+        </svg>
+
+        <!-- 脑电波（BCI）装饰曲线，横贯封面上部 -->
+        <svg viewBox="0 0 1200 160" preserveAspectRatio="none" style="left:0;top:44%;width:100%;z-index:2;opacity:.9;">
+          <polyline points="0,110 90,64 160,118 240,40 320,120 400,70 480,112 560,30 640,118 720,64 800,112 880,44 960,118 1040,66 1120,112 1200,86"
+            fill="none" stroke="#000" stroke-width="3" stroke-dasharray="10 8" class="brain-pulse"/>
+        </svg>
+      </div>
+
+      <div class="cover__fade" aria-hidden="true"></div>
+
+      <div class="cover__inner">
+        <p class="eyebrow" id="eyebrow">脑机接口 × 艺术</p>
+        <h1 class="cover__name"><span id="name-cn">王悦为</span><span class="en" id="name-en">Lia</span></h1>
+        <div class="cover__rule" aria-hidden="true"><i></i></div>
+        <p class="cover__role" id="role">智能医学工程（脑机接口方向）· 大一</p>
+        <p class="cover__intro" id="intro"></p>
+        <a class="cover__cta" href="#about"><span id="cta">进入档案</span> →</a>
+      </div>
+      <div class="scroll-hint" aria-hidden="true">下滑 · Scroll</div>
+    </section>
+
+    <!-- 关于 -->
+    <section class="band band--black" id="about">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="about-tag">关于 · ABOUT</span>
+            <h2 class="h2" id="about-h2">科学与<span class="mask-in"><span>艺术</span></span>之间</h2>
+          </div>
+          <p class="section__sub" id="about-sub"></p>
+        </div>
+
+        <!-- 专业 + 爱好图标带 -->
+        <div class="motif-strip" data-reveal>
+          <span class="motif"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M32 16 L28 30 L38 38 L30 52"/><circle cx="32" cy="16" r="3" fill="currentColor"/><circle cx="28" cy="30" r="3" fill="currentColor"/><circle cx="38" cy="38" r="3" fill="currentColor"/><circle cx="30" cy="52" r="3" fill="currentColor"/><path d="M8 40 L22 40 L28 32 L36 48 L42 40 L58 40" stroke-dasharray="5 5"/></svg><span>BCI</span></span>
+          <span class="motif"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 50 L42 20"/><path d="M42 20 L50 13 L54 17 L46 25 Z" fill="currentColor" stroke="none"/></svg><span>Paint</span></span>
+          <span class="motif"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><path d="M40 10 v34 c0 5 -7 8 -12 6 c-5-2 -5-9 -1-11 c4-2 9-1 13 1"/><path d="M40 10 L58 18"/></svg><span>Music</span></span>
+          <span class="motif"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><path d="M8 22 h10 a2 2 0 0 0 2-2 l1-2 h18 l1 2 a2 2 0 0 0 2 2 h10 a4 4 0 0 1 4 4 v20 a4 4 0 0 1 -4 4 H8 a4 4 0 0 1 -4-4 V26 a4 4 0 0 1 4-4 Z"/><circle cx="34" cy="37" r="8"/></svg><span>Photo</span></span>
+          <span class="motif"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="12" width="52" height="40" rx="3"/><path d="M6 22 h52 M6 42 h52 M22 12 v40 M42 12 v40"/></svg><span>Film</span></span>
+          <span class="motif"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><circle cx="42" cy="12" r="4"/><path d="M40 16 L32 30 L20 26"/><path d="M32 30 L34 50 L26 58"/><path d="M34 50 L46 56"/><path d="M32 30 L48 28"/></svg><span>Dance</span></span>
+        </div>
+
+        <div class="about-grid">
+          <div data-reveal>
+            <p class="long-intro" id="long-intro"></p>
+            <div class="about-meta" id="about-meta"></div>
+          </div>
+          <aside class="fact-card" data-reveal>
+            <span class="fact-card__title"><i>▷</i><span id="fact-title">档案</span></span>
+            <dl class="fact-list" id="fact-list"></dl>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- 兴趣 -->
+    <section class="band band--red" id="hobbies">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="hobbies-tag">兴趣 · HOBBIES</span>
+            <h2 class="h2" id="hobbies-h2">我的观察<span class="mask-in"><span>镜头</span></span></h2>
+          </div>
+          <p class="section__sub" id="hobbies-sub" style="color:rgba(0,0,0,0.72)"></p>
+        </div>
+        <div class="hobbies" id="hobbies"></div>
+      </div>
+    </section>
+
+    <!-- 项目 / 技能 -->
+    <section class="band band--black" id="growing">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="growing-tag">技能 · 项目</span>
+            <h2 class="h2" id="growing-h2">正在<span class="mask-in"><span>生长</span></span></h2>
+          </div>
+          <p class="section__sub" id="growing-sub"></p>
+        </div>
+        <div class="growing" id="growing"></div>
+      </div>
+    </section>
+
+    <!-- 联系方式（合并大板块） -->
+    <section class="band band--red" id="contact">
+      <div class="wrap section">
+        <div class="section__head" data-reveal>
+          <div>
+            <span class="label" id="contact-tag">联系 · CONTACT</span>
+            <h2 class="h2" id="contact-h2">找到<span class="mask-in"><span>我</span></span></h2>
+          </div>
+          <p class="section__sub" id="contact-sub" style="color:rgba(0,0,0,0.72)"></p>
+        </div>
+        <div data-reveal>
+          <div class="contact-panel">
+            <div class="contact-head">
+              <h3><span id="contact-title">联系方式</span> <span class="hl" id="contact-hl">/ Contact</span></h3>
+              <p id="contact-note">一幅画、一支舞、一个想法，都欢迎来聊。</p>
+            </div>
+            <div class="contact-list" id="contact"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <p id="footer"></p>
+      <span class="mono" id="footer-note"></span>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    "use strict";
+
+    /* ---------- 工具图标 ---------- */
+    const ICON = {
+      brush: '<svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 50 L42 20"/><path d="M42 20 L50 13 L54 17 L46 25 Z" fill="currentColor" stroke="none"/></g><circle cx="52" cy="22" r="3" fill="#fff"/></svg>',
+      dance: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><circle cx="42" cy="12" r="4"/><path d="M40 16 L32 30 L20 26"/><path d="M32 30 L34 50 L26 58"/><path d="M34 50 L46 56"/><path d="M32 30 L48 28"/></svg>',
+      photo: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><path d="M8 22 h10 a2 2 0 0 0 2-2 l1-2 h18 l1 2 a2 2 0 0 0 2 2 h10 a4 4 0 0 1 4 4 v20 a4 4 0 0 1 -4 4 H8 a4 4 0 0 1 -4-4 V26 a4 4 0 0 1 4-4 Z"/><circle cx="34" cy="37" r="8"/></svg>',
+      music: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><path d="M40 10 v34 c0 5 -7 8 -12 6 c-5-2 -5-9 -1-11 c4-2 9-1 13 1"/><path d="M40 10 L58 18"/></svg>',
+      film: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="12" width="52" height="40" rx="3"/><path d="M6 22 h52 M6 42 h52 M22 12 v40 M42 12 v40"/></svg>'
+    };
+    /* 联系类型图标 */
+    const BADGE = {
+      mail: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><rect x="6" y="14" width="36" height="24" rx="3"/><path d="M6 16 L24 30 L42 16"/></svg>',
+      qq:   '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><circle cx="24" cy="22" r="13"/><ellipse cx="24" cy="16" rx="7" ry="9"/><circle cx="19" cy="20" r="2.5" fill="currentColor"/><circle cx="29" cy="20" r="2.5" fill="currentColor"/><path d="M24 31 L21 38 L24 36 L27 38 Z" fill="currentColor"/></svg>',
+      wechat:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3"><path d="M30 24 C30 16 24 12 17 12 C10 12 4 17 6 26 C8 32 10 36 10 36 L6 40 L16 38 C22 40 30 36 30 24 Z"/><path d="M34 22 C41 22 46 27 44 34 C43 38 42 40 42 40 L45 43 L40 42 C36 43 33 40 34 34 Z"/></svg>'
+    };
+
+    /* ---------- 内容数据 ---------- */
+    const COPY = {
+      zh: {
+        eyebrow: "脑机接口 × 艺术",
+        nameCn: "王悦为", nameEn: "Lia",
+        role: "智能医学工程（脑机接口方向）· 大一",
+        intro: "嗨，我是王悦为。钻研<strong>脑机接口</strong>，也爱绘画、舞蹈、摄影。记录生活，也探索生物学与人文艺术。很高兴认识你。",
+        cta: "进入档案",
+        nav: { about: "关于", hobbies: "兴趣", growing: "项目", contact: "联系" },
+        aboutTag: "关于 · ABOUT",
+        aboutH2a: "科学与", aboutH2b: "艺术", aboutH2c: "之间",
+        aboutSub: "从成都到深圳，从医学代码到画笔，一个随信号起舞的 08 后。",
+        longIntro: "我在两种语言里切换——<em>一支画笔</em>和一段代码。记录舞蹈的律动，也想读懂大脑的电波。生活与学习，都是我观察世界的镜头。",
+        aboutMeta: ["记录生活", "生物学", "人文艺术"],
+        factTitle: "档案",
+        facts: [
+          { k: "出生", v: "2008.04.23" }, { k: "家乡", v: "四川成都" }, { k: "常居", v: "广东深圳" },
+          { k: "学校", v: "天津大学香港理工大学深圳未来技术学院" }, { k: "专业", v: "智能医学工程（脑机接口方向）" }
+        ],
+        hobbiesTag: "兴趣 · HOBBIES",
+        hobbiesH2a: "我的观察", hobbiesH2b: "镜头",
+        hobbiesSub: "艺术与医学，是同一副镜头下的不同画面。",
+        hobbies: [
+          { icon: "brush", cn: "绘画", en: "Painting" },
+          { icon: "dance", cn: "舞蹈", en: "Dance" },
+          { icon: "photo", cn: "摄影", en: "Photography" },
+          { icon: "music", cn: "音乐", en: "Music" },
+          { icon: "film", cn: "电影", en: "Film" }
+        ],
+        growingTag: "技能 · 项目",
+        growingH2a: "正在", growingH2b: "生长",
+        growingSub: "技能与第一个作品仍在路上，欢迎常回来看看。",
+        growing: [
+          { no: "01", title: "技能学习", desc: "正在解锁新的工具与方向，边学边玩。", badge: "进行中" },
+          { no: "02", title: "项目经历", desc: "第一章作品正在酝酿，出炉一定大声宣告。", badge: "进行中" },
+          { no: "03", title: "更多可能", desc: "这里永远为下一个想法留着一页。", badge: "敬请期待" }
+        ],
+        contactTag: "联系 · CONTACT",
+        contactH2a: "找到", contactH2b: "我",
+        contactSub: "三种方式，任选其一。",
+        contactTitle: "联系方式", contactHl: "Contact",
+        contactNote: "一幅画、一支舞、一个想法，都欢迎来聊。",
+        contact: [
+          { badge: "mail", type: "邮箱", v: "wil_19780117@tju.edu.cn", href: "mailto:wil_19780117@tju.edu.cn", tap: "写封信" },
+          { badge: "qq", type: "QQ", v: "3944174406", href: "#contact", tap: "来聊聊" },
+          { badge: "wechat", type: "微信", v: "Wil-2t", href: "#contact", tap: "报个名号" }
+        ],
+        footer: "© 2026 王悦为 · 保持好奇，持续创造",
+        footerNote: "黑 · 红 · 白"
+      },
+      en: {
+        eyebrow: "BCI × ART",
+        nameCn: "Wang Yuewei", nameEn: "Lia",
+        role: "Intelligent Medical Engineering (BCI) · Freshman",
+        intro: "Hi, I'm Lia. I dig into <strong>brain-computer interfaces</strong> and I paint, dance and shoot photos on the side. Documenting life, exploring biology and the humanities. Glad to meet you.",
+        cta: "Enter the file",
+        nav: { about: "About", hobbies: "Hobbies", growing: "Projects", contact: "Contact" },
+        aboutTag: "About · ABOUT",
+        aboutH2a: "Between science & ", aboutH2b: "art", aboutH2c: "",
+        aboutSub: "From Chengdu to Shenzhen — a Gen-Z dancing to the signal between medical code and a paintbrush.",
+        longIntro: "I switch between two languages — <em>a paintbrush</em> and a line of code. Chasing the rhythm of dance while reading the brain's waves. Life and study are both lenses on my world.",
+        aboutMeta: ["Documenting life", "Biology", "Humanities"],
+        factTitle: "PROFILE",
+        facts: [
+          { k: "Born", v: "2008.04.23" }, { k: "Hometown", v: "Chengdu, Sichuan" }, { k: "Based in", v: "Shenzhen, Guangdong" },
+          { k: "School", v: "Shenzhen Future Tech Institute, TJU & PolyU" }, { k: "Major", v: "Intelligent Medical Eng. (BCI)" }
+        ],
+        hobbiesTag: "HOBBIES",
+        hobbiesH2a: "Through my ", hobbiesH2b: "lens",
+        hobbiesSub: "Art and medicine — different frames, one lens.",
+        hobbies: [
+          { icon: "brush", cn: "Painting", en: "绘画" },
+          { icon: "dance", cn: "Dance", en: "舞蹈" },
+          { icon: "photo", cn: "Photography", en: "摄影" },
+          { icon: "music", cn: "Music", en: "音乐" },
+          { icon: "film", cn: "Film", en: "电影" }
+        ],
+        growingTag: "SKILLS · PROJECTS",
+        growingH2a: "Still ", growingH2b: "growing",
+        growingSub: "Skills and a first project are still on the way — check back soon.",
+        growing: [
+          { no: "01", title: "Skills", desc: "Unlocking new tools and directions, learning while playing.", badge: "WIP" },
+          { no: "02", title: "Projects", desc: "My first chapter is brewed in the lab. I'll shout it out soon.", badge: "WIP" },
+          { no: "03", title: "More to come", desc: "There's always a page here for the next idea.", badge: "SOON" }
+        ],
+        contactTag: "CONTACT",
+        contactH2a: "Find ", contactH2b: "me",
+        contactSub: "Pick any one of three.",
+        contactTitle: "Contact", contactHl: "联系方式",
+        contactNote: "A painting, a dance, an idea — let's talk.",
+        contact: [
+          { badge: "mail", type: "Email", v: "wil_19780117@tju.edu.cn", href: "mailto:wil_19780117@tju.edu.cn", tap: "Write" },
+          { badge: "qq", type: "QQ", v: "3944174406", href: "#contact", tap: "Say hi" },
+          { badge: "wechat", type: "WeChat", v: "Wil-2t", href: "#contact", tap: "Add me" }
+        ],
+        footer: "© 2026 Wang Yuewei · Stay curious, keep creating",
+        footerNote: "BLACK · RED · WHITE"
+      }
+    };
+
+    let lang = "zh";
+    const $ = (s) => document.querySelector(s);
+
+    function buildH2(a, b, c) {
+      const bold = b ? `<span class="mask-in"><span>${b}</span></span>` : "";
+      return a + bold + (c || "");
+    }
+
+    function splitChars(el) {
+      const text = el.textContent;
+      el.textContent = "";
+      const frag = document.createDocumentFragment();
+      [...text].forEach((ch) => {
+        const s = document.createElement("span");
+        s.className = "ch";
+        s.textContent = ch;
+        frag.appendChild(s);
+      });
+      el.appendChild(frag);
+      Array.from(el.children).forEach((s, i) => { s.style.animationDelay = (0.25 + i * 0.08) + "s"; });
+    }
+
+    function render() {
+      const t = COPY[lang];
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      document.title = `${t.nameCn} · WIL`;
+      $("#brand-name").textContent = t.nameCn;
+      $("#eyebrow").textContent = t.eyebrow;
+      const ncn = $("#name-cn"); ncn.textContent = t.nameCn; splitChars(ncn);
+      const nen = $("#name-en"); nen.textContent = t.nameEn; splitChars(nen);
+      $("#role").textContent = t.role;
+      $("#intro").innerHTML = t.intro;
+      $("#cta").textContent = t.cta;
+
+      $("#nav-about").textContent = t.nav.about;
+      $("#nav-hobbies").textContent = t.nav.hobbies;
+      $("#nav-growing").textContent = t.nav.growing;
+      $("#nav-contact").textContent = t.nav.contact;
+
+      $("#about-tag").textContent = t.aboutTag;
+      $("#about-h2").innerHTML = buildH2(t.aboutH2a, t.aboutH2b, t.aboutH2c);
+      $("#about-sub").textContent = t.aboutSub;
+      $("#long-intro").innerHTML = t.longIntro;
+      $("#about-meta").innerHTML = t.aboutMeta.map((m, i) => `<span class="chip"><b>${String(i + 1).padStart(2, "0")}</b>${m}</span>`).join("");
+      $("#fact-title").textContent = t.factTitle;
+      $("#fact-list").innerHTML = t.facts.map((f) => `<div class="fact-row"><dt>${f.k}</dt><dd>${f.v}</dd></div>`).join("");
+
+      $("#hobbies-tag").textContent = t.hobbiesTag;
+      $("#hobbies-h2").innerHTML = buildH2(t.hobbiesH2a, t.hobbiesH2b, "");
+      $("#hobbies-sub").textContent = t.hobbiesSub;
+      $("#hobbies").innerHTML = t.hobbies.map((h) => `
+        <button class="hobby" type="button" data-reveal>
+          ${ICON[h.icon]}
+          <span class="en">${h.en}</span>
+          <span class="cn">${h.cn}</span>
+        </button>`).join("");
+
+      $("#growing-tag").textContent = t.growingTag;
+      $("#growing-h2").innerHTML = buildH2(t.growingH2a, t.growingH2b, "");
+      $("#growing-sub").textContent = t.growingSub;
+      $("#growing").innerHTML = t.growing.map((g) => `
+        <article class="grow-card" data-reveal>
+          <div class="grow-card__no">CASE ${g.no}</div>
+          <h3>${g.title}</h3>
+          <p>${g.desc}</p>
+          <span class="grow-badge"><i></i>${g.badge}</span>
+        </article>`).join("");
+
+      $("#contact-tag").textContent = t.contactTag;
+      $("#contact-h2").innerHTML = buildH2(t.contactH2a, t.contactH2b, "");
+      $("#contact-sub").textContent = t.contactSub;
+      $("#contact-title").textContent = t.contactTitle;
+      $("#contact-hl").textContent = t.contactHl;
+      $("#contact-note").textContent = t.contactNote;
+      $("#contact").innerHTML = t.contact.map((c) => `
+        <a class="contact-line" href="${c.href}" target="${c.href.startsWith("http") ? "_blank" : "_self"}">
+          <span class="contact-badge">${BADGE[c.badge]}<b>${c.type}</b></span>
+          <span class="contact-line__v">${c.v}</span>
+          <span class="contact-line__tap">${c.tap}</span>
+        </a>`).join("");
+
+      $("#footer").textContent = t.footer;
+      $("#footer-note").textContent = t.footerNote;
+
+      document.querySelectorAll(".lang button").forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      observe();
+    }
+
+    /* ---------- 滚动浮现 ---------- */
+    let io = null;
+    function observe() {
+      if (io) io.disconnect();
+      io = new IntersectionObserver((es) => {
+        es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } });
+      }, { threshold: 0.14 });
+      document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+    }
+
+    function bindLang() {
+      document.querySelectorAll(".lang button").forEach((b) => b.addEventListener("click", () => {
+        if (b.dataset.lang !== lang) { lang = b.dataset.lang; render(); }
+      }));
+    }
+
+    function init() {
+      render();
+      bindLang();
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    else init();
+  })();
+  </script>
+</body>
+</html>

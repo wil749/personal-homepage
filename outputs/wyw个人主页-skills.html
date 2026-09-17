@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="王悦为 Lia wil · 技能成长 · 红黑白 谋杀案海报风" />
+  <title>技能成长 · 王悦为 WIL</title>
+
+  <style>
+    :root {
+      --ink: #000000;        /* 纯黑 */
+      --red: #c00d1a;        /* 海报红（已降亮） */
+      --red-deep: #8a0a12;   /* 深红 */
+      --white: #ffffff;      /* 纯白 */
+      --off: #f3efe6;        /* 米白（正文用） */
+      --gray: #c9c6bd;       /* 灰白 */
+      --font: "方正姚体", "FZYaoti", "FZYaoTi", Georgia, "Times New Roman", "Source Han Serif SC", "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STZhongsong", "STSong", "SimSun", serif;
+      --disp: "方正姚体", "FZYaoti", "FZYaoTi", Georgia, "Times New Roman", "Source Han Serif SC", "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STZhongsong", "STSong", serif;
+      --bold: 0.03em;        /* 姚体无粗体字重，用描边加粗 */
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --wrap: 78rem;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--ink); color: var(--off); font-family: var(--font); -webkit-text-stroke: var(--bold) currentColor; line-height: 1.75; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    ::selection { background: var(--red); color: #fff; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: var(--font); -webkit-text-stroke: var(--bold) currentColor; }
+    h1,h2,h3,h4,p { margin: 0; }
+    .wrap { width: min(100% - clamp(1.2rem, 6vw, 4rem) * 2, var(--wrap)); margin-inline: auto; }
+
+    /* ---------------- 顶部栏 ---------------- */
+    .topbar { position: sticky; top: 0; z-index: 80; background: var(--ink); border-bottom: 2px solid var(--red); }
+    .topbar__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.8rem; }
+    .brand { display: inline-flex; align-items: center; gap: 0.55rem; font-weight: 900; letter-spacing: 0.06em; }
+    .brand svg { width: 1.5rem; height: 1.5rem; color: var(--red); }
+    .brand b { color: var(--white); }
+    .brand .sub { font-size: 0.66rem; letter-spacing: 0.26em; color: var(--gray); font-weight: 700; }
+    .topnav { display: flex; align-items: center; gap: clamp(0.8rem, 3vw, 1.6rem); }
+    .topnav a { font-size: 0.82rem; letter-spacing: 0.14em; color: var(--off); opacity: 0.78; font-weight: 700; transition: color .3s var(--ease), opacity .3s var(--ease); }
+    .topnav a:hover { color: var(--red); opacity: 1; }
+    .lang { display: inline-flex; padding: 0.16rem; border: 1px solid #444; border-radius: 2px; }
+    .lang button { padding: 0.24rem 0.62rem; border: 0; background: transparent; color: var(--off); font-size: 0.72rem; font-weight: 800; letter-spacing: .06em; cursor: pointer; transition: all .3s var(--ease); }
+    .lang button.is-active { background: var(--red); color: #fff; }
+
+    /* ---------------- 英雄区（红） ---------------- */
+    .hero { position: relative; overflow: hidden; background: var(--red); color: var(--ink); padding: clamp(3rem, 10vw, 6rem) 0; }
+    .hero__eyebrow { font-size: 0.74rem; font-weight: 800; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(0,0,0,0.68); display: inline-flex; align-items: center; gap: 0.6rem; }
+    .hero__eyebrow::before { content: ""; width: 1.8rem; height: 3px; background: var(--ink); }
+    .hero h1 { font-family: var(--disp); font-size: clamp(2.4rem, 8vw, 5rem); font-weight: 900; line-height: 1; letter-spacing: 0.02em; margin-top: 1rem; }
+    .hero h1 .acc { color: #fff; background: var(--ink); padding: 0 0.12em; }
+    .hero__sub { max-width: 40rem; margin-top: 1.2rem; font-size: clamp(1rem, 2.2vw, 1.14rem); color: rgba(0,0,0,0.76); }
+    .hero__back { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.8rem; padding: 0.7rem 1.5rem; background: var(--ink); color: #fff; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.82rem; transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease); }
+    .hero__back:hover { background: #fff; color: var(--red); transform: translateX(-3px); }
+    .hero__back::before { content: "←"; }
+
+    /* ---------------- 技能列表（黑） ---------------- */
+    .section { padding-block: clamp(3rem, 9vw, 6rem); }
+    .section__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.2rem; flex-wrap: wrap; margin-bottom: clamp(1.8rem, 4vw, 2.8rem); }
+    .label { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.34em; text-transform: uppercase; color: var(--white); }
+    .label::before { content: ""; width: 1.6rem; height: 3px; background: var(--red); }
+    .h2 { font-family: var(--disp); font-size: clamp(1.9rem, 6vw, 3.4rem); font-weight: 900; letter-spacing: 0.03em; line-height: 1.08; margin-top: 0.8rem; color: #fff; }
+    .section__sub { max-width: 32rem; color: var(--gray); font-size: 0.96rem; }
+
+    .skill { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1rem, 3vw, 2rem); }
+    .skill-card { border: 1px solid #333; padding: clamp(1.4rem, 3.5vw, 2.4rem); position: relative; overflow: hidden; transition: border-color .35s var(--ease), transform .35s var(--ease), background .35s var(--ease); }
+    .skill-card:hover { border-color: var(--red); transform: translateY(-6px); background: rgba(192,13,26,0.06); }
+    .skill-card__no { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.3em; color: var(--red); }
+    .skill-card h3 { margin: 0.8rem 0 0.4rem; font-size: clamp(1.25rem, 3vw, 1.8rem); font-weight: 900; color: #fff; }
+    .skill-card__en { display: block; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); font-weight: 700; margin-bottom: 1rem; }
+    .skill-card p { color: var(--gray); font-size: 0.95rem; }
+    .skill-meta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.2rem; }
+    .skill-tag { padding: 0.28rem 0.68rem; border: 1px solid #444; color: var(--gray); font-size: 0.76rem; font-weight: 700; }
+    .skill-tag b { color: var(--red); font-weight: 800; }
+    .skill-tag--tbd { border: 1px dashed var(--gray); }
+
+    /* ---------------- 奖励（红） ---------------- */
+    .award-band { background: var(--red); color: var(--ink); padding: clamp(3rem, 8vw, 5rem) 0; }
+    .award-band .wrap h2 { font-family: var(--disp); font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 900; }
+    .award-band .wrap p { margin-top: 0.6rem; color: rgba(0,0,0,0.76); }
+    .award-list { margin-top: 2rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(0.8rem, 2vw, 1.3rem); }
+    .award { background: var(--ink); color: #fff; padding: clamp(1.1rem, 2.6vw, 1.8rem); }
+    .award b { display: block; color: var(--red); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    .award span { font-size: 0.92rem; font-weight: 800; margin-top: 0.4rem; display: block; }
+    .award em { font-style: normal; color: var(--gray); font-size: 0.8rem; }
+
+    /* ---------------- 页脚 ---------------- */
+    .footer { background: var(--ink); border-top: 2px solid var(--red); padding-block: clamp(1.8rem, 4vw, 2.6rem); }
+    .footer__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer p { color: var(--gray); font-size: 0.86rem; }
+    .footer .mono { font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--red); }
+
+    /* ---------------- 动效 ---------------- */
+    [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+    [data-reveal].is-in { opacity: 1; transform: none; }
+
+    @media (max-width: 720px) {
+      .skill, .award-list { grid-template-columns: 1fr; }
+      .topnav { gap: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="wyw个人主页-V2.2.html#top">
+        <svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M38 40 L46 12 L66 36 Z"/><path d="M62 40 L54 12 L34 36 Z"/><circle cx="50" cy="56" r="24"/><ellipse cx="43" cy="54" rx="3" ry="5" fill="#fff"/><ellipse cx="57" cy="54" rx="3" ry="5" fill="#fff"/></svg>
+        <b id="brand-name">王悦为</b><span class="sub">WIL · LIA</span>
+      </a>
+      <nav class="topnav" aria-label="导航">
+        <a href="wyw个人主页-V2.2.html#about">关于</a>
+        <a href="wyw个人主页-V2.2.html#growing">项目</a>
+        <a href="wyw个人主页-V2.2.html#hobbies">兴趣</a>
+        <a href="wyw个人主页-V2.2.html#contact">联系</a>
+        <div class="lang" role="group" aria-label="语言切换">
+          <button type="button" data-lang="zh" class="is-active">中</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <span class="hero__eyebrow" id="hero-tag">技能 · SKILLS</span>
+      <h1 id="hero-title">正在<span class="acc">生长</span></h1>
+      <p class="hero__sub" id="hero-sub">在解锁新的工具与方向，边学边玩。这里记录每一次小小的进步与奖励。</p>
+      <a class="hero__back" href="wyw个人主页-V2.2.html#growing" id="hero-back">返回主页</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section__head">
+        <div data-reveal>
+          <span class="label" id="list-tag">技能名录 · SKILL SET</span>
+          <h2 class="h2" id="list-h2">成长进行中</h2>
+        </div>
+        <p class="section__sub" id="list-sub"></p>
+      </div>
+
+      <div class="skill" id="skill-list"></div>
+    </div>
+  </section>
+
+  <section class="award-band">
+    <div class="wrap">
+      <div data-reveal>
+        <h2 id="award-h2">收获与奖励</h2>
+        <p id="award-sub">每一份认可，都值得记录。</p>
+      </div>
+      <div class="award-list" id="award-list"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <p id="footer">© 2026 Wang Yuewei · Stay curious, keep creating</p>
+      <span class="mono">BLACK · RED · WHITE</span>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    "use strict";
+
+    const COPY = {
+      zh: {
+        tag: "技能 · SKILLS",
+        titleA: "正在", titleB: "生长",
+        sub: "在解锁新的工具与方向，边学边玩。这里记录每一次小小的进步与奖励。",
+        back: "返回主页",
+        listTag: "技能名录 · SKILL SET",
+        listH2: "成长进行中",
+        listSub: "成长过程 · 每一次都在变强",
+        items: [
+          { no: "S01", title: "Python 编程", en: "Python", desc: "从控制台到数据处理，一点点把代码变成可用的工具。", level: "等级：入门", stage: "阶段：进行中" },
+          { no: "S02", title: "医学图像基础", en: "Medical Imaging", desc: "MR / CT 图像怎么读、怎么画基础分割，建立医学影像直觉。", level: "等级：入门", stage: "阶段：进行中" },
+          { no: "S03", title: "数据可视化", en: "Data Viz", desc: "把脑波、生理数据画成能一眼看懂又不失美感的图。", level: "等级：进行中", stage: "阶段：待定" },
+          { no: "S04", title: "绘画与视觉设计", en: "Art & Design", desc: "用画笔与排版把理性数据变成能打动人的视觉语言。", level: "等级：持续练习", stage: "阶段：待定" }
+        ],
+        awardH2: "收获与奖励",
+        awardSub: "每一份认可，都值得记录。",
+        awards: [
+          { tag: "AWARD", title: "奖学金 · 待定", note: "正在努力争取" },
+          { tag: "HONOR", title: "竞赛奖项 · 待定", note: "明年再战" },
+          { tag: "RECORD", title: "参与项目 · 待定", note: "陆续补充" }
+        ],
+        footer: "© 2026 Wang Yuewei · Stay curious, keep creating"
+      },
+      en: {
+        tag: "SKILLS",
+        titleA: "Growing", titleB: "up",
+        sub: "Unlocking new tools and directions, learning while playing. Recording every little step and reward here.",
+        back: "Back to home",
+        listTag: "SKILLS · SKILL SET",
+        listH2: "In progress ",
+        listSub: "Growth process · Getting stronger every time",
+        items: [
+          { no: "S01", title: "Python", en: "Python 编程", desc: "From console to data crunching, turning code into a handy tool bit by bit.", level: "Level: Beginner", stage: "Stage: In progress" },
+          { no: "S02", title: "Medical Imaging", en: "医学图像基础", desc: "How to read MR / CT images and draw basic segmentation, building imaging intuition.", level: "Level: Beginner", stage: "Stage: In progress" },
+          { no: "S03", title: "Data Visualization", en: "数据可视化", desc: "Turning brainwaves and physiological data into clear yet beautiful charts.", level: "Level: In progress", stage: "Stage: TBD" },
+          { no: "S04", title: "Art & Design", en: "绘画与视觉设计", desc: "Using brush and layout to turn rational data into a visual language that moves people.", level: "Level: Practicing", stage: "Stage: TBD" }
+        ],
+        awardH2: "Awards & Honors",
+        awardSub: "Every recognition deserves a record.",
+        awards: [
+          { tag: "AWARD", title: "Scholarship · TBD", note: "Still striving for it" },
+          { tag: "HONOR", title: "Contest Prize · TBD", note: "Try again next year" },
+          { tag: "RECORD", title: "Project · TBD", note: "Coming up soon" }
+        ],
+        footer: "© 2026 Wang Yuewei · Stay curious, keep creating"
+      }
+    };
+
+    let lang = "zh";
+    const $ = (s) => document.querySelector(s);
+
+    function render() {
+      const t = COPY[lang];
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      $("#brand-name").textContent = lang === "zh" ? "王悦为" : "WIL";
+      $("#hero-tag").textContent = t.tag;
+      $("#hero-title").innerHTML = t.titleA + '<span class="acc">' + t.titleB + "</span>";
+      $("#hero-sub").textContent = t.sub;
+      $("#hero-back").textContent = t.back;
+      $("#list-tag").textContent = t.listTag;
+      $("#list-h2").textContent = t.listH2;
+      $("#list-sub").textContent = t.listSub;
+      $("#skill-list").innerHTML = t.items.map((it) => `
+        <article class="skill-card" data-reveal>
+          <div class="skill-card__no">${it.no}</div>
+          <h3>${it.title}</h3>
+          <span class="skill-card__en">${it.en}</span>
+          <p>${it.desc}</p>
+          <div class="skill-meta">
+            <span class="skill-tag"><b>${it.level.split("：")[0] || "Level"}</b>${it.level.split("：")[1] || ""}</span>
+            <span class="skill-tag skill-tag--tbd"><b>${it.stage.split("：")[0] || "Stage"}</b>${it.stage.split("：")[1] || ""}</span>
+          </div>
+        </article>`).join("");
+      $("#award-h2").textContent = t.awardH2;
+      $("#award-sub").textContent = t.awardSub;
+      $("#award-list").innerHTML = t.awards.map((a) => `
+        <div class="award" data-reveal><b>${a.tag}</b><span>${a.title}</span><em>${a.note}</em></div>`).join("");
+      $("#footer").textContent = t.footer;
+
+      document.querySelectorAll(".lang button").forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      observe();
+    }
+
+    let io = null;
+    function observe() {
+      if (io) io.disconnect();
+      io = new IntersectionObserver((es) => {
+        es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+      document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+    }
+
+    function bindLang() {
+      document.querySelectorAll(".lang button").forEach((b) => b.addEventListener("click", () => {
+        if (b.dataset.lang !== lang) { lang = b.dataset.lang; render(); }
+      }));
+    }
+
+    function init() {
+      render();
+      bindLang();
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    else init();
+  })();
+  </script>
+</body>
+</html>

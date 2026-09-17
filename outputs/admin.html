@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>留言后台 · WIL</title>
+  <style>
+    :root {
+      --ink: #000000;
+      --red: #a80d18;
+      --red-deep: #770a10;
+      --white: #ffffff;
+      --off: #f3efe6;
+      --gray: #c9c6bd;
+      --dim: #7d7a72;
+      --line: #2b2b2b;
+      --font: "方正姚体", "FZYaoti", "FZYaoTi", Georgia, "Times New Roman", "Source Han Serif SC", "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STZhongsong", "STSong", "SimSun", serif;
+      --mono: Consolas, Menlo, "Courier New", monospace;
+      --disp: "方正姚体", "FZYaoti", "FZYaoTi", Georgia, "Times New Roman", "Source Han Serif SC", "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STZhongsong", "STSong", serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--ink); color: var(--off); font-family: var(--font); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+    ::selection { background: var(--red); color: #fff; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea { font-family: var(--font); }
+    h1, h2, h3, p { margin: 0; }
+    .wrap { width: min(100% - clamp(1.2rem, 6vw, 4rem) * 2, 82rem); margin-inline: auto; }
+
+    /* ---------------- 顶栏 ---------------- */
+    .bar { position: sticky; top: 0; z-index: 40; background: var(--ink); border-bottom: 2px solid var(--red); }
+    .bar__in { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .8rem; flex-wrap: wrap; }
+    .brand { display: inline-flex; align-items: center; gap: .6rem; font-weight: 900; letter-spacing: .06em; }
+    .brand svg { width: 1.5rem; height: 1.5rem; color: var(--red); }
+    .brand b { color: #fff; }
+    .brand span { font-size: .66rem; letter-spacing: .26em; color: var(--gray); font-weight: 700; }
+    .bar__tools { display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
+
+    .btn { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid var(--line); background: transparent; color: var(--off); font-size: .78rem; font-weight: 800; letter-spacing: .1em; padding: .42rem .9rem; cursor: pointer; transition: border-color .25s var(--ease), background .25s var(--ease), color .25s var(--ease); }
+    .btn:hover { border-color: var(--red); color: #fff; }
+    .btn--red { background: var(--red); border-color: var(--red); color: #fff; }
+    .btn--red:hover { background: var(--red-deep); border-color: var(--red-deep); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .pill { font-family: var(--mono); font-size: .76rem; color: var(--gray); border: 1px solid var(--line); padding: .3rem .7rem; }
+
+    header.hero { padding: clamp(1.8rem, 5vw, 3rem) 0 clamp(1.2rem, 3vw, 2rem); border-bottom: 1px solid var(--line); }
+    .label { display: inline-flex; align-items: center; gap: .6rem; font-size: .72rem; font-weight: 800; letter-spacing: .32em; text-transform: uppercase; color: var(--gray); }
+    .label::before { content: ""; width: 1.5rem; height: 3px; background: var(--red); }
+    h1 { font-family: var(--disp); font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 900; color: #fff; margin-top: .6rem; }
+    h1 .hl { color: var(--red); background: #fff; padding: 0 .14em; }
+    .hero p { color: var(--gray); font-size: .92rem; margin-top: .7rem; max-width: 46rem; }
+
+    main { padding-bottom: 5rem; }
+
+    /* ---------------- 提示卡片 ---------------- */
+    .card { border: 2px solid var(--red); background: #0d0d0d; padding: clamp(1.4rem, 4vw, 2.4rem); position: relative; }
+    .card--plain { border-width: 1px; }
+    #view-config { margin-top: 2rem; }
+    .card h2 { font-family: var(--disp); font-size: clamp(1.2rem, 3vw, 1.6rem); color: #fff; }
+    .card p { color: var(--gray); font-size: .9rem; margin-top: .6rem; }
+    .code { font-family: var(--mono); font-size: .84rem; background: #000; border: 1px solid var(--line); color: var(--off); padding: .7rem .9rem; margin-top: .9rem; overflow-x: auto; white-space: pre; }
+    .hint { margin-top: 1rem; border-left: 3px solid var(--red); padding-left: .85rem; color: var(--gray); font-size: .86rem; }
+    .hint b { color: #fff; }
+
+    /* ---------------- 登录 ---------------- */
+    .login-box { max-width: 27rem; margin: clamp(2rem, 8vw, 5rem) auto 0; }
+    .field { margin-bottom: 1rem; }
+    .field label { display: block; margin-bottom: .45rem; font-size: .72rem; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; color: var(--gray); }
+    .field input { width: 100%; background: #000; border: 1px solid #3a3a3a; color: var(--off); font-size: .95rem; padding: .74rem .85rem; transition: border-color .25s var(--ease); }
+    .field input:focus { outline: none; border-color: var(--red); }
+    .form-msg { display: none; margin-top: 1rem; font-size: .86rem; line-height: 1.7; }
+    .form-msg.is-show { display: block; }
+    .form-msg--err { color: #ffbcbc; border-left: 3px solid #ff5b5b; padding-left: .8rem; }
+    .form-msg--ok { color: #fff; border-left: 3px solid var(--red); padding-left: .8rem; }
+
+    /* ---------------- 统计 ---------------- */
+    .stats { display: flex; gap: .7rem; flex-wrap: wrap; margin: 1.6rem 0 1.1rem; }
+    .stat { border: 1px solid var(--line); padding: .8rem 1.15rem; min-width: 6.6rem; }
+    .stat b { display: block; font-family: var(--disp); font-size: 1.65rem; font-weight: 900; color: #fff; line-height: 1.15; }
+    .stat span { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); }
+    .stat.is-hot b { color: var(--red); }
+    .stat.is-hot { border-color: var(--red); }
+
+    .tabs { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.2rem; }
+    .tab { border: 1px solid var(--line); background: transparent; color: var(--gray); font-size: .8rem; font-weight: 800; padding: .38rem .95rem; cursor: pointer; transition: all .25s var(--ease); }
+    .tab:hover { color: #fff; border-color: var(--red); }
+    .tab.is-on { background: var(--red); border-color: var(--red); color: #fff; }
+
+    /* ---------------- 留言列表 ---------------- */
+    .list { display: flex; flex-direction: column; gap: .85rem; }
+    .note { border: 1px solid var(--line); border-left: 4px solid var(--line); background: #0a0a0a; padding: 1rem 1.2rem; transition: border-color .3s var(--ease), background .3s var(--ease); }
+    .note:hover { background: #101010; }
+    .note.is-unread { border-left-color: var(--red); background: #100c0c; }
+    .note.is-hidden { opacity: .5; }
+    .note__top { display: flex; align-items: center; gap: .65rem; flex-wrap: wrap; }
+    .note__name { font-weight: 900; color: #fff; font-size: 1.02rem; }
+    .note__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+    .note__time { font-family: var(--mono); font-size: .74rem; color: var(--dim); }
+    .tag { font-size: .68rem; font-weight: 800; letter-spacing: .1em; border: 1px solid var(--line); color: var(--gray); padding: .1rem .5rem; }
+    .tag--red { border-color: var(--red); color: var(--red); }
+    .tag--hide { border-color: #5a5a5a; color: var(--dim); }
+    .note__contact { margin-top: .55rem; font-family: var(--mono); font-size: .78rem; color: var(--gray); word-break: break-all; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+    .note__contact b { font-family: var(--font); color: var(--red); font-size: .72rem; letter-spacing: .1em; }
+    .mini { border: 1px solid var(--line); background: transparent; color: var(--gray); font-size: .68rem; font-weight: 800; padding: .1rem .5rem; cursor: pointer; }
+    .mini:hover { border-color: var(--red); color: #fff; }
+    .note__body { margin-top: .7rem; color: var(--off); font-size: .95rem; line-height: 1.8; white-space: pre-wrap; word-break: break-word; }
+    .note__foot { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .9rem; padding-top: .8rem; border-top: 1px dashed var(--line); }
+    .empty { border: 1px dashed var(--line); padding: clamp(2rem, 6vw, 3.4rem) 1rem; text-align: center; color: var(--dim); font-size: .9rem; }
+    .loading { padding: 2rem 1rem; text-align: center; color: var(--dim); font-size: .88rem; }
+    .danger { border-color: #5c1414; color: #ff9b9b; }
+    .danger:hover { border-color: #ff5b5b; color: #fff; background: rgba(168, 13, 24, .18); }
+
+    footer { border-top: 1px solid var(--line); padding: 1.4rem 0 3rem; color: var(--dim); font-size: .78rem; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .mono { font-family: var(--mono); }
+    .hidden { display: none !important; }
+    @media (max-width: 620px) {
+      .bar__in { flex-direction: column; align-items: flex-start; }
+      .stat { flex: 1; min-width: 5.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="bar">
+    <div class="wrap bar__in">
+      <a class="brand" href="wyw个人主页-V3.1.html">
+        <svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M38 40 L46 12 L66 36 Z"/><path d="M62 40 L54 12 L34 36 Z"/><circle cx="50" cy="56" r="24"/><ellipse cx="43" cy="54" rx="3" ry="5" fill="#fff"/><ellipse cx="57" cy="54" rx="3" ry="5" fill="#fff"/></svg>
+        <b>王悦为</b><span>WIL · ADMIN</span>
+      </a>
+      <div class="bar__tools">
+        <span class="pill hidden" id="whoami"></span>
+        <button class="btn hidden" id="btn-reload" type="button">刷新</button>
+        <button class="btn hidden" id="btn-logout" type="button">退出登录</button>
+        <a class="btn" href="wyw个人主页-V3.1.html#feedback">返回主页</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <header class="hero">
+      <span class="label">Guestbook · 留言后台</span>
+      <h1>访客<span class="hl">留言</span></h1>
+      <p>这里是你一个人的收件箱。访客在主页提交的留言会直接进入这个列表，页面本身不会公开任何内容。</p>
+    </header>
+
+    <main>
+      <!-- 未配置凭证 -->
+      <section class="card" id="view-config" style="display:none;">
+        <h2>还差一步：填写 Supabase 凭证</h2>
+        <p>这个后台需要连上你自己的 Supabase 数据库。请先按下面的顺序把凭证补齐：</p>
+        <div class="code">1. 打开 Supabase 控制台 → Project Settings → API Keys
+2. 复制 Project URL 和 anon public key
+3. 打开本目录下的 admin.html，找到文件底部「后台配置」那两行
+4. 把两个空字符串替换成你的凭证，保存后刷新本页</div>
+        <div class="hint">
+          <b>注意：</b>主页 <span class="mono">wyw个人主页-V3.1.html</span> 里也有同样的两行配置，两边都要填，留言才能一路打通。<br />
+          完整图文步骤见 <span class="mono">docs/supabase-接入指南.md</span>。
+        </div>
+      </section>
+
+      <!-- 登录 -->
+      <section class="card login-box" id="view-login" style="display:none;">
+        <h2>作者登录</h2>
+        <p>用你在 Supabase 里创建的管理员邮箱和密码登录，登录后才能读取留言。</p>
+        <form id="login-form" style="margin-top:1.4rem;">
+          <div class="field">
+            <label for="email">邮箱</label>
+            <input id="email" type="email" autocomplete="username" placeholder="you@example.com" required />
+          </div>
+          <div class="field">
+            <label for="pw">密码</label>
+            <input id="pw" type="password" autocomplete="current-password" placeholder="••••••••" required />
+          </div>
+          <button class="btn btn--red" id="btn-login" type="submit" style="width:100%; justify-content:center; padding:.7rem;">登录</button>
+          <p class="form-msg" id="login-msg"></p>
+        </form>
+        <div class="hint">还没有账号？在 Supabase 控制台 <b>Authentication → Users → Add user</b> 里手动建一个，并<b>关闭公开注册</b>。步骤见接入指南。</div>
+      </section>
+
+      <!-- 留言列表 -->
+      <section id="view-list" style="display:none;">
+        <div class="stats">
+          <div class="stat"><b id="st-all">0</b><span>全部</span></div>
+          <div class="stat is-hot"><b id="st-unread">0</b><span>未读</span></div>
+          <div class="stat"><b id="st-read">0</b><span>已读</span></div>
+          <div class="stat"><b id="st-hidden">0</b><span>已隐藏</span></div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab is-on" type="button" data-filter="all">全部</button>
+          <button class="tab" type="button" data-filter="unread">未读</button>
+          <button class="tab" type="button" data-filter="read">已读</button>
+          <button class="tab" type="button" data-filter="hidden">已隐藏</button>
+          <button class="btn" id="btn-read-all" type="button" style="margin-left:auto;">全部标为已读</button>
+        </div>
+
+        <div class="list" id="list"></div>
+      </section>
+
+      <section class="loading" id="view-loading" style="display:none;">正在读取留言…</section>
+    </main>
+
+    <footer>
+      <span>留言仅作者可见 · 数据存放在你自己的 Supabase 项目里</span>
+      <span class="mono">WIL · ADMIN CONSOLE</span>
+    </footer>
+  </div>
+
+  <!-- 官方客户端：后台必须联网使用 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script>
+  (function () {
+    "use strict";
+
+    /* ==================================================================
+       后台配置（和主页保持完全一致）
+       ------------------------------------------------------------------
+       在 Supabase 控制台 → Project Settings → API Keys 复制这两个值，
+       粘贴到下面两行的引号里，保存后刷新本页即可。
+       ================================================================== */
+    const SUPABASE_URL = "";
+    const SUPABASE_ANON_KEY = "";
+    const GUESTBOOK_TABLE = "guestbook";
+
+    /* 话题 key → 显示名（与主页的 fbMoods 一一对应） */
+    const MOOD_LABEL = {
+      paint: "画画", dance: "舞蹈", photo: "摄影",
+      music: "音乐", bci: "脑机接口", chat: "随便聊聊"
+    };
+
+    const $ = (s) => document.querySelector(s);
+    let sb = null;
+    let rows = [];
+    let filter = "all";
+    let channel = null;
+
+    /* ---------- 小工具 ---------- */
+    function esc(s) {
+      return String(s == null ? "" : s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function fmtTime(iso) {
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return iso || "";
+      const p = (n) => String(n).padStart(2, "0");
+      return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) +
+             " " + p(d.getHours()) + ":" + p(d.getMinutes());
+    }
+
+    const VIEWS = ["view-config", "view-login", "view-list", "view-loading"];
+    function show(id) {
+      VIEWS.forEach((v) => {
+        const el = document.getElementById(v);
+        if (el) el.style.display = v === id ? "block" : "none";
+      });
+    }
+
+    function msg(text, kind) {
+      const el = $("#login-msg");
+      el.className = "form-msg is-show form-msg--" + (kind || "err");
+      el.textContent = text;
+    }
+
+    function isConfigured() {
+      const url = String(SUPABASE_URL).trim();
+      const key = String(SUPABASE_ANON_KEY).trim();
+      return url.slice(0, 4) === "http" && key.length > 20;
+    }
+
+    /* ---------- 渲染 ---------- */
+    function counts() {
+      return {
+        all: rows.length,
+        unread: rows.filter((r) => !r.is_read && !r.is_hidden).length,
+        read: rows.filter((r) => r.is_read && !r.is_hidden).length,
+        hidden: rows.filter((r) => r.is_hidden).length
+      };
+    }
+
+    function renderStats() {
+      const c = counts();
+      $("#st-all").textContent = c.all;
+      $("#st-unread").textContent = c.unread;
+      $("#st-read").textContent = c.read;
+      $("#st-hidden").textContent = c.hidden;
+    }
+
+    function visible() {
+      if (filter === "unread") return rows.filter((r) => !r.is_read && !r.is_hidden);
+      if (filter === "read") return rows.filter((r) => r.is_read && !r.is_hidden);
+      if (filter === "hidden") return rows.filter((r) => r.is_hidden);
+      return rows;
+    }
+
+    function renderList() {
+      const box = $("#list");
+      const list = visible();
+      if (!list.length) {
+        box.innerHTML = '<div class="empty">' +
+          (rows.length ? "这个筛选下还没有留言。" : "还没有收到留言，等第一位访客出现吧。") +
+          "</div>";
+        return;
+      }
+      box.innerHTML = list.map((r) => {
+        const mood = r.mood && MOOD_LABEL[r.mood] ? MOOD_LABEL[r.mood] : (r.mood || "");
+        const cls = ["note"];
+        if (!r.is_read) cls.push("is-unread");
+        if (r.is_hidden) cls.push("is-hidden");
+        return '<article class="' + cls.join(" ") + '" data-id="' + esc(r.id) + '">' +
+          '<div class="note__top">' +
+            (r.is_read ? "" : '<span class="note__dot" title="未读"></span>') +
+            '<span class="note__name">' + esc(r.name) + "</span>" +
+            '<span class="note__time">' + esc(fmtTime(r.created_at)) + "</span>" +
+            (mood ? '<span class="tag tag--red">' + esc(mood) + "</span>" : "") +
+            (r.lang === "en" ? '<span class="tag">EN</span>' : "") +
+            (r.is_read ? '<span class="tag">已读</span>' : "") +
+            (r.is_hidden ? '<span class="tag tag--hide">已隐藏</span>' : "") +
+          "</div>" +
+          (r.contact
+            ? '<div class="note__contact"><b>联系方式</b>' + esc(r.contact) +
+              '<button class="mini" type="button" data-act="copy" data-v="' + esc(r.contact) + '">复制</button></div>'
+            : "") +
+          '<div class="note__body">' + esc(r.message) + "</div>" +
+          '<div class="note__foot">' +
+            '<button class="mini" type="button" data-act="read">' + (r.is_read ? "标为未读" : "标为已读") + "</button>" +
+            '<button class="mini" type="button" data-act="hide">' + (r.is_hidden ? "取消隐藏" : "隐藏") + "</button>" +
+            (r.contact ? '<a class="mini" href="mailto:' + esc(r.contact) + '">写回信</a>' : "") +
+            '<button class="mini danger" type="button" data-act="del" style="margin-left:auto;">删除</button>' +
+          "</div>" +
+        "</article>";
+      }).join("");
+    }
+
+    function renderAll() { renderStats(); renderList(); }
+
+    /* ---------- 数据 ---------- */
+    async function load() {
+      const res = await sb.from(GUESTBOOK_TABLE).select("*").order("created_at", { ascending: false }).limit(500);
+      if (res.error) throw res.error;
+      rows = res.data || [];
+      renderAll();
+    }
+
+    async function patch(id, patchObj) {
+      const res = await sb.from(GUESTBOOK_TABLE).update(patchObj).eq("id", id);
+      if (res.error) throw res.error;
+      rows = rows.map((r) => (String(r.id) === String(id) ? Object.assign({}, r, patchObj) : r));
+      renderAll();
+    }
+
+    async function remove(id) {
+      const res = await sb.from(GUESTBOOK_TABLE).delete().eq("id", id);
+      if (res.error) throw res.error;
+      rows = rows.filter((r) => String(r.id) !== String(id));
+      renderAll();
+    }
+
+    function subscribe() {
+      try {
+        channel = sb.channel("guestbook-admin")
+          .on("postgres_changes", { event: "*", schema: "public", table: GUESTBOOK_TABLE }, () => { load().catch(() => {}); })
+          .subscribe();
+      } catch (err) { /* Realtime 未开启时静默忽略，点「刷新」即可 */ }
+    }
+
+    /* ---------- 登录流程 ---------- */
+    function enterApp(email) {
+      $("#whoami").textContent = email || "已登录";
+      $("#whoami").classList.remove("hidden");
+      $("#btn-reload").classList.remove("hidden");
+      $("#btn-logout").classList.remove("hidden");
+      show("view-loading");
+      load()
+        .then(() => { show("view-list"); subscribe(); })
+        .catch((err) => {
+          show("view-list");
+          $("#list").innerHTML = '<div class="empty">读取留言失败：' + esc(err.message || err) +
+            "<br />请确认已执行建表 SQL，并且当前账号能看到 guestbook 表。</div>";
+        });
+    }
+
+    function exitApp() {
+      $("#whoami").classList.add("hidden");
+      $("#btn-reload").classList.add("hidden");
+      $("#btn-logout").classList.add("hidden");
+      if (channel) { try { sb.removeChannel(channel); } catch (err) {} channel = null; }
+      rows = [];
+      show("view-login");
+    }
+
+    function boot() {
+      if (!isConfigured()) { show("view-config"); return; }
+      if (!window.supabase || !window.supabase.createClient) {
+        show("view-config");
+        document.querySelector("#view-config h2").textContent = "Supabase 客户端没能加载";
+        document.querySelector("#view-config p").textContent = "页面需要从 CDN 加载 supabase-js。请检查网络后刷新；如果长期打不开，可以把 supabase.js 下载到本地，改成相对路径引用。";
+        return;
+      }
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      sb.auth.getSession().then((res) => {
+        const session = res && res.data ? res.data.session : null;
+        if (session && session.user) enterApp(session.user.email);
+        else show("view-login");
+      }).catch(() => show("view-login"));
+
+      sb.auth.onAuthStateChange((event) => {
+        if (event === "SIGNED_OUT") exitApp();
+      });
+    }
+
+    /* ---------- 事件 ---------- */
+    $("#login-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const btn = $("#btn-login");
+      btn.disabled = true;
+      btn.textContent = "登录中…";
+      msg("", "ok");
+      const res = await sb.auth.signInWithPassword({
+        email: $("#email").value.trim(),
+        password: $("#pw").value
+      });
+      btn.disabled = false;
+      btn.textContent = "登录";
+      if (res.error) {
+        msg("登录失败：" + res.error.message + "（检查邮箱密码是否正确，账号是否已在 Supabase 里创建）", "err");
+        return;
+      }
+      $("#pw").value = "";
+      enterApp(res.data.user ? res.data.user.email : "");
+    });
+
+    $("#btn-logout").addEventListener("click", async function () {
+      await sb.auth.signOut();
+      exitApp();
+    });
+
+    $("#btn-reload").addEventListener("click", function () {
+      show("view-loading");
+      load().then(() => show("view-list")).catch((err) => {
+        show("view-list");
+        $("#list").innerHTML = '<div class="empty">刷新失败：' + esc(err.message || err) + "</div>";
+      });
+    });
+
+    $("#btn-read-all").addEventListener("click", async function () {
+      const btn = this;
+      btn.disabled = true;
+      btn.textContent = "处理中…";
+      const ids = rows.filter((r) => !r.is_read).map((r) => r.id);
+      if (ids.length) {
+        const res = await sb.from(GUESTBOOK_TABLE).update({ is_read: true }).in("id", ids);
+        if (!res.error) rows = rows.map((r) => (r.is_read ? r : Object.assign({}, r, { is_read: true })));
+      }
+      btn.disabled = false;
+      btn.textContent = "全部标为已读";
+      renderAll();
+    });
+
+    document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", function () {
+      filter = t.dataset.filter;
+      document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("is-on", x === t));
+      renderList();
+    }));
+
+    $("#list").addEventListener("click", async function (e) {
+      const btn = e.target.closest("[data-act]");
+      if (!btn) return;
+      const card = btn.closest("[data-id]");
+      if (!card) return;
+      const id = card.dataset.id;
+      const row = rows.find((r) => String(r.id) === String(id));
+      if (!row) return;
+      const act = btn.dataset.act;
+
+      if (act === "copy") {
+        try { await navigator.clipboard.writeText(btn.dataset.v || ""); btn.textContent = "已复制"; }
+        catch (err) { btn.textContent = "复制失败"; }
+        setTimeout(() => { btn.textContent = "复制"; }, 1600);
+        return;
+      }
+      if (act === "read") {
+        btn.disabled = true;
+        try { await patch(id, { is_read: !row.is_read }); }
+        catch (err) { alert("更新失败：" + (err.message || err)); btn.disabled = false; }
+        return;
+      }
+      if (act === "hide") {
+        btn.disabled = true;
+        try { await patch(id, { is_hidden: !row.is_hidden }); }
+        catch (err) { alert("更新失败：" + (err.message || err)); btn.disabled = false; }
+        return;
+      }
+      if (act === "del") {
+        if (!confirm("确定删除这条来自「" + row.name + "」的留言吗？删除后无法恢复。")) return;
+        btn.disabled = true;
+        try { await remove(id); }
+        catch (err) { alert("删除失败：" + (err.message || err)); btn.disabled = false; }
+      }
+    });
+
+    boot();
+  })();
+  </script>
+</body>
+</html>
