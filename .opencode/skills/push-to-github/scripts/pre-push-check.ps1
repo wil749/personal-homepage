@@ -55,7 +55,7 @@ if ($dirty.Count -gt 0) {
 # --- 3. 大文件 ---
 Write-Host ""
 Write-Host "[2/4] 大文件检查（阈值 50 MB）" -ForegroundColor Cyan
-$tracked = @(git ls-files)
+$tracked = @(git ls-files --cached --others --exclude-standard)
 $big = @()
 foreach ($f in $tracked) {
   if (Test-Path -LiteralPath $f -PathType Leaf) {
