@@ -6,7 +6,14 @@
   <meta name="description" content="王悦为 Wil · 智能医学工程（脑机接口方向）大一学生 · 红黑白 谋杀案海报风" />
   <title>王悦为 · WIL</title>
 
-  <!-- V3.1：样式与动效仍为纯自定义、离线自包含；
+  <!-- V4.0：在 V3.1 基础上为「兴趣爱好」手册加入书页配图（左文右图），
+       翻页时图片随书页一起做 3D 翻转，书本整体尺寸适量放大。
+       —— 怎么换成你自己的图片：
+          1) 把照片放进 outputs/images/ 目录；
+          2) 在下文 COPY.zh / COPY.en 的 hobbies 数组里，给对应爱好填 img: "images/你的文件名.jpg"，
+             想写图注就填 cap: "图注文字"；
+          3) img 留空 "" 时，书页上会显示虚线占位框，方便你之后替换。
+       样式与动效仍为纯自定义、离线自包含；
        仅「访客留言」功能会按需从 CDN 加载 Supabase 客户端（未配置或加载失败时自动降级为本地演示模式，不影响页面其他部分） -->
   <style>
     :root {
@@ -147,7 +154,8 @@
     /* ---------------- 兴趣（红底翻书：黑色牛皮封皮 + 泛黄牛皮纸内页） ---------------- */
     .hobbies { position: relative; }
     .book-wrap { position: relative; }
-    .book { position: relative; width: min(1040px, 94vw); height: clamp(360px, 50vw, 540px); margin-inline: auto; perspective: 2400px; perspective-origin: 50% 45%; }
+    /* 宽度取「1220px / 95vw / 容器宽」三者最小，保证既不超出栏目容器也不溢出屏幕 */
+    .book { position: relative; width: min(1220px, 95vw, 100%); height: clamp(440px, 55vw, 640px); margin-inline: auto; perspective: 2700px; perspective-origin: 50% 45%; }
     .book__inner { position: absolute; inset: 0; transform-style: preserve-3d; transform: translateX(-25%); transition: transform 1.05s cubic-bezier(.2,.72,.28,1); }
     .book.is-open .book__inner { transform: translateX(0); }
     /* 黑色牛皮：书脊 / 封底内页 / 内封 */
@@ -186,6 +194,31 @@
     .pg__water { position: absolute; right: -2%; bottom: -6%; color: rgba(122,26,18,.10); }
     .pg__water svg { width: clamp(6rem, 20vw, 12rem); height: clamp(6rem, 20vw, 12rem); }
     .pg__folio { margin-top: auto; font-size: .66rem; letter-spacing: .22em; font-weight: 800; color: rgba(90,58,20,.6); }
+    /* —— 书页配图（V4.0 左文右图）：图片随书页一起 3D 翻转 —— */
+    .pg__body { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: 1.02fr 1fr; gap: clamp(.9rem, 2.4vw, 1.8rem); align-items: stretch; margin-top: .7rem; }
+    .pg__text { display: flex; flex-direction: column; min-width: 0; }
+    .pg__text .pg__icon { margin-top: 0; }
+    .pg__text .pg__icon svg { width: clamp(2.1rem, 5vw, 3.4rem); height: clamp(2.1rem, 5vw, 3.4rem); }
+    .pg__text .pg__title { margin-top: .5rem; }
+    .pg__text .pg__desc { max-width: none; }
+    .pg__media { position: relative; margin: 0; min-height: 0; border-radius: 7px; overflow: hidden; background: rgba(255,255,255,.22);
+      box-shadow: inset 0 0 0 1px rgba(120,78,28,.3), inset 0 0 30px rgba(120,78,28,.26), 0 10px 24px rgba(90,58,20,.18);
+      transform: translateZ(0); }
+    .pg__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .pg__cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: .55rem .62rem .34rem; font-size: .64rem; font-weight: 800; letter-spacing: .06em; color: #f4e5c2;
+      background: linear-gradient(0deg, rgba(28,18,8,.9) 0%, rgba(28,18,8,.6) 55%, rgba(28,18,8,0) 100%); }
+    .pg__media--empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .32rem; text-align: center; padding: .9rem .7rem;
+      border: 1.6px dashed rgba(122,26,18,.5);
+      background: repeating-linear-gradient(45deg, rgba(122,26,18,.055) 0 7px, rgba(0,0,0,0) 7px 14px), rgba(255,255,255,.2);
+      box-shadow: inset 0 0 26px rgba(120,78,28,.2); }
+    .pg__media--empty svg { width: 1.8rem; height: 1.8rem; color: rgba(122,26,18,.72); }
+    .pg__media--empty b { font-size: .74rem; font-weight: 900; letter-spacing: .06em; color: rgba(122,26,18,.92); }
+    .pg__media--empty span { font-size: .6rem; line-height: 1.55; color: rgba(90,58,20,.74); }
+    /* 左页（背面）镜像排版：图在左、文在右 */
+    .pg--back .pg__body { align-self: stretch; width: 100%; }
+    .pg--back .pg__media { order: -1; }
+    /* 左页配图换一种裁切与暖调，翻页时像是同一段的另一帧 */
+    .pg--back .pg__media img { object-position: 50% 50%; filter: sepia(.14) saturate(.9) contrast(1.02); }
     .pg--cover { align-items: center; justify-content: center; text-align: center; color: #e8dcc2;
       background:
         radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.08), transparent 60%),
@@ -201,7 +234,7 @@
     .book__spine { position: absolute; left: 50%; top: 0; bottom: 0; width: 46px; margin-left: -23px; z-index: 200; pointer-events: none;
       background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.34) 42%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.34) 58%, rgba(0,0,0,0) 100%); }
     .book__hint { margin: clamp(1.4rem, 3vw, 2rem) auto 0; text-align: center; font-size: .78rem; font-weight: 800; letter-spacing: .1em; color: rgba(0,0,0,.62); }
-    @media (max-width: 620px) { .book { height: clamp(320px, 96vw, 460px); } .pg { padding: 1rem; } }
+    @media (max-width: 620px) { .book { height: clamp(380px, 108vw, 540px); } .pg { padding: .8rem; } .pg__no { font-size: clamp(1.1rem, 5vw, 1.5rem); } .pg__body { grid-template-columns: 1fr; gap: .5rem; } .pg__media { min-height: 84px; } .pg--back .pg__media { order: 0; } .pg__cap { font-size: .6rem; padding: .4rem .5rem .26rem; } .pg__title { font-size: clamp(1.3rem, 5vw, 1.8rem); } .pg__icon svg { width: clamp(2.2rem, 8vw, 3rem); height: clamp(2.2rem, 8vw, 3rem); } .pg__media--empty b { font-size: .68rem; } .pg__media--empty span { display: none; } }
 
     /* ---------------- 项目（黑） ---------------- */
     .growing { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 3vw, 2rem); }
@@ -1021,15 +1054,17 @@ html.has-quill .quill { opacity: 1; }
         hobbiesH2a: "我的观察", hobbiesH2b: "镜头",
         hobbiesSub: "艺术与医学，是同一副镜头下的不同画面。",
         hobbies: [
-          { icon: "brush", cn: "绘画", en: "Painting", desc: "用画笔记录情绪，也把看到的颜色留在一张纸上。" },
-          { icon: "dance", cn: "舞蹈", en: "Dance", desc: "在节奏里松开身体，舞台是我最直接的语言。" },
-          { icon: "photo", cn: "摄影", en: "Photography", desc: "按下快门，把光线和瞬间一起收进口袋。" },
-          { icon: "music", cn: "音乐", en: "Music", desc: "耳机里的旋律，是学习与生活的背景音。" },
-          { icon: "film", cn: "电影", en: "Film", desc: "在别人的故事里，学会理解更多不同的世界。" }
+          { icon: "brush", cn: "绘画", en: "Painting", desc: "用画笔记录情绪，也把看到的颜色留在一张纸上。", img: "images/drawing1.jpg", cap: "速写本随手拍" },
+          { icon: "dance", cn: "舞蹈", en: "Dance", desc: "在节奏里松开身体，舞台是我最直接的语言。", img: "images/dancing.jpg", cap: "舞蹈瞬间" },
+          { icon: "photo", cn: "摄影", en: "Photography", desc: "按下快门，把光线和瞬间一起收进口袋。", img: "images/photo.jpg", cap: "镜头下的光" },
+          { icon: "music", cn: "音乐", en: "Music", desc: "耳机里的旋律，是学习与生活的背景音。", img: "images/music.jpg", cap: "单曲循环" },
+          { icon: "film", cn: "电影", en: "Film", desc: "在别人的故事里，学会理解更多不同的世界。", img: "images/movie.jpg", cap: "银幕之外" }
         ],
         bookTitle: "兴趣手册", bookNote: "HOBBIES · 五则", bookTag: "兴趣",
         bookCoverLine: "五种喜欢，都收在这一册里。",
         bookHint: "点击右页向右翻 · 点击左页向左翻",
+        bookAddImg: "插入图片",
+        bookAddImgHint: "把照片放进 outputs/images/ 后填路径",
         growingTag: "技能 · 项目",
         growingH2a: "正在", growingH2b: "生长",
         growingSub: "技能与第一个作品仍在路上，欢迎常回来看看。",
@@ -1124,15 +1159,17 @@ html.has-quill .quill { opacity: 1; }
         hobbiesH2a: "Through my ", hobbiesH2b: "lens",
         hobbiesSub: "Art and medicine — different frames, one lens.",
         hobbies: [
-          { icon: "brush", cn: "Painting", en: "绘画", desc: "I paint to keep the colours and feelings I see." },
-          { icon: "dance", cn: "Dance", en: "舞蹈", desc: "Moving to the beat — the stage is my clearest voice." },
-          { icon: "photo", cn: "Photography", en: "摄影", desc: "One press of the shutter, and light becomes a memory." },
-          { icon: "music", cn: "Music", en: "音乐", desc: "Melodies are the soundtrack of my study and my days." },
-          { icon: "film", cn: "Film", en: "电影", desc: "Stories on screen teach me to understand other worlds." }
+          { icon: "brush", cn: "Painting", en: "绘画", desc: "I paint to keep the colours and feelings I see.", img: "images/drawing1.jpg", cap: "Sketchbook snap" },
+          { icon: "dance", cn: "Dance", en: "舞蹈", desc: "Moving to the beat — the stage is my clearest voice.", img: "", cap: "In motion" },
+          { icon: "photo", cn: "Photography", en: "摄影", desc: "One press of the shutter, and light becomes a memory.", img: "", cap: "Caught light" },
+          { icon: "music", cn: "Music", en: "音乐", desc: "Melodies are the soundtrack of my study and my days.", img: "", cap: "On repeat" },
+          { icon: "film", cn: "Film", en: "电影", desc: "Stories on screen teach me to understand other worlds.", img: "", cap: "Beyond the screen" }
         ],
         bookTitle: "Hobby Booklet", bookNote: "兴趣手册 · FIVE", bookTag: "Hobby",
         bookCoverLine: "Five little loves, bound in one book.",
         bookHint: "Click the right page to turn forward · the left page to turn back",
+        bookAddImg: "Add image",
+        bookAddImgHint: "Drop a photo in outputs/images/ and set its path",
         growingTag: "SKILLS · PROJECTS",
         growingH2a: "Still ", growingH2b: "growing",
         growingSub: "Skills and a first project are still on the way — check back soon.",
@@ -1494,7 +1531,25 @@ html.has-quill .quill { opacity: 1; }
 
     /* ---------- 兴趣翻书（红底 + 黑色牛皮封皮 + 泛黄牛皮纸内页） ---------- */
     const CREST = '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"><path d="M32 14 C26 9 17 9 11 12 V50 C17 47 26 47 32 52 C38 47 47 47 53 50 V12 C47 9 38 9 32 14 Z"/><path d="M32 14 V52"/></svg>';
+    /* 书页占位图标（还没放照片时显示） */
+    const PHOTO_ICON = '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="9" width="34" height="30" rx="3"/><circle cx="17.5" cy="19.5" r="3.4"/><path d="M41 32 L31.5 22.5 L13 39"/></svg>';
     const bookState = { opened: false, flipped: 0, el: null, leaves: [], io: null };
+
+    /* 书页配图块：h.img 有值 → 显示真实照片（可带图注）；否则显示虚线占位框。
+       h.img 用相对本文件的路径，例如 "images/mydance.jpg" */
+    function mediaHTML(h, t) {
+      if (h.img) {
+        return '<figure class="pg__media">'
+          + '<img src="' + h.img + '" alt="' + (h.cn || "") + '" decoding="async" />'
+          + (h.cap ? '<figcaption class="pg__cap">' + h.cap + '</figcaption>' : '')
+          + '</figure>';
+      }
+      return '<figure class="pg__media pg__media--empty">'
+        + PHOTO_ICON
+        + '<b>' + t.bookAddImg + '</b>'
+        + '<span>' + t.bookAddImgHint + '</span>'
+        + '</figure>';
+    }
 
     function bookHTML(t) {
       const total = String(t.hobbies.length).padStart(2, "0");
@@ -1518,24 +1573,37 @@ html.has-quill .quill { opacity: 1; }
         </div>`;
       const leaves = t.hobbies.map(function (h, i) {
         const no = String(i + 1).padStart(2, "0");
+        const media = mediaHTML(h, t);
         return `
         <div class="leaf" data-leaf="${i + 1}">
           <div class="leaf__face leaf__face--front">
             <div class="pg">
               <span class="pg__no">${no}</span>
-              <span class="pg__icon">${ICON[h.icon]}</span>
-              <h3 class="pg__title">${h.cn}</h3>
-              <div class="pg__en">${h.en}</div>
+              <div class="pg__body">
+                <div class="pg__text">
+                  <span class="pg__icon">${ICON[h.icon]}</span>
+                  <h3 class="pg__title">${h.cn}</h3>
+                  <div class="pg__en">${h.en}</div>
+                  <div class="pg__rule"></div>
+                  <p class="pg__desc">${h.desc}</p>
+                </div>
+                ${media}
+              </div>
               <span class="pg__folio">${t.bookTag} · ${no}</span>
             </div>
           </div>
           <div class="leaf__face leaf__face--back">
             <div class="pg pg--back">
               <span class="pg__water" aria-hidden="true">${ICON[h.icon]}</span>
-              <h3 class="pg__title">${h.cn}</h3>
-              <div class="pg__en">${h.en}</div>
-              <div class="pg__rule"></div>
-              <p class="pg__desc">${h.desc}</p>
+              <div class="pg__body">
+                ${media}
+                <div class="pg__text">
+                  <h3 class="pg__title">${h.cn}</h3>
+                  <div class="pg__en">${h.en}</div>
+                  <div class="pg__rule"></div>
+                  <p class="pg__desc">${h.desc}</p>
+                </div>
+              </div>
               <span class="pg__folio">${no} / ${total}</span>
             </div>
           </div>

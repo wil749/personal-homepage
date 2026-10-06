@@ -23,7 +23,7 @@ if (-not (Test-Path -LiteralPath "outputs")) {
 
 # 源文件 -> 发布到根目录的文件名
 $files = [ordered]@{
-  "wyw个人主页-V3.1.html"     = "index.html"
+  "wyw个人主页-V4.0.html"     = "index.html"
   "wyw个人主页-projects.html" = "projects.html"
   "wyw个人主页-skills.html"   = "skills.html"
   "admin.html"                = "admin.html"
@@ -31,10 +31,18 @@ $files = [ordered]@{
 
 # 链接替换规则（旧的中文文件名 -> 新的发布文件名）
 $links = [ordered]@{
+  "wyw个人主页-V4.0.html"     = "index.html"
   "wyw个人主页-V3.1.html"     = "index.html"
   "wyw个人主页-V2.2.html"     = "index.html"
   "wyw个人主页-projects.html" = "projects.html"
   "wyw个人主页-skills.html"   = "skills.html"
+}
+
+# 需要同步到根目录的资源目录（源目录 -> 发布目录）
+# 首页 V4.0 的书页配图写的是相对路径 images/xxx.jpg，
+# 发布到仓库根目录后必须能在根目录的 images/ 下找到，否则图片 404。
+$assets = [ordered]@{
+  "outputs\images" = "images"
 }
 
 Write-Host ""
@@ -57,6 +65,23 @@ foreach ($src in $files.Keys) {
   $dstPath = Join-Path (Get-Location).Path $dstName
   [System.IO.File]::WriteAllText($dstPath, $text, (New-Object System.Text.UTF8Encoding($false)))
   Write-Host ("  {0,-28} -> {1,-16} 替换链接 {2} 处" -f $src, $dstName, $hits) -ForegroundColor Green
+}
+
+foreach ($srcDir in $assets.Keys) {
+  if (-not (Test-Path -LiteralPath $srcDir)) {
+    Write-Host ("  跳过：找不到资源目录 {0}" -f $srcDir) -ForegroundColor Yellow
+    continue
+  }
+  $dstDir = Join-Path (Get-Location).Path $assets[$srcDir]
+  if (-not (Test-Path -LiteralPath $dstDir)) {
+    New-Item -ItemType Directory -Path $dstDir | Out-Null
+  }
+  $copied = 0
+  Get-ChildItem -LiteralPath $srcDir -File | ForEach-Object {
+    Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $dstDir $_.Name) -Force
+    $copied++
+  }
+  Write-Host ("  {0,-28} -> {1,-16} 复制 {2} 个文件" -f $srcDir, ($assets[$srcDir] + "\"), $copied) -ForegroundColor Green
 }
 
 Write-Host ""
