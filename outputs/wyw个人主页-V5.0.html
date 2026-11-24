@@ -643,6 +643,18 @@ html.has-quill .quill { opacity: 1; }
     </button>
   </div>
 
+  <!-- 开场动画只放一次：已访问过的访客直接跳过，避免每次刷新都等一遍 -->
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem("wil_opening_seen_v1") === "1") {
+          var op = document.getElementById("opening");
+          if (op) { op.style.display = "none"; op.classList.add("is-done"); }
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- 顶部栏 -->
   <header class="topbar">
     <div class="wrap topbar__inner">
@@ -2362,12 +2374,21 @@ html.has-quill .quill { opacity: 1; }
     }
 
     /* ---------- 开场动画 ---------- */
+    var OPENING_KEY = "wil_opening_seen_v1";
+    function openingSeen() {
+      try { return localStorage.getItem(OPENING_KEY) === "1"; } catch (e) { return false; }
+    }
+    function markOpeningSeen() {
+      try { localStorage.setItem(OPENING_KEY, "1"); } catch (e) {}
+    }
     function startOpening() {
       const op = document.getElementById("opening");
       if (!op) return;
       /* 预览 / 截图用：?noopening=1 直接跳过开场 */
       if (/[?&]noopening=1/.test(location.search)) { op.style.display = "none"; document.body.classList.remove("opening"); return; }
       if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { op.style.display = "none"; return; }
+      /* 只看一次：第二次及以后进入，直接露出主页 */
+      if (openingSeen()) { op.style.display = "none"; op.classList.add("is-done"); document.body.classList.remove("opening"); return; }
       const city = document.getElementById("op-city");
       const cap = document.getElementById("op-cap-text");
       const prompt = document.getElementById("op-prompt");
@@ -2427,6 +2448,7 @@ html.has-quill .quill { opacity: 1; }
       function finish() {
         if (done) return;
         done = true;
+        markOpeningSeen();
         timers.forEach(clearTimeout);
         releaseSwitch();
         hidePrompt();
@@ -2469,6 +2491,8 @@ html.has-quill .quill { opacity: 1; }
       }
 
       body.classList.add("opening");
+      /* 进入即记录：开场只属于第一次访问，中途刷新也不重播 */
+      markOpeningSeen();
 
       /* 第一幕：红底 + 城市远景（小，居中）+ 字幕 + 中心圆形波纹提示标 */
       later(function () {
