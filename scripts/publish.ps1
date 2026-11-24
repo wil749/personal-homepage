@@ -23,7 +23,7 @@ if (-not (Test-Path -LiteralPath "outputs")) {
 
 # 源文件 -> 发布到根目录的文件名
 $files = [ordered]@{
-  "wyw个人主页-V4.0.html"     = "index.html"
+  "wyw个人主页-V5.0.html"     = "index.html"
   "wyw个人主页-projects.html" = "projects.html"
   "wyw个人主页-skills.html"   = "skills.html"
   "admin.html"                = "admin.html"
@@ -31,18 +31,22 @@ $files = [ordered]@{
 
 # 链接替换规则（旧的中文文件名 -> 新的发布文件名）
 $links = [ordered]@{
+  "wyw个人主页-V5.0.html"     = "index.html"
   "wyw个人主页-V4.0.html"     = "index.html"
   "wyw个人主页-V3.1.html"     = "index.html"
+  "wyw个人主页-V3.2.html"     = "index.html"
   "wyw个人主页-V2.2.html"     = "index.html"
   "wyw个人主页-projects.html" = "projects.html"
   "wyw个人主页-skills.html"   = "skills.html"
 }
 
 # 需要同步到根目录的资源目录（源目录 -> 发布目录）
-# 首页 V4.0 的书页配图写的是相对路径 images/xxx.jpg，
-# 发布到仓库根目录后必须能在根目录的 images/ 下找到，否则图片 404。
+# 首页书页配图用相对路径 images/xxx.jpg；
+# V5 的分身知识库用相对路径 data/persona.js。
+# 发布到仓库根目录后必须在根目录下能找到这两个目录，否则 404。
 $assets = [ordered]@{
   "outputs\images" = "images"
+  "outputs\data"   = "data"
 }
 
 Write-Host ""

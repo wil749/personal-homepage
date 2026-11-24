@@ -27,3 +27,9 @@ Desktop.ini
 # 提醒：任何 Supabase service_role key、GitHub Token 都不要写进仓库
 .env
 .env.*
+
+# --- 本地工具（免安装 CLI 等，体积大，不进仓库） ---
+.tools/
+
+# --- 访客/会话上传素材（临时文件，不进仓库） ---
+uploads/

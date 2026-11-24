@@ -101,6 +101,10 @@
     .cover__intro strong { color: #fff; background: var(--red); padding: 0 0.3rem; }
     .cover__cta { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 2.6rem; padding: 0.85rem 2rem; background: var(--ink); color: #fff; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.88rem; transition: transform .35s var(--ease), background .35s var(--ease), color .35s var(--ease); animation: pulseBox 2.6s var(--ease) infinite; }
     .cover__cta:hover { background: #fff; color: var(--red); transform: translateY(-3px); }
+    .cover__ctas { display: flex; flex-wrap: wrap; gap: .7rem; justify-content: center; margin-top: 2.6rem; }
+    .cover__ctas .cover__cta { margin-top: 0; }
+    .cover__cta--ghost { background: transparent; border: 2px solid rgba(255,255,255,.62); color: var(--white); animation: none; }
+    .cover__cta--ghost:hover { background: #fff; border-color: #fff; color: var(--red); }
 
     .scroll-hint { position: absolute; z-index: 3; bottom: 1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.62rem; font-weight: 800; letter-spacing: 0.34em; text-transform: uppercase; color: var(--gray); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
     .scroll-hint::after { content: ""; width: 2px; height: 1.8rem; background: linear-gradient(var(--gray), transparent); margin-top: 0.1rem; }
@@ -251,54 +255,119 @@
     .grow-badge { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem; color: var(--red); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
     .grow-badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: pulse 2s var(--ease) infinite; }
 
-    /* ---------------- 问答互动区（问题菜单 + 对话窗） ---------------- */
-    .qa-stage { display: grid; grid-template-columns: minmax(15rem, .82fr) minmax(0, 1.45fr); border: 2px solid var(--red); min-height: 37rem; background: #080808; box-shadow: 0 24px 70px rgba(0,0,0,.34); position: relative; overflow: hidden; }
-    .qa-stage::after { content: "CASE / Q&A"; position: absolute; right: -2.1rem; top: 2.6rem; transform: rotate(90deg); color: rgba(255,255,255,.13); font-size: .62rem; letter-spacing: .32em; font-weight: 900; pointer-events: none; }
-    .qa-menu { padding: clamp(1.3rem, 3vw, 2.2rem); background: var(--red); color: #fff; display: flex; flex-direction: column; position: relative; }
-    .qa-menu::before { content: "?"; position: absolute; right: .8rem; bottom: -3.6rem; color: rgba(0,0,0,.16); font-family: var(--disp); font-size: 15rem; font-weight: 900; line-height: 1; }
-    .qa-menu__eyebrow { color: var(--ink); font-size: .7rem; font-weight: 900; letter-spacing: .26em; text-transform: uppercase; position: relative; z-index: 1; }
-    .qa-menu__title { font-family: var(--disp); font-size: clamp(1.65rem, 3.4vw, 2.5rem); line-height: 1.15; margin-top: .65rem; position: relative; z-index: 1; }
-    .qa-options { display: flex; flex-direction: column; gap: .65rem; margin-top: 1.7rem; position: relative; z-index: 1; max-height: 23rem; overflow-y: auto; padding-right: .2rem; }
-    .qa-option { width: 100%; border: 1px solid rgba(255,255,255,.48); background: transparent; color: #fff; padding: .82rem .9rem; text-align: left; font-size: .88rem; font-weight: 800; line-height: 1.45; cursor: pointer; display: grid; grid-template-columns: 1.8rem 1fr; gap: .45rem; transition: background .25s var(--ease), color .25s var(--ease), transform .25s var(--ease); }
-    .qa-option span { color: var(--ink); }
-    .qa-option:hover, .qa-option.is-active { background: var(--ink); color: #fff; transform: translateX(5px); border-color: var(--ink); }
-    .qa-option:hover span, .qa-option.is-active span { color: var(--red); }
-    .qa-chat { padding: clamp(1.2rem, 3.5vw, 2.4rem); display: flex; flex-direction: column; min-width: 0; }
-    .qa-chat__bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #333; }
-    .qa-agent { display: flex; align-items: center; gap: .75rem; }
-    .qa-agent__mark { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; background: var(--red); color: #fff; font-family: var(--disp); font-weight: 900; }
-    .qa-agent b { display: block; color: #fff; font-size: .9rem; letter-spacing: .14em; }
-    .qa-agent small { display: block; color: var(--gray); font-size: .68rem; letter-spacing: .08em; }
-    .qa-status { color: var(--gray); font-size: .7rem; letter-spacing: .14em; }
-    .qa-status::before { content: ""; display: inline-block; width: .48rem; height: .48rem; margin-right: .45rem; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 4px rgba(168,13,24,.16); }
-    .qa-messages { flex: 1; min-height: 17rem; max-height: 25rem; overflow-y: auto; padding: 1.5rem .2rem; display: flex; flex-direction: column; gap: 1rem; scrollbar-color: var(--red) #171717; }
-    .qa-message { max-width: min(88%, 38rem); animation: qaIn .42s var(--ease) both; }
-    .qa-message--bot { align-self: flex-start; }
-    .qa-message--user { align-self: flex-end; }
-    .qa-message__who { display: block; margin-bottom: .28rem; color: var(--gray); font-size: .62rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
-    .qa-message--user .qa-message__who { text-align: right; color: var(--red); }
-    .qa-message__bubble { padding: .85rem 1rem; font-size: .94rem; line-height: 1.75; border: 1px solid #333; background: #121212; color: var(--off); }
-    .qa-message--bot .qa-message__bubble { border-left: 4px solid var(--red); }
-    .qa-message--user .qa-message__bubble { background: var(--red); color: #fff; border-color: var(--red); }
-    .qa-typing { display: inline-flex; gap: .3rem; align-items: center; min-width: 4rem; }
-    .qa-typing i { width: .38rem; height: .38rem; border-radius: 50%; background: var(--gray); animation: qaDot 1s infinite alternate; }
-    .qa-typing i:nth-child(2) { animation-delay: .16s; }
-    .qa-typing i:nth-child(3) { animation-delay: .32s; }
-    .qa-chat__hint { border-top: 1px solid #333; padding-top: .9rem; color: #777; font-size: .72rem; letter-spacing: .08em; }
-    @keyframes qaIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-    @keyframes qaDot { to { opacity: .25; transform: translateY(-3px); } }
+    /* ---------------- 分身 · TWIN（羊皮纸日记跨页） ---------------- */
+    .twin-band {
+      --paper: #ece0c4;
+      --paper-deep: #d9c9a3;
+      --paper-ink: #221e19;
+      --paper-ink-soft: #4a4237;
+      --seal: #8e2b25;
+      --seal-deep: #5e1a16;
+      --tape: rgba(214,193,148,.8);
+      --hand: "Segoe Print", "Bradley Hand", "Kaiti SC", "STKaiti", "KaiTi", "楷体", var(--font);
+      padding-block: clamp(4rem, 10vw, 7.5rem);
+    }
+    .twin-band::before { content: ""; position: absolute; inset: 0; background: radial-gradient(58% 46% at 50% 46%, rgba(168,13,24,.18), transparent 72%); pointer-events: none; }
+    .twin-band .grain { opacity: .1; }
+    .twin-book { position: relative; margin-top: clamp(1.6rem, 4vw, 2.8rem); }
+    .twin-tear { position: absolute; left: 1.6%; width: 96.8%; height: 22px; z-index: 0; pointer-events: none; }
+    .twin-tear path { fill: var(--paper); }
+    .twin-tear--top { top: -19px; }
+    .twin-tear--bottom { bottom: -19px; transform: scaleY(-1); }
+    .twin-tape { position: absolute; width: 96px; height: 26px; z-index: 6; background: linear-gradient(180deg, rgba(230,213,175,.92), rgba(206,184,138,.74)); border-left: 1px dashed rgba(140,115,70,.3); border-right: 1px dashed rgba(140,115,70,.3); box-shadow: 0 2px 6px rgba(60,40,20,.18); opacity: .92; pointer-events: none; }
+    .twin-tape--1 { top: -13px; left: 7%; transform: rotate(-4deg); }
+    .twin-tape--2 { top: -11px; right: 6%; transform: rotate(3deg); }
+    .twin-sheet {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) 26px minmax(0, 1.2fr);
+      padding: clamp(1rem, 2.6vw, 2rem);
+      color: var(--paper-ink);
+      background-color: var(--paper);
+      background-image:
+        radial-gradient(120% 90% at 12% 0%, rgba(255,252,240,.55), transparent 58%),
+        radial-gradient(90% 70% at 88% 100%, rgba(120,88,48,.17), transparent 62%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.1'/%3E%3C/svg%3E");
+      box-shadow: 0 36px 84px rgba(0,0,0,.52), inset 0 0 84px rgba(96,68,34,.18), inset 0 1px 0 rgba(255,255,255,.4);
+      -webkit-text-stroke: .012em currentColor;
+    }
+    .twin-sheet::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 26px rgba(82,56,26,.2); background: linear-gradient(104deg, transparent 43.6%, rgba(120,92,54,.055) 44.4%, transparent 45.2%, transparent 55%, rgba(255,250,235,.16) 55.7%, transparent 56.4%); }
+    .twin-spine { position: relative; border-left: 1px dashed rgba(110,86,52,.36); border-right: 1px dashed rgba(255,250,235,.42); }
+    .twin-spine i { position: absolute; left: 50%; width: 9px; height: 9px; border-radius: 50%; transform: translateX(-50%); background: radial-gradient(circle at 35% 30%, #bda57a, #7d6440 70%); box-shadow: inset 0 1px 1px rgba(255,255,255,.5), 0 1px 2px rgba(0,0,0,.25); }
+    .twin-spine i:nth-child(1) { top: 16%; }
+    .twin-spine i:nth-child(2) { top: 50%; }
+    .twin-spine i:nth-child(3) { top: 84%; }
+    .twin-leaf { padding: clamp(.9rem, 2.2vw, 1.7rem); min-width: 0; }
+    .twin-leaf--left { position: relative; display: flex; flex-direction: column; padding-right: clamp(.7rem, 1.6vw, 1.2rem); }
+    .twin-leaf--right { display: flex; flex-direction: column; padding-left: clamp(.7rem, 1.6vw, 1.2rem); }
 
-    /* 打字光标 · 重点高亮 · 对话区与选项滚动条 */
-    .qa-caret { display: inline-block; width: .5em; height: 1.05em; margin-left: .1em; background: var(--red); vertical-align: -.16em; animation: qaCaret .72s steps(1, end) infinite; }
-    @keyframes qaCaret { 50% { opacity: 0; } }
-    .qa-message__bubble strong { color: #fff; background: var(--red); padding: 0 .18em; font-weight: 900; }
-    .qa-message--user .qa-message__bubble strong { background: rgba(0,0,0,.32); }
-    .qa-messages::-webkit-scrollbar { width: 8px; }
-    .qa-messages::-webkit-scrollbar-track { background: #141414; }
-    .qa-messages::-webkit-scrollbar-thumb { background: var(--red); }
-    .qa-options::-webkit-scrollbar { width: 6px; }
-    .qa-options::-webkit-scrollbar-track { background: rgba(0,0,0,.18); }
-    .qa-options::-webkit-scrollbar-thumb { background: rgba(0,0,0,.45); }
+    /* 左页：立绘 + 身份卡 */
+    .twin-photo { position: relative; transform: rotate(-1.4deg); padding: .55rem .55rem 1.7rem; background: #f7efdc; box-shadow: 0 9px 20px rgba(70,45,20,.24), 0 0 0 1px rgba(120,92,54,.14); }
+    .twin-photo::after { content: ""; position: absolute; inset: .55rem .55rem 1.7rem; box-shadow: inset 0 0 34px rgba(90,62,30,.22); pointer-events: none; }
+    .twin-photo img { display: block; width: 100%; height: auto; mix-blend-mode: multiply; filter: contrast(1.06) sepia(.08) saturate(.94); }
+    .twin-photo__cap { position: absolute; left: 0; right: 0; bottom: .42rem; text-align: center; font-family: var(--hand); font-size: .64rem; letter-spacing: .06em; color: rgba(84,62,38,.72); }
+    .twin-id { margin-top: clamp(1rem, 2.2vw, 1.5rem); }
+    .twin-id__eyebrow { font-family: var(--hand); font-size: .62rem; letter-spacing: .2em; color: rgba(110,82,45,.75); }
+    .twin-id h3 { font-family: var(--disp); font-size: clamp(1.35rem, 2.6vw, 1.85rem); line-height: 1.12; margin: .2rem 0 .45rem; color: var(--paper-ink); }
+    .twin-id h3 em { font-style: normal; font-family: var(--hand); font-size: .62em; color: var(--seal); }
+    .twin-id > p { font-size: .78rem; line-height: 1.7; color: rgba(58,46,32,.8); }
+    .twin-facts { list-style: none; margin: .95rem 0 0; padding: 0; display: grid; gap: .42rem; }
+    .twin-facts li { display: flex; gap: .65rem; align-items: baseline; font-size: .76rem; line-height: 1.5; border-bottom: 1px dashed rgba(110,82,45,.24); padding-bottom: .32rem; }
+    .twin-facts span { flex: 0 0 2.8rem; font-family: var(--hand); font-size: .66rem; color: rgba(110,82,45,.78); }
+    .twin-facts b { font-weight: 700; color: var(--paper-ink); }
+    .twin-note { margin-top: .9rem; font-family: var(--hand); font-size: .7rem; line-height: 1.75; color: rgba(92,68,40,.82); transform: rotate(-1.4deg); }
+    .twin-seal { position: absolute; top: 1.55rem; right: 1rem; width: 3.9rem; height: 3.9rem; border-radius: 50%; display: grid; place-items: center; transform: rotate(-9deg); background: radial-gradient(circle at 35% 30%, #b5433b, #8e2b25 46%, #5e1a16 100%); color: #f3dfc0; box-shadow: 0 3px 0 #4a130f, 0 7px 14px rgba(0,0,0,.28); }
+    .twin-seal::before { content: ""; position: absolute; inset: 5px; border-radius: 50%; border: 1px dashed rgba(255,235,205,.45); }
+    .twin-seal span { font-family: var(--disp); font-weight: 900; font-size: 1.45rem; }
+
+    /* 右页：对话 */
+    .twin-head { display: flex; align-items: center; gap: .7rem; padding-bottom: .75rem; border-bottom: 1px solid rgba(110,82,45,.32); }
+    .twin-avatar { flex: 0 0 2.55rem; width: 2.55rem; height: 2.55rem; display: grid; place-items: center; border-radius: 50%; background: var(--seal); color: #f3dfc0; font-family: var(--disp); font-weight: 900; transform: rotate(-4deg); box-shadow: 0 2px 0 #4a130f; }
+    .twin-head__id { min-width: 0; }
+    .twin-head b { display: block; font-size: .9rem; letter-spacing: .1em; color: var(--paper-ink); }
+    .twin-head small { display: block; font-family: var(--hand); font-size: .64rem; color: rgba(92,68,40,.7); }
+    .twin-badge { margin-left: auto; flex: 0 0 auto; font-family: var(--hand); font-size: .62rem; letter-spacing: .04em; color: var(--seal); border: 1px solid rgba(142,43,37,.42); padding: .2rem .5rem; transform: rotate(1.6deg); background: rgba(255,250,235,.45); }
+    .twin-log { flex: 1; min-height: 17.5rem; max-height: 25rem; overflow-y: auto; padding: .9rem .35rem 1.1rem; scrollbar-color: rgba(142,43,37,.6) rgba(110,82,45,.1); background-image: repeating-linear-gradient(180deg, transparent 0 31px, rgba(96,70,40,.16) 31px 32px); background-position: 0 .45rem; }
+    .twin-msg { max-width: 94%; margin-bottom: 1.05rem; animation: twinIn .42s var(--ease) both; }
+    .twin-msg--bot { align-self: flex-start; }
+    .twin-msg--user { margin-left: auto; }
+    .twin-msg__who { display: inline-block; margin-bottom: .16rem; font-family: var(--hand); font-size: .6rem; letter-spacing: .12em; color: rgba(96,72,42,.72); border-bottom: 1px solid rgba(120,90,50,.28); }
+    .twin-msg--user .twin-msg__who { margin-left: 100%; }
+    .twin-msg__body { position: relative; font-size: .93rem; line-height: 1.85; color: var(--paper-ink); padding: .12rem .15rem; text-align: left; word-break: break-word; }
+    .twin-msg--bot .twin-msg__body { border-left: 3px solid var(--seal); padding-left: .75rem; background: linear-gradient(90deg, rgba(255,250,235,.55), transparent 82%); }
+    .twin-msg--user .twin-msg__body { display: inline-block; float: right; clear: both; padding: .34rem .62rem; background: rgba(255,252,240,.62); border: 1px solid rgba(120,90,50,.24); box-shadow: 0 2px 5px rgba(90,60,30,.08); transform: rotate(-.4deg); }
+    .twin-msg::after { content: ""; display: block; clear: both; }
+    .twin-caret { display: inline-block; width: 2px; height: 1.02em; margin-left: 1px; background: var(--seal); vertical-align: -.14em; animation: twinBlink .72s steps(1, end) infinite; }
+    @keyframes twinBlink { 50% { opacity: 0; } }
+    @keyframes twinIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .twin-typing { display: inline-flex; gap: .3rem; align-items: center; min-width: 3.4rem; padding: .3rem 0; }
+    .twin-typing i { width: .34rem; height: .34rem; border-radius: 50%; background: rgba(142,43,37,.72); animation: twinDot 1s infinite alternate; }
+    .twin-typing i:nth-child(2) { animation-delay: .16s; }
+    .twin-typing i:nth-child(3) { animation-delay: .32s; }
+    @keyframes twinDot { to { opacity: .22; transform: translateY(-3px); } }
+    .twin-quick { display: flex; flex-wrap: wrap; gap: .42rem; margin: .55rem 0 .15rem; }
+    .twin-quick button { border: 1px dashed rgba(110,82,45,.46); background: rgba(255,250,235,.5); color: var(--paper-ink-soft); font-family: var(--hand); font-size: .72rem; line-height: 1.2; padding: .32rem .58rem; cursor: pointer; transform: rotate(-.6deg); transition: background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease), transform .25s var(--ease); }
+    .twin-quick button:nth-child(2n) { transform: rotate(.7deg); }
+    .twin-quick button:hover { background: var(--seal); border-color: var(--seal); color: #fff; transform: translateY(-1px) rotate(0deg); }
+    .twin-form { display: flex; gap: .65rem; align-items: flex-end; margin-top: .45rem; padding-top: .7rem; border-top: 1px solid rgba(110,82,45,.3); }
+    .twin-field { flex: 1; min-width: 0; }
+    .twin-input { width: 100%; background: transparent; border: 0; border-bottom: 1px solid rgba(110,82,45,.5); color: var(--paper-ink); font-family: var(--hand); font-size: .92rem; padding: .45rem .15rem; outline: none; border-radius: 0; }
+    .twin-input::placeholder { color: rgba(92,68,40,.52); }
+    .twin-input:focus { border-bottom-color: var(--seal); box-shadow: 0 1px 0 var(--seal); }
+    .twin-send { flex: 0 0 3.5rem; width: 3.5rem; height: 3.5rem; border-radius: 50%; border: 2px solid rgba(94,26,22,.55); background: radial-gradient(circle at 35% 30%, #b5433b, var(--seal) 46%, var(--seal-deep) 100%); color: #f6e9d2; font-family: var(--hand); font-size: .6rem; letter-spacing: .06em; line-height: 1.15; cursor: pointer; box-shadow: 0 3px 0 #4a130f, 0 7px 14px rgba(0,0,0,.28); transition: transform .2s var(--ease), box-shadow .2s var(--ease); }
+    .twin-send:hover { transform: translateY(-2px) rotate(-3deg); box-shadow: 0 5px 0 #4a130f, 0 10px 18px rgba(0,0,0,.3); }
+    .twin-send:active { transform: translateY(1px); box-shadow: 0 1px 0 #4a130f; }
+    .twin-tools { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem 1rem; margin-top: .55rem; font-family: var(--hand); font-size: .66rem; }
+    .twin-tools button { border: 0; background: none; padding: 0; color: rgba(84,62,38,.76); font-family: inherit; font-size: inherit; cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
+    .twin-tools button:hover { color: var(--seal); }
+    .twin-tools button[aria-pressed="true"] { color: var(--seal); font-weight: 700; text-decoration-style: solid; }
+    .twin-count { margin-left: auto; color: rgba(84,62,38,.55); }
+    .twin-count b { color: var(--seal); }
+    .twin-log::-webkit-scrollbar { width: 7px; }
+    .twin-log::-webkit-scrollbar-track { background: rgba(110,82,45,.1); }
+    .twin-log::-webkit-scrollbar-thumb { background: rgba(142,43,37,.55); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
     /* ---------------- 联系方式（合并大板块） ---------------- */
     .contact-panel { background: var(--ink); color: #fff; border: 2px solid var(--red); padding: clamp(1.6rem, 4vw, 3rem); position: relative; overflow: hidden; }
@@ -350,17 +419,24 @@
       .about-grid { grid-template-columns: 1fr; }
       .hobbies { grid-template-columns: repeat(2, 1fr); }
       .growing { grid-template-columns: 1fr; }
-      .qa-stage { grid-template-columns: 1fr; }
-      .qa-menu::before { font-size: 10rem; }
-      .qa-messages { min-height: 15rem; max-height: 22rem; }
-      .qa-options { max-height: none; overflow: visible; padding-right: 0; }
+      .twin-sheet { grid-template-columns: 1fr; gap: 0; padding: clamp(.8rem, 3vw, 1.2rem); }
+      .twin-spine { display: none; }
+      .twin-leaf--left { padding: 0 0 clamp(.9rem, 3vw, 1.2rem); border-bottom: 1px dashed rgba(110,82,45,.28); margin-bottom: clamp(.9rem, 3vw, 1.2rem); }
+      .twin-photo { max-width: 18rem; margin-inline: auto; }
+      .twin-leaf--right { padding: 0; }
+      .twin-log { min-height: 15rem; max-height: 22rem; }
       .contact-line { flex-wrap: wrap; }
       .contact-badge { width: 100%; }
+    }
+    @media (max-width: 620px) {
+      .twin-photo { max-width: none; }
+      .twin-facts li { font-size: .72rem; }
+      .twin-send { width: 3.1rem; height: 3.1rem; }
     }
     @media (max-width: 480px) { .hobbies { grid-template-columns: 1fr; } .cover__name { letter-spacing: 0.08em; } }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      [data-reveal], .mask-in > span, .cover__name .ch, .fall, .art-float, .cover__cta, .grow-badge i, .brain-pulse, .cover__scroll, .qa-caret, .qa-typing i { animation: none !important; transition: none !important; }
+      [data-reveal], .mask-in > span, .cover__name .ch, .fall, .art-float, .cover__cta, .grow-badge i, .brain-pulse, .cover__scroll, .twin-caret, .twin-typing i { animation: none !important; transition: none !important; }
       [data-reveal] { opacity: 1; transform: none; }
       .cover__name .ch { opacity: 1; transform: none; }
       .mask-in > span { transform: none; }
@@ -525,7 +601,7 @@ html.has-quill .quill { opacity: 1; }
         <a id="nav-about" href="#about">关于</a>
         <a id="nav-growing" href="#growing">项目</a>
         <a id="nav-hobbies" href="#hobbies">兴趣</a>
-        <a id="nav-ask" href="#ask">问答</a>
+        <a id="nav-twin" href="#twin">分身</a>
         <a id="nav-contact" href="#contact">联系</a>
         <a id="nav-feedback" href="#feedback">留言</a>
         <div class="lang" role="group" aria-label="语言切换">
@@ -761,7 +837,10 @@ html.has-quill .quill { opacity: 1; }
           <p class="cover__role" id="role">智能医学工程（脑机接口方向）· 大一</p>
           <p class="cover__intro" id="intro"></p>
         </div>
-        <a class="cover__cta" href="#about"><span id="cta">进入档案</span> →</a>
+        <div class="cover__ctas">
+          <a class="cover__cta" href="#about"><span id="cta">进入档案</span> →</a>
+          <a class="cover__cta cover__cta--ghost" href="#twin" id="cta-twin">和分身聊聊</a>
+        </div>
       </div>
       <div class="scroll-hint" aria-hidden="true">下滑 · Scroll</div>
     </section>
@@ -831,39 +910,73 @@ html.has-quill .quill { opacity: 1; }
       </div>
     </section>
 
-    <!-- 问答互动区（位于联系方式之前 · 黑底） -->
-    <section class="band band--black" id="ask">
+    <!-- 分身 · TWIN（羊皮纸跨页 · 本地知识库模式） -->
+    <section class="band band--black twin-band" id="twin">
+      <div class="grain" aria-hidden="true"></div>
       <div class="wrap section">
         <div class="section__head" data-reveal>
           <div>
-            <span class="label" id="ask-tag">问答 · ASK</span>
-            <h2 class="h2" id="ask-h2">你问我<span class="mask-in"><span>答</span></span></h2>
+            <span class="label" id="twin-tag">分身 · TWIN</span>
+            <h2 class="h2" id="twin-h2">另一个<span class="mask-in"><span>我</span></span></h2>
           </div>
-          <p class="section__sub" id="ask-sub"></p>
+          <p class="section__sub" id="twin-sub"></p>
         </div>
 
-        <div class="qa-stage" data-reveal>
-          <!-- 左：问题菜单（红底） -->
-          <div class="qa-menu">
-            <span class="qa-menu__eyebrow" id="qa-eyebrow">CASE FILE · Q&A</span>
-            <h3 class="qa-menu__title" id="qa-title">点一个问题，开始对话</h3>
-            <div class="qa-options" id="qa-options" role="group" aria-label="常见问题列表"></div>
-          </div>
-          <!-- 右：对话窗（黑底） -->
-          <div class="qa-chat">
-            <div class="qa-chat__bar">
-              <div class="qa-agent">
-                <span class="qa-agent__mark" id="qa-mark" aria-hidden="true">W</span>
-                <div>
-                  <b id="qa-agent-name">王悦为 · Wil</b>
-                  <small id="qa-agent-role">脑机接口方向 · 大一</small>
-                </div>
+        <div class="twin-book" data-reveal>
+          <span class="twin-tape twin-tape--1" aria-hidden="true"></span>
+          <span class="twin-tape twin-tape--2" aria-hidden="true"></span>
+          <svg class="twin-tear twin-tear--top" viewBox="0 0 1200 28" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 28 L0 13 L22 17 L44 9 L66 15 L88 8 L112 14 L138 10 L164 17 L190 9 L216 15 L240 8 L266 14 L292 10 L318 16 L344 9 L370 15 L396 8 L422 14 L448 11 L474 17 L500 9 L526 15 L552 8 L578 14 L604 10 L630 16 L656 9 L682 15 L708 8 L734 14 L760 11 L786 17 L812 9 L838 15 L864 8 L890 14 L916 10 L942 16 L968 9 L994 15 L1020 8 L1046 14 L1072 11 L1098 17 L1124 9 L1150 15 L1176 8 L1200 13 L1200 28 Z"/>
+          </svg>
+
+          <div class="twin-sheet">
+            <aside class="twin-leaf twin-leaf--left">
+              <figure class="twin-photo">
+                <img src="images/twin-portrait.jpg" alt="王悦为的画像" width="900" height="721" loading="lazy" decoding="async">
+                <figcaption class="twin-photo__cap">Wil · EST. 2008</figcaption>
+              </figure>
+              <div class="twin-id">
+                <span class="twin-id__eyebrow">THE OTHER ME</span>
+                <h3 id="twin-name">王悦为 <em>/ Wil</em></h3>
+                <p id="twin-role">智能医学工程（脑机接口方向）· 大一</p>
+                <ul class="twin-facts" id="twin-facts"></ul>
+                <p class="twin-note" id="twin-note"></p>
               </div>
-              <span class="qa-status" id="qa-status">在线 · ONLINE</span>
+              <div class="twin-seal" aria-hidden="true"><span>W</span></div>
+            </aside>
+
+            <div class="twin-spine" aria-hidden="true"><i></i><i></i><i></i></div>
+
+            <div class="twin-leaf twin-leaf--right">
+              <div class="twin-head">
+                <span class="twin-avatar" aria-hidden="true">W</span>
+                <div class="twin-head__id">
+                  <b id="twin-agent">王悦为 · Wil</b>
+                  <small id="twin-mode">本地知识库模式 · 对话不上传</small>
+                </div>
+                <span class="twin-badge" id="twin-badge">纸上的我</span>
+              </div>
+              <div class="twin-log" id="twin-log" role="log" aria-live="polite" aria-label="与分身的对话"></div>
+              <div class="twin-quick" id="twin-quick" role="group" aria-label="快捷问题"></div>
+              <form class="twin-form" id="twin-form" autocomplete="off">
+                <div class="twin-field">
+                  <label class="sr-only" for="twin-input" id="twin-input-label">写下你的问题</label>
+                  <input class="twin-input" id="twin-input" name="q" type="text" maxlength="200" placeholder="写点什么…">
+                </div>
+                <button class="twin-send" id="twin-send" type="submit">寄出</button>
+              </form>
+              <div class="twin-tools">
+                <button type="button" id="twin-retain" aria-pressed="false">在本机保留</button>
+                <button type="button" id="twin-export">导出 .txt</button>
+                <button type="button" id="twin-clear">清空这一页</button>
+                <span class="twin-count" id="twin-count"></span>
+              </div>
             </div>
-            <div class="qa-messages" id="qa-messages" role="log" aria-live="polite" aria-label="问答对话内容"></div>
-            <p class="qa-chat__hint" id="qa-hint"></p>
           </div>
+
+          <svg class="twin-tear twin-tear--bottom" viewBox="0 0 1200 28" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 28 L0 13 L22 17 L44 9 L66 15 L88 8 L112 14 L138 10 L164 17 L190 9 L216 15 L240 8 L266 14 L292 10 L318 16 L344 9 L370 15 L396 8 L422 14 L448 11 L474 17 L500 9 L526 15 L552 8 L578 14 L604 10 L630 16 L656 9 L682 15 L708 8 L734 14 L760 11 L786 17 L812 9 L838 15 L864 8 L890 14 L916 10 L942 16 L968 9 L994 15 L1020 8 L1046 14 L1072 11 L1098 17 L1124 9 L1150 15 L1176 8 L1200 13 L1200 28 Z"/>
+          </svg>
         </div>
       </div>
     </section>
@@ -968,6 +1081,8 @@ html.has-quill .quill { opacity: 1; }
     </div>
   </footer>
 
+  <!-- 分身知识库：只放可公开信息；将来接 LLM 时，这份数据可直接作为检索库 -->
+  <script src="data/persona.js"></script>
   <script>
   (function () {
     "use strict";
@@ -985,8 +1100,8 @@ html.has-quill .quill { opacity: 1; }
        ⚠️ anon key 是公开密钥，放前端是正常做法；真正的安全由数据库
           的 RLS 行级安全策略保证（详见 docs/supabase-接入指南.md）。
        ================================================================== */
-    const SUPABASE_URL = "https://qscorgyyzffycjuqhhxe.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzY29yZ3l5emZmeWNqdXFoaHhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2MzE0MzIsImV4cCI6MjEwNTIwNzQzMn0.V3nsB-iN9xTI2euuDe8U-JaB_gKU9V6ZaxnOPQfokJY";
+    const SUPABASE_URL = "https://bafmpqiesnsyhtnqfohj.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_hZXfXp6oCsyU5LjKEVQ_Ng_hvBAz5jO";
     const GUESTBOOK_TABLE = "guestbook";
     const SB_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js";
 
@@ -1039,7 +1154,7 @@ html.has-quill .quill { opacity: 1; }
         intro: "嗨，我是王悦为。钻研<strong>脑机接口</strong>，也爱绘画、舞蹈、摄影。记录生活，也探索生物学与人文艺术。很高兴认识你。",
         cta: "进入档案",
         opContinue: "点击继续",
-        nav: { about: "关于", hobbies: "兴趣", growing: "项目", ask: "问答", contact: "联系", feedback: "留言" },
+        nav: { about: "关于", hobbies: "兴趣", growing: "项目", twin: "分身", contact: "联系", feedback: "留言" },
         aboutTag: "关于 · ABOUT",
         aboutH2a: "科学与", aboutH2b: "艺术", aboutH2c: "之间",
         aboutSub: "从成都到深圳，从医学代码到画笔，一个随信号起舞的 08 后。",
@@ -1073,24 +1188,44 @@ html.has-quill .quill { opacity: 1; }
           { no: "02", title: "技能成长", desc: "正在解锁新的工具与方向，边学边玩。", badge: "查看技能", href: "skills.html" },
           { no: "03", title: "更多可能", desc: "这里永远为下一个想法留着一页。", badge: "敬请期待", href: "#" }
         ],
-        askTag: "问答 · ASK",
-        askH2a: "你问我", askH2b: "答",
-        askSub: "常被问到的四个问题，点一下，我用对话回答你。",
-        qaEyebrow: "CASE FILE · Q&A",
-        qaTitle: "点一个问题，开始对话",
-        qaMark: "W",
-        qaAgentName: "王悦为 · Wil",
-        qaAgentRole: "脑机接口方向 · 大一",
-        qaStatus: "在线 · ONLINE",
-        qaHint: "点击左侧任意问题 · 回答会以对话形式出现在这里 · 随语言切换",
-        qaHello: "你好，我是王悦为（Wil）。左边是我最常被问到的四个问题，点一个，我在这里回答你。",
-        qaUserLabel: "访客 · VISITOR",
-        qaBotLabel: "王悦为 · WIL",
-        qa: [
-          { q: "你是怎么对脑机接口产生兴趣的？", a: "最初的震撼来自电影《黑客帝国》——当\"意识\"与\"代码\"被放进同一个命题里，我意识到人类对自身的想象可以被重新书写。后来这份好奇心慢慢落到了现实：我既着迷于生物本身精密而柔软的构造，也对计算机与前沿科技的可能性抱有持续的兴趣。脑机接口刚好站在两者的交界处——它是生物学的问题，也是工程学的问题，更是关于\"人究竟是什么\"的问题。" },
-          { q: "你的绘画经历是怎样的？", a: "我从六岁开始正式学画，画到今天是件很自然的事。我最擅长的是人物速写和漫画相关的内容——捕捉一个人的神态、姿态、一瞬间的情绪，是我最享受的部分。目前我正在尝试学习色彩，从线条与结构走向光影与色调，算是给自己打开了一个新的维度。" },
-          { q: "你的音乐品味如何？", a: "我的口味比较杂，但也偏爱一些方向：POP、R&B、JAZZ、DREAM POP、迷幻摇滚都在我的歌单里，而且我喜欢的作品往往来自不同语种。艺人方面，Glass Animals、Lana Del Rey、Ariana Grande、Lauv、Lady Gaga、Men I Trust 都是我反复循环的名字。对我来说，音乐不只是背景音，它决定了一天的氛围和情绪的颜色。" },
-          { q: "你的日常是什么样的？", a: "看电影、citywalk、看展，是我最常做的三件事。我喜欢在城市的街道上随意走一走，也喜欢在展厅里慢慢停留，让眼睛和脑子都被好东西重新校准。某种意义上，我是一个始终在路上，立志于提升品位与眼界、让生命在美中寻求意义的文艺青年。" }
+        twinTag: "分身 · TWIN",
+        twinH2a: "另一个", twinH2b: "我",
+        twinSub: "本地知识库演示版 · 对话不会上传 · 刷新默认清空，可在工具栏选择在本机保留。",
+        twinCta: "和分身聊聊",
+        twinBadge: "纸上的我",
+        twinMode: "本地知识库模式 · 对话不上传",
+        twinName: "王悦为 <em>/ Wil</em>",
+        twinRole: "智能医学工程（脑机接口方向）· 大一",
+        twinFacts: [
+          { k: "学校", v: "天津大学 & 香港理工大学 深圳未来技术学院" },
+          { k: "城市", v: "深圳 · 在校" },
+          { k: "语言", v: "中文（普通话）· English" },
+          { k: "签", v: "保持好奇 · 持续创造" }
+        ],
+        twinNote: "——这个分身只会回答我愿意被公开知道的事。\n成绩、住址、家事都不会被写进来。",
+        twinYou: "来访者 · YOU",
+        twinMe: "分身 · WIL",
+        twinHello: "你好，我是 Wil 留在纸上的分身。问我画画、舞蹈、音乐、最近在做什么都可以——也可以只是来打个招呼。",
+        twinCleared: "这一页翻过去了。想聊点新的，再写一句就好。",
+        twinPlaceholder: "写点什么…",
+        twinSend: "寄出",
+        twinRetainOn: "✓ 在本机保留",
+        twinRetainOff: "在本机保留",
+        twinExport: "导出 .txt",
+        twinClear: "清空这一页",
+        twinCount: "还可以写 <b>{n}</b> 字",
+        twinUnknown: "这个问题我还没准备好答案。换个问法试试，或者从下面几个常见问题开始——",
+        twinSuggest: [
+          "你是怎么对脑机接口产生兴趣的？",
+          "你平时都在忙什么？",
+          "可以推荐一首歌吗？",
+          "最近在画什么？"
+        ],
+        twinQuick: [
+          "你是怎么对脑机接口产生兴趣的？",
+          "你的绘画经历是怎样的？",
+          "你的音乐品味如何？",
+          "你的日常是什么样的？"
         ],
         contactTag: "联系 · CONTACT",
         contactH2a: "找到", contactH2b: "我",
@@ -1144,7 +1279,7 @@ html.has-quill .quill { opacity: 1; }
         intro: "Hi, I'm Wil. I dig into <strong>brain-computer interfaces</strong> and I paint, dance and shoot photos on the side. Documenting life, exploring biology and the humanities. Glad to meet you.",
         cta: "Enter the file",
         opContinue: "CLICK TO CONTINUE",
-        nav: { about: "About", hobbies: "Hobbies", growing: "Projects", ask: "Q&A", contact: "Contact", feedback: "Note" },
+        nav: { about: "About", hobbies: "Hobbies", growing: "Projects", twin: "Twin", contact: "Contact", feedback: "Note" },
         aboutTag: "About · ABOUT",
         aboutH2a: "Between science & ", aboutH2b: "art", aboutH2c: "",
         aboutSub: "From Chengdu to Shenzhen — a Gen-Z dancing to the signal between medical code and a paintbrush.",
@@ -1178,24 +1313,44 @@ html.has-quill .quill { opacity: 1; }
           { no: "02", title: "Skills", desc: "Unlocking new tools and directions, learning while playing.", badge: "Skills", href: "skills.html" },
           { no: "03", title: "More to come", desc: "There's always a page here for the next idea.", badge: "SOON", href: "#" }
         ],
-        askTag: "ASK · Q&A",
-        askH2a: "Ask me ", askH2b: "anything",
-        askSub: "Four questions I get asked the most — tap one and it answers itself.",
-        qaEyebrow: "CASE FILE · Q&A",
-        qaTitle: "Tap a question to start",
-        qaMark: "W",
-        qaAgentName: "Wang Yuewei · Wil",
-        qaAgentRole: "BCI track · Freshman",
-        qaStatus: "ONLINE",
-        qaHint: "Tap any question on the left · Answers appear here as a chat · Follows language",
-        qaHello: "Hi, I'm Wil. On the left are the four questions I get asked most — tap one and I'll answer you right here.",
-        qaUserLabel: "VISITOR",
-        qaBotLabel: "WANG YUEWEI · WIL",
-        qa: [
-          { q: "How did you first get into brain-computer interfaces?", a: "The first shock came from the film The Matrix — when \"consciousness\" and \"code\" are placed inside the same proposition, I realised that our image of ourselves can be rewritten. That curiosity then came down to earth: I'm drawn both to how precise and how soft biology is, and to the possibilities of computers and frontier tech. BCI stands right on the border between the two — a question of biology, a question of engineering, and above all a question of what a human being really is." },
-          { q: "What's your history with painting?", a: "I started formal training at six, and painting still feels like the most natural thing. I'm best at figure sketches and comic-related work — catching someone's expression, their posture, a fleeting emotion is what I enjoy most. Right now I'm learning colour, moving from line and structure into light and tone — a new dimension I'm opening for myself." },
-          { q: "What kind of music do you listen to?", a: "My taste is pretty mixed, with a few clear directions: POP, R&B, JAZZ, DREAM POP and psychedelic rock all live in my playlists, and much of what I love comes from different languages. On repeat: Glass Animals, Lana Del Rey, Ariana Grande, Lauv, Lady Gaga, Men I Trust. Music isn't just background sound to me — it sets the mood of a day and the colour of it." },
-          { q: "What does an ordinary day look like for you?", a: "Films, city walks and exhibitions are the three things I do most. I like wandering a city's streets with no particular goal, and lingering slowly in a gallery, letting my eyes and my head be recalibrated by good things. In a way, I'm a young soul always on the road — set on sharpening my taste and widening my horizons, looking for meaning in beauty." }
+        twinTag: "TWIN",
+        twinH2a: "The other ", twinH2b: "me",
+        twinSub: "Local knowledge base demo · Nothing is uploaded · Clears on refresh unless you choose to keep it on this device.",
+        twinCta: "Talk to my twin",
+        twinBadge: "Pen-and-ink me",
+        twinMode: "Local mode · nothing leaves this page",
+        twinName: "Wang Yuewei <em>/ Wil</em>",
+        twinRole: "Intelligent Medical Engineering · BCI · Freshman",
+        twinFacts: [
+          { k: "School", v: "Tianjin Univ. × PolyU · Shenzhen Future Tech" },
+          { k: "City", v: "Shenzhen · on campus" },
+          { k: "Languages", v: "Chinese · English" },
+          { k: "Tagline", v: "Stay curious, keep creating" }
+        ],
+        twinNote: "— This twin only answers what's safe to put online.\nGrades, addresses, family matters are not in here.",
+        twinYou: "VISITOR",
+        twinMe: "WIL",
+        twinHello: "Hi, I'm the Wil left on paper. Ask me about painting, dance, music, what I'm working on — or just say hi.",
+        twinCleared: "That page is turned. Write a new line when you're ready.",
+        twinPlaceholder: "Write something…",
+        twinSend: "Send",
+        twinRetainOn: "✓ Kept on this device",
+        twinRetainOff: "Keep on this device",
+        twinExport: "Export .txt",
+        twinClear: "Turn this page",
+        twinCount: "<b>{n}</b> characters left",
+        twinUnknown: "I don't have an answer for that one yet. Try a different angle — or start from one of these:",
+        twinSuggest: [
+          "How did you first get into BCI?",
+          "What does a typical day look like?",
+          "Recommend me a song?",
+          "What are you drawing lately?"
+        ],
+        twinQuick: [
+          "How did you first get into BCI?",
+          "What's your history with painting?",
+          "What kind of music do you listen to?",
+          "What does an ordinary day look like?"
         ],
         contactTag: "CONTACT",
         contactH2a: "Find ", contactH2b: "me",
@@ -1276,11 +1431,12 @@ html.has-quill .quill { opacity: 1; }
       $("#role").textContent = t.role;
       $("#intro").innerHTML = t.intro;
       $("#cta").textContent = t.cta;
+      $("#cta-twin").textContent = t.twinCta;
 
       $("#nav-about").textContent = t.nav.about;
       $("#nav-hobbies").textContent = t.nav.hobbies;
       $("#nav-growing").textContent = t.nav.growing;
-      $("#nav-ask").textContent = t.nav.ask;
+      $("#nav-twin").textContent = t.nav.twin;
       $("#nav-contact").textContent = t.nav.contact;
       $("#nav-feedback").textContent = t.nav.feedback;
 
@@ -1315,10 +1471,20 @@ html.has-quill .quill { opacity: 1; }
           <span class="grow-card__go">查看详情 →</span>
         </a>`).join("");
 
-      $("#ask-tag").textContent = t.askTag;
-      $("#ask-h2").innerHTML = buildH2(t.askH2a, t.askH2b, "");
-      $("#ask-sub").textContent = t.askSub;
-      qaRender(t);
+      $("#twin-tag").textContent = t.twinTag;
+      $("#twin-h2").innerHTML = buildH2(t.twinH2a, t.twinH2b, "");
+      $("#twin-sub").textContent = t.twinSub;
+      $("#twin-name").innerHTML = t.twinName;
+      $("#twin-role").textContent = t.twinRole;
+      $("#twin-mode").textContent = t.twinMode;
+      $("#twin-badge").textContent = t.twinBadge;
+      $("#twin-note").innerHTML = (t.twinNote || "").replace(/\n/g, "<br>");
+      $("#twin-input").placeholder = t.twinPlaceholder;
+      $("#twin-input-label").textContent = t.twinPlaceholder;
+      $("#twin-send").textContent = t.twinSend;
+      const facts = document.getElementById("twin-facts");
+      if (facts) facts.innerHTML = (t.twinFacts || []).map(f => `<li><span>${f.k}</span><b>${f.v}</b></li>`).join("");
+      twinRender(t);
 
       $("#contact-tag").textContent = t.contactTag;
       $("#contact-h2").innerHTML = buildH2(t.contactH2a, t.contactH2b, "");
@@ -1682,132 +1848,472 @@ html.has-quill .quill { opacity: 1; }
       }
     }
 
-    /* ---------- 问答互动区：点击问题 → 对话式回答 ---------- */
-    const QAS = { busy: false, timer: null };
+    /* ---------- 分身 · TWIN：本地知识库对话 ---------- */
+    const TWIN = { busy: false, timer: null, log: [], lastTopic: null, lastIndex: {}, retain: false, booted: false, typing: null, queue: [] };
+    const TWIN_KEY_LOG = "wil_twin_log_v1";
+    const TWIN_KEY_RETAIN = "wil_twin_retain_v1";
 
-    function qaEsc(s) {
-      return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    function twinEsc(s) {
+      return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
 
-    /* 把 **文字** 拆成“普通 / 加粗”片段，供打字机逐字渲染 */
-    function qaSegs(text) {
-      const segs = [];
-      String(text).split("**").forEach(function (part, i) {
-        if (part) segs.push({ text: part, bold: i % 2 === 1 });
+    function twinNorm(s) {
+      return String(s || "").toLowerCase().replace(/[\s\u3000]+/g, "").replace(/[^\u4e00-\u9fa5a-z0-9]/g, "");
+    }
+
+    function twinScore(text, kws) {
+      let n = 0;
+      (kws || []).forEach(function (k) {
+        const kk = twinNorm(k);
+        if (kk && text.indexOf(kk) !== -1) n += 1;
       });
-      return segs;
+      return n;
     }
 
-    function qaTypedHTML(segs, n) {
-      let out = "";
-      let used = 0;
-      for (let i = 0; i < segs.length && used < n; i++) {
-        const s = segs[i];
-        const take = Math.min(s.text.length, n - used);
-        const piece = qaEsc(s.text.slice(0, take));
-        out += s.bold ? "<strong>" + piece + "</strong>" : piece;
-        used += take;
-      }
-      return out;
+    function twinLoad() {
+      try {
+        const raw = localStorage.getItem(TWIN_KEY_LOG);
+        if (!raw) return null;
+        const arr = JSON.parse(raw);
+        if (!Array.isArray(arr)) return null;
+        const clean = arr.filter(function (m) {
+          return m && (m.role === "user" || m.role === "bot") && typeof m.text === "string";
+        }).slice(-60);
+        return clean.length ? clean : null;
+      } catch (e) { return null; }
     }
 
-    function qaScroll() {
-      const box = document.getElementById("qa-messages");
+    function twinRetainState() {
+      try { return localStorage.getItem(TWIN_KEY_RETAIN) === "1"; } catch (e) { return false; }
+    }
+
+    function twinStore() {
+      if (!TWIN.retain) return;
+      try { localStorage.setItem(TWIN_KEY_LOG, JSON.stringify(TWIN.log.slice(-60))); } catch (e) {}
+    }
+
+    function twinScroll() {
+      const box = document.getElementById("twin-log");
       if (box) box.scrollTop = box.scrollHeight;
     }
 
-    function qaTrim() {
-      const box = document.getElementById("qa-messages");
-      while (box && box.children.length > 16) box.removeChild(box.firstElementChild);
+    function twinTrim() {
+      const box = document.getElementById("twin-log");
+      while (box && box.children.length > 26) box.removeChild(box.firstElementChild);
     }
 
-    function qaPush(kind, who, html) {
-      const box = document.getElementById("qa-messages");
+    function twinPush(kind, text, typing) {
+      const box = document.getElementById("twin-log");
       if (!box) return null;
-      const el = document.createElement("div");
-      el.className = "qa-message qa-message--" + kind;
-      const name = document.createElement("span");
-      name.className = "qa-message__who";
-      name.textContent = who;
-      const bubble = document.createElement("div");
-      bubble.className = "qa-message__bubble";
-      bubble.innerHTML = html;
-      el.appendChild(name);
-      el.appendChild(bubble);
-      box.appendChild(el);
-      qaTrim();
-      qaScroll();
-      return el;
-    }
-
-    /* 打字机：逐字显示，**文字** 渲染为红底高亮，末尾带闪动光标 */
-    function qaType(bubble, text, done) {
-      const segs = qaSegs(text);
-      const total = segs.reduce(function (a, s) { return a + s.text.length; }, 0);
-      let n = 0;
-      clearInterval(QAS.timer);
-      QAS.timer = setInterval(function () {
-        n += 2;
-        const finished = n >= total;
-        if (finished) { n = total; clearInterval(QAS.timer); }
-        bubble.innerHTML = qaTypedHTML(segs, n) + (finished ? "" : '<i class="qa-caret" aria-hidden="true"></i>');
-        qaScroll();
-        if (finished && done) done();
-      }, 22);
-    }
-
-    function qaAsk(index, btn) {
       const t = COPY[lang];
-      const item = t.qa && t.qa[index];
-      if (!item || QAS.busy) return;
-      QAS.busy = true;
-      document.querySelectorAll(".qa-option").forEach(function (b) {
-        b.classList.toggle("is-active", b === btn);
-      });
-      qaPush("user", t.qaUserLabel, qaEsc(item.q));
-      const el = qaPush("bot", t.qaBotLabel, '<span class="qa-typing" aria-label="正在输入"><i></i><i></i><i></i></span>');
-      if (!el) { QAS.busy = false; return; }
-      const bubble = el.querySelector(".qa-message__bubble");
-      setTimeout(function () {
-        qaType(bubble, item.a, function () { QAS.busy = false; });
-      }, 560);
+      const el = document.createElement("div");
+      el.className = "twin-msg twin-msg--" + kind;
+      const who = document.createElement("span");
+      who.className = "twin-msg__who";
+      who.textContent = kind === "user" ? t.twinYou : t.twinMe;
+      const body = document.createElement("div");
+      body.className = "twin-msg__body";
+      if (typing) {
+        body.innerHTML = '<span class="twin-typing" aria-label="正在写"><i></i><i></i><i></i></span>';
+      } else {
+        body.innerHTML = twinEsc(text).replace(/\n/g, "<br>");
+      }
+      el.appendChild(who);
+      el.appendChild(body);
+      box.appendChild(el);
+      twinTrim();
+      twinScroll();
+      return body;
     }
 
-    function qaRender(t) {
-      const box = document.getElementById("qa-messages");
-      const opts = document.getElementById("qa-options");
-      if (!box || !opts || !t.qa) return;
-      clearInterval(QAS.timer);
-      QAS.busy = false;
-      document.getElementById("qa-eyebrow").textContent = t.qaEyebrow;
-      document.getElementById("qa-title").textContent = t.qaTitle;
-      document.getElementById("qa-mark").textContent = t.qaMark;
-      document.getElementById("qa-agent-name").textContent = t.qaAgentName;
-      document.getElementById("qa-agent-role").textContent = t.qaAgentRole;
-      document.getElementById("qa-status").textContent = t.qaStatus;
-      document.getElementById("qa-hint").textContent = t.qaHint;
-      opts.innerHTML = t.qa.map(function (item, i) {
-        return '<button class="qa-option" type="button" data-qa="' + i + '">' +
-          "<span>" + String(i + 1).padStart(2, "0") + "</span>" + qaEsc(item.q) +
-          "</button>";
+    /* 打字机：逐字显示，标点处稍作停顿 */
+    function twinType(body, text, done) {
+      if (!body) { if (done) done(); return; }
+      const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const str = String(text || "");
+      if (reduce) {
+        body.innerHTML = twinEsc(str).replace(/\n/g, "<br>");
+        twinScroll();
+        if (done) done();
+        return;
+      }
+      let i = 0;
+      clearTimeout(TWIN.timer);
+      TWIN.typing = { body: body, text: str, done: done };
+      function step() {
+        if (i >= str.length) {
+          body.innerHTML = twinEsc(str).replace(/\n/g, "<br>");
+          twinScroll();
+          const cur = TWIN.typing;
+          TWIN.typing = null;
+          if (cur && cur.done) cur.done();
+          return;
+        }
+        i += 1;
+        const ch = str.charAt(i - 1);
+        body.innerHTML = twinEsc(str.slice(0, i)).replace(/\n/g, "<br>") + '<i class="twin-caret" aria-hidden="true"></i>';
+        twinScroll();
+        const pause = /[。！？!?]/.test(ch) ? 170 : /[，、；：,;:]/.test(ch) ? 80 : 16;
+        TWIN.timer = setTimeout(step, pause);
+      }
+      step();
+    }
+
+    /* 立即收尾当前打字：用户追问时先把上一句落定 */
+    function twinFlush() {
+      if (!TWIN.typing) return;
+      const cur = TWIN.typing;
+      TWIN.typing = null;
+      clearTimeout(TWIN.timer);
+      TWIN.timer = null;
+      cur.body.innerHTML = twinEsc(cur.text).replace(/\n/g, "<br>");
+      twinScroll();
+      if (cur.done) cur.done();
+    }
+
+    function twinPick(item, field) {
+      const pack = lang === "en" ? item.en : item.zh;
+      if (!pack) return "";
+      return pack[field] || pack.a || pack.q || "";
+    }
+
+    function twinTopicAnswer(item) {
+      const pack = lang === "en" ? item.en : item.zh;
+      if (!pack) return "";
+      const arr = pack.answers || [];
+      if (!arr.length) return pack.a || "";
+      const i = (TWIN.lastIndex[item.id] || 0) % arr.length;
+      TWIN.lastIndex[item.id] = i + 1;
+      return arr[i];
+    }
+
+    function twinAnswer(input) {
+      const t = COPY[lang];
+      const P = window.WIL_PERSONA;
+      const q = twinNorm(input);
+      if (!q) return t.twinUnknown;
+      if (!P) return t.twinUnknown;
+
+      /* 1) 隐私边界：优先拦截，绝不展开 */
+      const avoid = (P.style && P.style.avoid) || [];
+      for (let i = 0; i < avoid.length; i++) {
+        if (q.indexOf(twinNorm(avoid[i])) !== -1) {
+          return lang === "en" ? P.style.boundary.en : P.style.boundary.zh;
+        }
+      }
+
+      const st = P.smalltalk || {};
+
+      /* 2) 寒暄 */
+      if (/^(你好|您好|嗨|哈喽|在吗|有人在吗|hi|hello|hey|yo)$/.test(q)) {
+        return st.hello ? st.hello[lang] : t.twinHello;
+      }
+      if (/(谢谢|感谢|多谢|thanks|thankyou|thx)/.test(q)) {
+        return st.thanks ? st.thanks[lang] : st.hello[lang];
+      }
+      if (/(再见|拜拜|晚安|下次聊|bye|goodbye|seeyou)/.test(q)) {
+        return st.bye ? st.bye[lang] : st.hello[lang];
+      }
+      if (/(你是谁|你叫什么|介绍一下|自我介绍|whoareyou|aboutyou|introduce)/.test(q)) {
+        return st.about ? st.about[lang] : t.twinHello;
+      }
+      if (/(你能做什么|会什么|能聊什么|whatcanyoudo|whatdoyouknow)/.test(q)) {
+        return st.can ? st.can[lang] : t.twinUnknown;
+      }
+
+      /* 3) 追问：那舞蹈呢 / 还有呢 */
+      if (TWIN.lastTopic && /^(那|还有|这个|那个|它|继续|然后)?(呢|吗|呢吗|还有呢|然后呢|怎么说)$/.test(q)) {
+        const prev = (P.topics || []).find(function (x) { return x.id === TWIN.lastTopic; });
+        if (prev) { const a = twinTopicAnswer(prev); if (a) return a; }
+      }
+
+      /* 4) 常见问题 */
+      let best = null, bestScore = 0;
+      (P.faq || []).forEach(function (f) {
+        let s = twinScore(q, f.kw);
+        const fq = twinNorm(twinPick(f, "q"));
+        if (fq && q.length >= 2 && (q.indexOf(fq) !== -1 || fq.indexOf(q) !== -1)) s += 3;
+        if (s > bestScore) { bestScore = s; best = f; }
+      });
+      if (best && bestScore >= 1) {
+        TWIN.lastTopic = best.id;
+        return twinPick(best, "a");
+      }
+
+      /* 5) 主题 */
+      let topic = null, topicScore = 0;
+      (P.topics || []).forEach(function (x) {
+        const s = twinScore(q, x.kw);
+        if (s > topicScore) { topicScore = s; topic = x; }
+      });
+      if (topic && topicScore >= 1) {
+        TWIN.lastTopic = topic.id;
+        return twinTopicAnswer(topic);
+      }
+
+      /* 6) 兜底：永远有回应，并给 3 个可选方向 */
+      const sug = (t.twinSuggest || []).slice(0, 3);
+      return t.twinUnknown + (sug.length ? "\n\n" + sug.map(function (s) { return "· " + s; }).join("\n") : "");
+    }
+
+
+    /* ===== 分身 · 远端模型（Supabase Edge Function → 智谱 GLM-4-Flash） =====
+       策略：隐私与寒暄本地秒答；其余问题交给模型；模型不可用时回落本地知识库。 */
+    function twinEdgeReady() {
+      if (/[?&]llm=0/.test(location.search)) return false;
+      if (/[?&]selftest=1/.test(location.search)) return false;
+      if (TWIN.remoteDown) return false;
+      const u = String(SUPABASE_URL || "").trim();
+      const k = String(SUPABASE_ANON_KEY || "").trim();
+      return u.slice(0, 4) === "http" && k.length > 20;
+    }
+
+    /* 确定性问题在本地答，绝不外传（隐私词尤其不能发往第三方） */
+    function twinLocalOnly(input) {
+      const t = COPY[lang];
+      const P = window.WIL_PERSONA;
+      if (!P) return t.twinUnknown;
+      const q = twinNorm(input);
+      if (!q) return t.twinUnknown;
+
+      const avoid = (P.style && P.style.avoid) || [];
+      for (let i = 0; i < avoid.length; i++) {
+        if (q.indexOf(twinNorm(avoid[i])) !== -1) {
+          return lang === "en" ? P.style.boundary.en : P.style.boundary.zh;
+        }
+      }
+
+      const st = P.smalltalk || {};
+      if (/^(你好|您好|嗨|哈喽|在吗|有人在吗|hi|hello|hey|yo)$/.test(q)) {
+        return st.hello ? st.hello[lang] : t.twinHello;
+      }
+      if (/(谢谢|感谢|多谢|thanks|thankyou|thx)/.test(q)) {
+        return st.thanks ? st.thanks[lang] : (st.hello ? st.hello[lang] : t.twinHello);
+      }
+      if (/(再见|拜拜|晚安|下次聊|bye|goodbye|seeyou)/.test(q)) {
+        return st.bye ? st.bye[lang] : (st.hello ? st.hello[lang] : t.twinHello);
+      }
+      if (/(你是谁|你叫什么|介绍一下|自我介绍|whoareyou|aboutyou|introduce)/.test(q)) {
+        return st.about ? st.about[lang] : t.twinHello;
+      }
+      if (/(你能做什么|会什么|能聊什么|whatcanyoudo|whatdoyouknow)/.test(q)) {
+        return st.can ? st.can[lang] : t.twinUnknown;
+      }
+      return "";
+    }
+
+    function twinAsk(value) {
+      const quick = twinLocalOnly(value);
+      if (quick) return Promise.resolve(quick);
+      if (!twinEdgeReady()) return Promise.resolve(twinAnswer(value));
+
+      const ctrl = ("AbortController" in window) ? new AbortController() : null;
+      const timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 18000);
+      const history = TWIN.log.slice(-6).map(function (m) {
+        return { role: m.role === "bot" ? "assistant" : "user", content: m.text };
+      });
+
+      return fetch(String(SUPABASE_URL).replace(/\/+$/, "") + "/functions/v1/clever-task", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_ANON_KEY
+        },
+        body: JSON.stringify({ message: value, lang: lang, history: history }),
+        signal: ctrl ? ctrl.signal : undefined
+      }).then(function (r) {
+        clearTimeout(timer);
+        if (!r.ok) throw new Error("http-" + r.status);
+        return r.json();
+      }).then(function (d) {
+        const reply = d && d.reply ? String(d.reply).trim() : "";
+        if (!reply) throw new Error("empty-reply");
+        TWIN.remoteFails = 0;
+        return reply;
+      }).catch(function () {
+        clearTimeout(timer);
+        TWIN.remoteFails = (TWIN.remoteFails || 0) + 1;
+        if (TWIN.remoteFails >= 2) TWIN.remoteDown = true;
+        return twinAnswer(value);
+      });
+    }
+
+    function twinSend(text) {
+      const value = String(text == null ? "" : text).replace(/\s+/g, " ").trim().slice(0, 200);
+      if (!value) return;
+
+      /* 上一句还在打字：先落定它，再把新问题排队，逐条回复、不丢消息 */
+      if (TWIN.busy) {
+        if (TWIN.queue.length < 3) TWIN.queue.push(value);
+        twinFlush();
+        return;
+      }
+
+      TWIN.busy = true;
+      twinPush("user", value);
+      TWIN.log.push({ role: "user", text: value, at: Date.now() });
+      twinStore();
+      const body = twinPush("bot", "", true);
+      body.innerHTML = '<i class="twin-caret" aria-hidden="true"></i>';
+      let finished = false;
+      function finish(reply) {
+        if (finished) return;
+        finished = true;
+        twinType(body, reply, function () {
+          TWIN.log.push({ role: "bot", text: reply, at: Date.now() });
+          TWIN.busy = false;
+          twinStore();
+          /* 队列里还有问题就接着回答 */
+          if (TWIN.queue.length) twinSend(TWIN.queue.shift());
+        });
+      }
+      setTimeout(function () { twinAsk(value).then(finish); }, 380);
+    }
+
+    function twinSyncRetain() {
+      const btn = document.getElementById("twin-retain");
+      if (!btn) return;
+      const t = COPY[lang];
+      btn.textContent = TWIN.retain ? t.twinRetainOn : t.twinRetainOff;
+      btn.setAttribute("aria-pressed", TWIN.retain ? "true" : "false");
+    }
+
+    function twinCount() {
+      const input = document.getElementById("twin-input");
+      const el = document.getElementById("twin-count");
+      if (!input || !el) return;
+      const left = Math.max(0, 200 - input.value.length);
+      el.innerHTML = COPY[lang].twinCount.replace("{n}", "<b>" + left + "</b>");
+    }
+
+    function twinClear() {
+      clearTimeout(TWIN.timer);
+      TWIN.busy = false;
+      TWIN.typing = null;
+      TWIN.queue = [];
+      TWIN.remoteDown = false;
+      TWIN.remoteFails = 0;
+      TWIN.log = [];
+      TWIN.lastTopic = null;
+      TWIN.lastIndex = {};
+      try { localStorage.removeItem(TWIN_KEY_LOG); } catch (e) {}
+      const box = document.getElementById("twin-log");
+      if (box) box.innerHTML = "";
+      const t = COPY[lang];
+      twinPush("bot", t.twinCleared);
+      TWIN.log.push({ role: "bot", text: t.twinCleared, at: Date.now() });
+      twinStore();
+    }
+
+    function twinExport() {
+      if (!TWIN.log.length) return;
+      const t = COPY[lang];
+      const lines = TWIN.log.map(function (m) {
+        const d = new Date(m.at || Date.now());
+        const hh = String(d.getHours()).padStart(2, "0");
+        const mm = String(d.getMinutes()).padStart(2, "0");
+        return "[" + hh + ":" + mm + "] " + (m.role === "user" ? t.twinYou : t.twinMe) + "：" + m.text;
+      });
+      const blob = new Blob([lines.join("\n\n")], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const d = new Date();
+      const stamp = "" + d.getFullYear() + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0") + "-" + String(d.getHours()).padStart(2, "0") + String(d.getMinutes()).padStart(2, "0");
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "wil-twin-" + stamp + ".txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1200);
+    }
+
+    function twinRender(t) {
+      const box = document.getElementById("twin-log");
+      const quick = document.getElementById("twin-quick");
+      if (!box) return;
+      clearTimeout(TWIN.timer);
+      TWIN.busy = false;
+      TWIN.typing = null;
+      TWIN.queue = [];
+      TWIN.lastTopic = null;
+      TWIN.lastIndex = {};
+      TWIN.retain = twinRetainState();
+
+      quick.innerHTML = (t.twinQuick || []).map(function (q) {
+        return '<button type="button" data-q="' + twinEsc(q) + '">' + twinEsc(q) + "</button>";
       }).join("");
+
       box.innerHTML = "";
-      qaPush("bot", t.qaBotLabel, qaEsc(t.qaHello));
+      TWIN.log = [];
+
+      const saved = (!TWIN.booted && TWIN.retain) ? twinLoad() : null;
+      TWIN.booted = true;
+
+      if (saved) {
+        saved.forEach(function (m) { twinPush(m.role, m.text); });
+        TWIN.log = saved;
+      } else {
+        twinPush("bot", t.twinHello);
+        TWIN.log.push({ role: "bot", text: t.twinHello, at: Date.now() });
+      }
+      twinSyncRetain();
+      twinCount();
+      if (TWIN.retain) twinStore();
     }
 
-    function bindQa() {
-      const opts = document.getElementById("qa-options");
-      if (!opts) return;
-      opts.addEventListener("click", function (e) {
-        const btn = e.target.closest ? e.target.closest(".qa-option") : null;
-        if (btn) qaAsk(Number(btn.dataset.qa), btn);
+    function bindTwin() {
+      const form = document.getElementById("twin-form");
+      const input = document.getElementById("twin-input");
+      const quick = document.getElementById("twin-quick");
+      if (!form || !input) return;
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const v = input.value;
+        input.value = "";
+        twinCount();
+        twinSend(v);
       });
+      input.addEventListener("input", twinCount);
+
+      if (quick) {
+        quick.addEventListener("click", function (e) {
+          const btn = e.target.closest ? e.target.closest("button[data-q]") : null;
+          if (btn) twinSend(btn.dataset.q);
+        });
+      }
+
+      const clearBtn = document.getElementById("twin-clear");
+      if (clearBtn) clearBtn.addEventListener("click", twinClear);
+      const exportBtn = document.getElementById("twin-export");
+      if (exportBtn) exportBtn.addEventListener("click", twinExport);
+
+      const retainBtn = document.getElementById("twin-retain");
+      if (retainBtn) {
+        retainBtn.addEventListener("click", function () {
+          TWIN.retain = !TWIN.retain;
+          try {
+            if (TWIN.retain) {
+              localStorage.setItem(TWIN_KEY_RETAIN, "1");
+              twinStore();
+            } else {
+              localStorage.removeItem(TWIN_KEY_RETAIN);
+              localStorage.removeItem(TWIN_KEY_LOG);
+            }
+          } catch (e) {}
+          twinSyncRetain();
+        });
+      }
+      twinSyncRetain();
+      twinCount();
     }
 
     /* ---------- 开场动画 ---------- */
     function startOpening() {
       const op = document.getElementById("opening");
       if (!op) return;
+      /* 预览 / 截图用：?noopening=1 直接跳过开场 */
+      if (/[?&]noopening=1/.test(location.search)) { op.style.display = "none"; document.body.classList.remove("opening"); return; }
       if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { op.style.display = "none"; return; }
       const city = document.getElementById("op-city");
       const cap = document.getElementById("op-cap-text");
@@ -1976,9 +2482,79 @@ html.has-quill .quill { opacity: 1; }
     }
 
     function init() {
+      /* 预览 / 截图用：?reveal=1 强制显示所有 reveal 元素 */
+      if (/[?&]reveal=1/.test(location.search)) {
+        try { document.querySelectorAll("[data-reveal]").forEach(function (e) { e.classList.add("is-in"); }); } catch (e) {}
+      }
+      /* 预览 / 截图用：?compact=1 取消封面 100svh，方便整页截图 */
+      if (/[?&]compact=1/.test(location.search)) {
+        const st = document.createElement("style");
+        st.textContent = ".cover{min-height:auto !important;padding-top:4rem !important;padding-bottom:4rem !important}";
+        document.head.appendChild(st);
+      }
+
+      /* 预览 / 截图用：?only=twin 只保留分身区 */
+      if (/[?&]only=twin/.test(location.search)) {
+        const st2 = document.createElement("style");
+        st2.textContent = ".cover,#about,#growing,#hobbies,#contact,#feedback{display:none !important}";
+        document.head.appendChild(st2);
+      }
+
+      /* 预览 / 诊断用：?diag=1 列出横向溢出元素 */
+      if (/[?&]diag=1/.test(location.search)) {
+        setTimeout(function () {
+          const vw = document.documentElement.clientWidth;
+          const bad = [];
+          document.querySelectorAll("body *").forEach(function (el) {
+            const r = el.getBoundingClientRect();
+            if (r.width > 0 && (r.right > vw + 1 || r.left < -1)) {
+              const cls = typeof el.className === "string" ? el.className.slice(0, 40) : "";
+              bad.push(el.tagName.toLowerCase() + (cls ? "." + cls.replace(/\s+/g, ".") : "") + " [L" + Math.round(r.left) + " R" + Math.round(r.right) + " W" + Math.round(r.width) + "]");
+            }
+          });
+          const d = document.createElement("div");
+          d.id = "diag-out";
+          d.textContent = JSON.stringify({ vw: vw, scrollW: document.documentElement.scrollWidth, count: bad.length, items: bad.slice(0, 50) }, null, 1);
+          document.body.appendChild(d);
+          document.title = "diag-done";
+        }, 800);
+      }
       render();
+      /* 预览 / 截图用：?noopening=1 时，等布局完成后再按 hash 定位 */
+      if (/[?&]noopening=1/.test(location.search) && location.hash.length > 1) {
+        setTimeout(function () {
+          const target = document.querySelector(location.hash);
+          if (target) target.scrollIntoView({ block: "start" });
+        }, 120);
+      }
       bindLang();
-      bindQa();
+      bindTwin();
+      /* 预览 / 自检用：?selftest=1 自动跑一轮对话并把结果写到 #selftest-out（仅 dev） */
+      if (/[?&]selftest=1/.test(location.search)) {
+        const out = document.createElement("div");
+        out.id = "selftest-out";
+        out.style.cssText = "position:fixed;left:-9999px;top:0";
+        out.textContent = "pending";
+        document.body.appendChild(out);
+        const log = [];
+        setTimeout(function () { log.push("init:" + document.getElementById("twin-log").children.length); twinSend("你最近在研究什么？"); }, 100);
+        setTimeout(function () { log.push("afterQ1:" + document.getElementById("twin-log").children.length + ":busy=" + (window.TWIN && TWIN.busy)); twinSend("你成绩怎么样"); }, 2200);
+        setTimeout(function () {
+          log.push("afterQ2:" + document.getElementById("twin-log").children.length + ":busy=" + (window.TWIN && TWIN.busy));
+          /* 再试一次追问：看你还有什么 */
+          twinSend("那画画呢");
+        }, 5000);
+        setTimeout(function () {
+          const box = document.getElementById("twin-log");
+          const texts = [];
+          box.querySelectorAll(".twin-msg__text").forEach(function (n) { texts.push(n.textContent.trim().slice(0, 80)); });
+          const retain = window.TWIN ? TWIN.retain : "?";
+          let stored = "(off)";
+          if (retain) { try { stored = localStorage.getItem(window.TWIN_KEY_LOG || "wil.twin.log.v1") || "(empty)"; } catch (e) {} }
+          out.textContent = JSON.stringify({ steps: log, count: box.children.length, texts: texts, retain: retain, stored: stored.slice(0, 120) });
+          document.title = "selftest-done";
+        }, 8500);
+      }
       fbBind();
       startOpening();
       startQuill();
