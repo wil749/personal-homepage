@@ -25,7 +25,7 @@
       --gray: #c9c6bd;       /* 灰白 */
       --font: "方正姚体", "FZYaoti", "FZYaoTi", Georgia, "Times New Roman", "Source Han Serif SC", "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STZhongsong", "STSong", "SimSun", serif;
       --disp: "方正姚体", "FZYaoti", "FZYaoTi", Georgia, "Times New Roman", "Source Han Serif SC", "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STZhongsong", "STSong", serif;
-      --bold: 0.03em;        /* 姚体无粗体字重，用描边加粗 */
+      --bold: 0.018em;       /* 姚体无粗体字重，用描边加粗（V5.1 由 .03 减细） */
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
       --wrap: 78rem;
     }
@@ -565,6 +565,59 @@ html.has-quill .quill { opacity: 1; }
       .fb-foot { flex-direction: column; align-items: stretch; }
       .fb-submit { justify-content: center; }
     }
+
+    /* ================= 可读性修正（V5.1 · 小字清晰化） =================
+       姚体本身没有粗体字重，站点用 -webkit-text-stroke 描边模拟加粗。
+       这在大标题上是风格，但在 ≤13px 的辅助文字上会把字糊成一团。
+       修正原则：
+         · 小字取消描边（stroke: 0）
+         · 字号上调半档（约 +1px）
+         · 字重降一档（900/800 → 700/600）
+         · 大间距标签适当收紧，避免小字被拉散
+       大标题（h1/h2/封面名）保持原样，不影响海报风。 */
+    .brand .sub, .topnav a, .lang button, .label, .eyebrow, .scroll-hint,
+    .chip, .motif span, .grow-card__no, .grow-card__go, .grow-badge,
+    .pg__en, .pg__folio, .pg__cap, .pg__media--empty b, .book__hint,
+    .twin-photo__cap, .twin-id__eyebrow, .twin-id > p, .twin-facts li,
+    .twin-facts span, .twin-note, .twin-head small, .twin-badge,
+    .twin-msg__who, .twin-quick button, .twin-tools, .twin-count,
+    .contact-badge b, .fb-field > label, .fb-mood, .fb-status, .fb-count,
+    .twin-send { -webkit-text-stroke: 0; }
+
+    .brand .sub { font-size: .72rem; font-weight: 600; letter-spacing: .2em; }
+    .topnav a { font-size: .86rem; font-weight: 600; }
+    .lang button { font-size: .78rem; font-weight: 600; }
+    .label { font-size: .8rem; font-weight: 700; letter-spacing: .26em; }
+    .eyebrow { font-size: .8rem; font-weight: 700; letter-spacing: .34em; }
+    .scroll-hint { font-size: .7rem; font-weight: 600; letter-spacing: .28em; }
+    .chip { font-size: .84rem; font-weight: 600; }
+    .motif span { font-size: .68rem; font-weight: 600; }
+    .grow-card__no { font-size: .76rem; font-weight: 600; letter-spacing: .24em; }
+    .grow-card__go { font-size: .8rem; font-weight: 700; }
+    .grow-badge { font-size: .78rem; font-weight: 700; }
+    .pg__en { font-size: .72rem; font-weight: 600; letter-spacing: .2em; }
+    .pg__folio { font-size: .72rem; font-weight: 600; letter-spacing: .18em; }
+    .pg__cap { font-size: .7rem; font-weight: 600; }
+    .pg__media--empty b { font-size: .78rem; font-weight: 700; }
+    .book__hint { font-size: .82rem; font-weight: 600; }
+    .twin-photo__cap { font-size: .7rem; }
+    .twin-id__eyebrow { font-size: .68rem; letter-spacing: .16em; }
+    .twin-id > p { font-size: .82rem; }
+    .twin-facts li { font-size: .8rem; }
+    .twin-facts span { font-size: .72rem; }
+    .twin-note { font-size: .76rem; }
+    .twin-head small { font-size: .7rem; }
+    .twin-badge { font-size: .68rem; }
+    .twin-msg__who { font-size: .66rem; }
+    .twin-quick button { font-size: .78rem; }
+    .twin-tools { font-size: .72rem; }
+    .twin-send { font-size: .66rem; }
+    .contact-badge b { font-size: .8rem; font-weight: 700; }
+    .fb-field > label { font-size: .78rem; font-weight: 700; letter-spacing: .16em; }
+    .fb-mood { font-size: .84rem; font-weight: 700; }
+    .fb-status { font-size: .76rem; font-weight: 600; }
+    .fb-count { font-size: .78rem; }
+
   </style>
 </head>
 
@@ -910,7 +963,7 @@ html.has-quill .quill { opacity: 1; }
       </div>
     </section>
 
-    <!-- 分身 · TWIN（羊皮纸跨页 · 本地知识库模式） -->
+    <!-- 分身 · TWIN（羊皮纸跨页 · GLM-4-Flash 生成 + 本地兜底） -->
     <section class="band band--black twin-band" id="twin">
       <div class="grain" aria-hidden="true"></div>
       <div class="wrap section">
@@ -952,7 +1005,7 @@ html.has-quill .quill { opacity: 1; }
                 <span class="twin-avatar" aria-hidden="true">W</span>
                 <div class="twin-head__id">
                   <b id="twin-agent">王悦为 · Wil</b>
-                  <small id="twin-mode">本地知识库模式 · 对话不上传</small>
+                  <small id="twin-mode">GLM-4-Flash 生成 · 隐私问题本地拦截</small>
                 </div>
                 <span class="twin-badge" id="twin-badge">纸上的我</span>
               </div>
@@ -1190,10 +1243,10 @@ html.has-quill .quill { opacity: 1; }
         ],
         twinTag: "分身 · TWIN",
         twinH2a: "另一个", twinH2b: "我",
-        twinSub: "本地知识库演示版 · 对话不会上传 · 刷新默认清空，可在工具栏选择在本机保留。",
+        twinSub: "智谱 GLM-4-Flash 实时生成 · 隐私问题不会发出 · 刷新默认清空，可在工具栏选择在本机保留。",
         twinCta: "和分身聊聊",
         twinBadge: "纸上的我",
-        twinMode: "本地知识库模式 · 对话不上传",
+        twinMode: "GLM-4-Flash 生成 · 隐私问题本地拦截",
         twinName: "王悦为 <em>/ Wil</em>",
         twinRole: "智能医学工程（脑机接口方向）· 大一",
         twinFacts: [
@@ -1315,10 +1368,10 @@ html.has-quill .quill { opacity: 1; }
         ],
         twinTag: "TWIN",
         twinH2a: "The other ", twinH2b: "me",
-        twinSub: "Local knowledge base demo · Nothing is uploaded · Clears on refresh unless you choose to keep it on this device.",
+        twinSub: "Powered by GLM-4-Flash · Private questions never leave this page · Clears on refresh unless you keep it on this device.",
         twinCta: "Talk to my twin",
         twinBadge: "Pen-and-ink me",
-        twinMode: "Local mode · nothing leaves this page",
+        twinMode: "Model-powered · private topics blocked locally",
         twinName: "Wang Yuewei <em>/ Wil</em>",
         twinRole: "Intelligent Medical Engineering · BCI · Freshman",
         twinFacts: [
